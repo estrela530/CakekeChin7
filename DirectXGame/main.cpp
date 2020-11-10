@@ -58,6 +58,12 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int)
 		return 1;
 	}
 
+	// ブロックの静的初期化
+	if (!Block::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {
+		assert(0);
+		return 1;
+	}
+
 #pragma endregion
 
 	// ゲームシーンの初期化

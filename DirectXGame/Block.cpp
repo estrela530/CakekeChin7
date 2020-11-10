@@ -1,4 +1,4 @@
-#include "Ball.h"
+#include "Block.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <fstream>
@@ -15,28 +15,28 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-const float Ball::radius = 5.0f;				// 底面の半径
-const float Ball::prizmHeight = 8.0f;			// 柱の高さ
-ID3D12Device* Ball::device = nullptr;
-UINT Ball::descriptorHandleIncrementSize = 0;
-ID3D12GraphicsCommandList* Ball::cmdList = nullptr;
-ComPtr<ID3D12RootSignature> Ball::rootsignature;
-ComPtr<ID3D12PipelineState> Ball::pipelinestate;
-ComPtr<ID3D12DescriptorHeap> Ball::descHeap;
-ComPtr<ID3D12Resource> Ball::vertBuff;
-ComPtr<ID3D12Resource> Ball::indexBuff;
-ComPtr<ID3D12Resource> Ball::texbuff;
-CD3DX12_CPU_DESCRIPTOR_HANDLE Ball::cpuDescHandleSRV;
-CD3DX12_GPU_DESCRIPTOR_HANDLE Ball::gpuDescHandleSRV;
-XMMATRIX Ball::matView{};
-XMMATRIX Ball::matProjection{};
-XMFLOAT3 Ball::eye = { 0, 0, -50.0f };
-XMFLOAT3 Ball::target = { 0, 0, 0 };
-XMFLOAT3 Ball::up = { 0, 1, 0 };
-D3D12_VERTEX_BUFFER_VIEW Ball::vbView{};
-D3D12_INDEX_BUFFER_VIEW Ball::ibView{};
+const float Block::radius = 5.0f;				// 底面の半径
+const float Block::prizmHeight = 8.0f;			// 柱の高さ
+ID3D12Device* Block::device = nullptr;
+UINT Block::descriptorHandleIncrementSize = 0;
+ID3D12GraphicsCommandList* Block::cmdList = nullptr;
+ComPtr<ID3D12RootSignature> Block::rootsignature;
+ComPtr<ID3D12PipelineState> Block::pipelinestate;
+ComPtr<ID3D12DescriptorHeap> Block::descHeap;
+ComPtr<ID3D12Resource> Block::vertBuff;
+ComPtr<ID3D12Resource> Block::indexBuff;
+ComPtr<ID3D12Resource> Block::texbuff;
+CD3DX12_CPU_DESCRIPTOR_HANDLE Block::cpuDescHandleSRV;
+CD3DX12_GPU_DESCRIPTOR_HANDLE Block::gpuDescHandleSRV;
+XMMATRIX Block::matView{};
+XMMATRIX Block::matProjection{};
+XMFLOAT3 Block::eye = { 0, 0, -50.0f };
+XMFLOAT3 Block::target = { 0, 0, 0 };
+XMFLOAT3 Block::up = { 0, 1, 0 };
+D3D12_VERTEX_BUFFER_VIEW Block::vbView{};
+D3D12_INDEX_BUFFER_VIEW Block::ibView{};
 #pragma region [2]追加
-Ball::Material Ball::material;
+Block::Material Block::material;
 #pragma endregion
 
 #pragma region [1]変更
@@ -45,15 +45,15 @@ Ball::Material Ball::material;
 #pragma endregion
 
 
-std::vector<Ball::VertexPosNormalUv>Ball::vertices;
-std::vector<unsigned short>Ball::indices;
+std::vector<Block::VertexPosNormalUv>Block::vertices;
+std::vector<unsigned short>Block::indices;
 
-bool Ball::StaticInitialize(ID3D12Device * device, int window_width, int window_height)
+bool Block::StaticInitialize(ID3D12Device * device, int window_width, int window_height)
 {
 	// nullptrチェック
 	assert(device);
 
-	Ball::device = device;
+	Block::device = device;
 
 	// デスクリプタヒープの初期化
 	InitializeDescriptorHeap();
@@ -70,13 +70,13 @@ bool Ball::StaticInitialize(ID3D12Device * device, int window_width, int window_
 	return true;
 }
 
-void Ball::PreDraw(ID3D12GraphicsCommandList * cmdList)
+void Block::PreDraw(ID3D12GraphicsCommandList * cmdList)
 {
 	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(Ball::cmdList == nullptr);
+	assert(Block::cmdList == nullptr);
 
 	// コマンドリストをセット
-	Ball::cmdList = cmdList;
+	Block::cmdList = cmdList;
 
 	// パイプラインステートの設定
 	cmdList->SetPipelineState(pipelinestate.Get());
@@ -86,49 +86,49 @@ void Ball::PreDraw(ID3D12GraphicsCommandList * cmdList)
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Ball::PostDraw()
+void Block::PostDraw()
 {
 	// コマンドリストを解除
-	Ball::cmdList = nullptr;
+	Block::cmdList = nullptr;
 }
 
-Ball * Ball::Create()
+Block * Block::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
-	Ball* ball = new Ball();
-	if (ball == nullptr) {
+	Block* block = new Block();
+	if (block == nullptr) {
 		return nullptr;
 	}
 
 	// 初期化
-	if (!ball->Initialize()) {
-		delete ball;
+	if (!block->Initialize()) {
+		delete block;
 		assert(0);
 		return nullptr;
 	}
 
 	//スケールをセット
-	float scale_val = 5;
-	ball->scale = { scale_val,scale_val, scale_val };
+	float scale_val = 20;
+	block->scale = { scale_val,scale_val, scale_val };
 
-	return ball;
+	return block;
 }
 
-void Ball::SetEye(XMFLOAT3 eye)
+void Block::SetEye(XMFLOAT3 eye)
 {
-	Ball::eye = eye;
+	Block::eye = eye;
 
 	UpdateViewMatrix();
 }
 
-void Ball::SetTarget(XMFLOAT3 target)
+void Block::SetTarget(XMFLOAT3 target)
 {
-	Ball::target = target;
+	Block::target = target;
 
 	UpdateViewMatrix();
 }
 
-void Ball::CameraMoveVector(XMFLOAT3 move)
+void Block::CameraMoveVector(XMFLOAT3 move)
 {
 	XMFLOAT3 eye_moved = GetEye();
 	XMFLOAT3 target_moved = GetTarget();
@@ -145,7 +145,7 @@ void Ball::CameraMoveVector(XMFLOAT3 move)
 	SetTarget(target_moved);
 }
 
-bool Ball::InitializeDescriptorHeap()
+bool Block::InitializeDescriptorHeap()
 {
 	HRESULT result = S_FALSE;
 
@@ -166,7 +166,7 @@ bool Ball::InitializeDescriptorHeap()
 	return true;
 }
 
-void Ball::InitializeCamera(int window_width, int window_height)
+void Block::InitializeCamera(int window_width, int window_height)
 {
 	// ビュー行列の生成
 	matView = XMMatrixLookAtLH(
@@ -187,7 +187,7 @@ void Ball::InitializeCamera(int window_width, int window_height)
 	);
 }
 
-bool Ball::InitializeGraphicsPipeline()
+bool Block::InitializeGraphicsPipeline()
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
@@ -349,7 +349,7 @@ bool Ball::InitializeGraphicsPipeline()
 	return true;
 }
 
-bool Ball::LoadTexture(
+bool Block::LoadTexture(
 	const std::string& directoryPath,
 	const std::string& filename)
 {
@@ -438,7 +438,7 @@ bool Ball::LoadTexture(
 }
 
 #pragma region [2]追加
-void Ball::LoadMaterial(
+void Block::LoadMaterial(
 	const std::string& directoryPath,
 	const std::string& filename)
 {
@@ -512,7 +512,7 @@ void Ball::LoadMaterial(
 }
 #pragma endregion
 
-void Ball::CreateModel()
+void Block::CreateModel()
 {
 	HRESULT result = S_FALSE;
 
@@ -522,7 +522,7 @@ void Ball::CreateModel()
 	//.objファイルを開く
 	//file.open("Resources/triangle_tex/triangle_tex.obj");
 	//const string modelname = "triangle_mat";
-	const string modelname = "ball";
+	const string modelname = "block";
 	const string filename = modelname + ".obj"; //"triangle_mat.obj"
 	const string directoryPath = "Resources/" + modelname + "/"; //"Resources/triangle_mat/"
 	file.open(directoryPath + filename);//"Resources/triangle_mat/triangle_mat.obj"
@@ -840,13 +840,13 @@ void Ball::CreateModel()
 
 }
 
-void Ball::UpdateViewMatrix()
+void Block::UpdateViewMatrix()
 {
 	// ビュー行列の更新
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 }
 
-bool Ball::Initialize()
+bool Block::Initialize()
 {
 	// nullptrチェック
 	assert(device);
@@ -873,7 +873,7 @@ bool Ball::Initialize()
 	return true;
 }
 
-void Ball::Update()
+void Block::Update()
 {
 	HRESULT result;
 	XMMATRIX matScale, matRot, matTrans;
@@ -915,11 +915,11 @@ void Ball::Update()
 
 }
 
-void Ball::Draw()
+void Block::Draw()
 {
 	// nullptrチェック
 	assert(device);
-	assert(Ball::cmdList);
+	assert(Block::cmdList);
 
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);

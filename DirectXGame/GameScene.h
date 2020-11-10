@@ -10,6 +10,8 @@
 #include "DebugText.h"
 #include "Audio.h"
 #include "Ball.h"
+#include "Block.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -67,6 +69,7 @@ private: // メンバ変数
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
 	Ball* ball = nullptr;
+	Block* block = nullptr;
 	Object3d2* object3d2 = nullptr;
 };
 

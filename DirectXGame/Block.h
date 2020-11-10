@@ -10,7 +10,7 @@
 /// <summary>
 /// 3Dオブジェクト
 /// </summary>
-class Ball
+class Block
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
@@ -109,7 +109,7 @@ public: // 静的メンバ関数
 	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
-	static Ball* Create();
+	static Block* Create();
 
 	/// <summary>
 	/// 視点座標の取得
@@ -279,6 +279,6 @@ private: // メンバ変数
 	// ローカルワールド変換行列
 	XMMATRIX matWorld;
 	// 親オブジェクト
-	Ball* parent = nullptr;
+	Block* parent = nullptr;
 };
 

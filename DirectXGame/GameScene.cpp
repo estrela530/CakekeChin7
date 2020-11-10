@@ -55,6 +55,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	//ボール生成
 	ball = Ball::Create();
 	ball->Update();
+
+	//ブロック生成
+	block = Block::Create();
+	block->Update();
+
 }
 
 void GameScene::Update()
@@ -105,6 +110,24 @@ void GameScene::Update()
 		// 座標の変更を反映
 		ball->SetPosition(position);
 	}
+
+	// ブロック移動
+	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+	{
+		// 現在の座標を取得
+		XMFLOAT3 position = ball->GetPosition();
+
+		// 移動後の座標を計算
+		if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+		else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+		if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+		else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+
+		// 座標の変更を反映
+		block->SetPosition(position);
+	}
+
+
 #pragma region オブジェクト2の座標系
 	// オブジェクト2の座標を取得
 	XMFLOAT3 position2 = object3d2->GetPosition();
@@ -114,34 +137,34 @@ void GameScene::Update()
 #pragma endregion
 
 #pragma region 当たり判定処理
-	//ヒット通知
-	bool hit = false;
-	//座標の差を求める
-	XMVECTOR pos_sub = XMVectorSet(
-		position.x - position2.x,
-		position.y - position2.y,
-		position.z - position2.z,
-		0);
-	//2つの距離を計算
-	pos_sub = XMVector3Length(pos_sub);
-	float dist = pos_sub.m128_f32[0];
+	////ヒット通知
+	//bool hit = false;
+	////座標の差を求める
+	//XMVECTOR pos_sub = XMVectorSet(
+	//	position.x - position2.x,
+	//	position.y - position2.y,
+	//	position.z - position2.z,
+	//	0);
+	////2つの距離を計算
+	//pos_sub = XMVector3Length(pos_sub);
+	//float dist = pos_sub.m128_f32[0];
 
-	if (dist <= object3d->radius + object3d2->radius2)
-	{
-		hit = true;
-	}
+	//if (dist <= object3d->radius + object3d2->radius2)
+	//{
+	//	hit = true;
+	//}
 
-	if (hit)
-	{
-		debugText.Print("Hit", 0, 0, 10);
-	}
+	//if (hit)
+	//{
+	//	debugText.Print("Hit", 0, 0, 10);
+	//}
 
 #pragma endregion
 	// 座標の変更を反映
 	object3d->SetPosition(position);
 	object3d->Update();
 	ball->Update();
-
+	block->Update();
 }
 
 void GameScene::Draw()
@@ -175,14 +198,20 @@ void GameScene::Draw()
 	//ボール描画前処理
 	Ball::PreDraw(cmdList);
 
+	//ブロック描画前処理
+	Block::PreDraw(cmdList);
+
 	// 3Dオブクジェクトの描画
-	object3d->Draw();
+	//object3d->Draw();
 
-	// 3Dオブクジェクト2の描画
-	object3d2->Draw();
+	//// 3Dオブクジェクト2の描画
+	//object3d2->Draw();
 
-	//ボールの描画
+	////ボールの描画
 	ball->Draw();
+
+	//ブロックの描画
+	block->Draw();
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
@@ -196,7 +225,12 @@ void GameScene::Draw()
 
 	//ボール描画後処理
 	Ball::PostDraw();
+
+	//ブロック描画後処理
+	Block::PostDraw();
+
 #pragma endregion
+
 
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
