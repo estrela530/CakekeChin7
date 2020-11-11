@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SafeDelete.h"
+
 #include "SceneManager.h"
 
 #include <DirectXMath.h>
@@ -11,7 +11,7 @@
 #include "Audio.h"
 #include "BaseScene.h"
 
-class TitleScene :public BaseScene
+class ResultScene :public BaseScene
 {
 private: // エイリアス
 // Microsoft::WRL::を省略
@@ -25,15 +25,13 @@ private: // エイリアス
 private://静的メンバ変数
 	static const int debugTextTexNumber = 0;
 public:
-	TitleScene();
+	ResultScene();
 	//デストラクタ
-	~TitleScene();
+	~ResultScene();
 	//初期化
 	virtual void Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio) override;
-
 	//毎フレーム管理
 	virtual void Update() override;
-
 	//描画
 	virtual void Draw() override;
 

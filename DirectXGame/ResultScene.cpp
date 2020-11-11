@@ -1,20 +1,19 @@
 #include "SceneManager.h"
-#include "TitleScene.h"
-
+#include "ResultScene.h"
 #include <cassert>//ヘッダで式が真であることを表す
 
 
-TitleScene::TitleScene()
+ResultScene::ResultScene()
 {
 }
 
-TitleScene::~TitleScene()
+ResultScene::~ResultScene()
 {
 	delete spriteBG;
 }
 
 
-void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
+void ResultScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 {
 	//nullptrチェック
 	assert(dxCommon);
@@ -24,7 +23,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	this->dxCommon = dxCommon;
 	this->input = input;
 	this->audio = audio;
-	if (!Sprite::LoadTexture(debugTextTexNumber, L"Resources/title.png"))
+	if (!Sprite::LoadTexture(debugTextTexNumber, L"Resources/RESULT.png"))
 	{
 		assert(0);
 		return;
@@ -32,7 +31,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	debugText.Initialize(debugTextTexNumber);
 
 	// テクスチャ読み込み
-	if (!Sprite::LoadTexture(1, L"Resources/title.png")) {
+	if (!Sprite::LoadTexture(1, L"Resources/RESULT.png")) {
 		assert(0);
 		return;
 	}
@@ -47,12 +46,12 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 }
 
 
-void TitleScene::Update()
+void ResultScene::Update()
 {
 
 }
 
-void TitleScene::Draw()
+void ResultScene::Draw()
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();

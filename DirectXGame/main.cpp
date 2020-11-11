@@ -52,11 +52,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		return 1;
 	}
 
-	// 3Dオブジェクト2静的初期化
-	if (!Object3d2::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {
-		assert(0);
-		return 1;
-	}
+	//// 3Dオブジェクト2静的初期化
+	//if (!Object3d2::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {
+	//	assert(0);
+	//	return 1;
+	//}
 
 	// ボールの静的初期化
 	if (!Ball::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {
@@ -81,7 +81,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	smane->AddScene(SCENE::TITLE, new TitleScene());
 	smane->AddScene(SCENE::GAME, new GameScene());
-	smane->ChangeScene(GAME);//ここでシーン切り替え
+	smane->AddScene(SCENE::RESULT, new ResultScene());
+	smane->ChangeScene(RESULT);//ここでシーン切り替え
 #pragma endregion 
 
 	// メインループ
@@ -108,20 +109,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			smane->ChangeScene(GAME);
 		}
-	
+		if (input->PushKey(DIK_3))
+		{
+			smane->ChangeScene(RESULT);
+		}
 		// 描画終了
 		dxCommon->PostDraw();
 	}
 	// 各種解放
-	safe_delete(smane);
-	safe_delete(audio);
-	safe_delete(input);
-	safe_delete(dxCommon);
-	
+	delete smane;
+	delete audio;
+	delete input;
+	delete dxCommon;
+
 
 	// ゲームウィンドウの破棄
 	win->TerminateGameWindow();
-	safe_delete(win);
+	delete(win);
 
 	return 0;
 }

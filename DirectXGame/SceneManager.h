@@ -2,14 +2,14 @@
 #include "BaseScene.h"
 #include "GameScene.h"
 #include "TitleScene.h"
+#include "ResultScene.h"
 #include <map>
 
 enum SCENE
 {
 	TITLE,
 	GAME,
-
-	NONE
+	RESULT,
 };
 
 class SceneManager

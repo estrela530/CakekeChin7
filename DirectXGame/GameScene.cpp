@@ -1,10 +1,10 @@
 ﻿#include "GameScene.h"
-#include <cassert>
+
 #include "BaseScene.h"
 #include "SceneManager.h"
 #include "Object3d2.h"
 #include "Object3d.h"
-
+#include <cassert>
 using namespace DirectX;
 
 GameScene::GameScene()
@@ -13,13 +13,13 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-	safe_delete(spriteBG);
-	safe_delete(object3d);
-	safe_delete(object3d2);//追加(SZK)
-	safe_delete(ball);
-	safe_delete(block);
-	safe_delete(block1);
-	safe_delete(block2);
+	delete spriteBG;
+	delete object3d;
+//	delete object3d2;//追加(SZK)
+	delete ball;
+	delete block;
+	delete block1;
+	delete block2;
 }
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
@@ -54,8 +54,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	object3d->Update();
 
 	// 3Dオブジェクト2生成(SZK) 追加
-	object3d2 = Object3d2::Create();
-	object3d2->Update();
+//	object3d2 = Object3d2::Create();
+	//object3d2->Update();
 
 	//ボール生成
 	ball = Ball::Create();
@@ -99,6 +99,8 @@ void GameScene::Update()
 	// 座標の変更を反映
 	object3d->SetPosition(position);
 	object3d->Update();
+//	object3d2->SetPosition(position);
+	//object3d2->Update();
 	//(SZK・・・・復活させた↑)
 #pragma endregion
 
@@ -151,9 +153,9 @@ void GameScene::Update()
 
 #pragma region オブジェクト2の座標系
 	// オブジェクト2の座標を取得
-	XMFLOAT3 position2 = object3d2->GetPosition();
+	//XMFLOAT3 position2 = object3d2->GetPosition();
 	// オブジェクト2の座標の変更を反映
-	object3d2->SetPosition(position2);
+	//object3d2->SetPosition(position2);
 
 #pragma endregion
 
@@ -216,7 +218,7 @@ void GameScene::Draw()
 	Object3d::PreDraw(cmdList);
 
 	// 3Dオブジェクト2描画前処理
-	Object3d2::PreDraw(cmdList);
+//	Object3d2::PreDraw(cmdList);
 
 	//ボール描画前処理
 	Ball::PreDraw(cmdList);
@@ -251,7 +253,7 @@ void GameScene::Draw()
 	Object3d::PostDraw();
 
 	// 3Dオブジェクト2描画後処理
-	Object3d2::PostDraw();
+	//Object3d2::PostDraw();
 
 	//ボール描画後処理
 	Ball::PostDraw();

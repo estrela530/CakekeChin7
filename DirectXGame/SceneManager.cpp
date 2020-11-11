@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "BaseScene.h"
 #include "GameScene.h"
+#include "ResultScene.h"
 #include "TitleScene.h"
 
 void SceneManager::Init(DirectXCommon * dxcommon, Input * input, Audio * audio)
