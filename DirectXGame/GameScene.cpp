@@ -1,6 +1,7 @@
 ﻿#include "GameScene.h"
 #include <cassert>
-
+#include "BaseScene.h"
+#include "SceneManager.h"
 #include "Object3d2.h"
 #include "Object3d.h"
 
@@ -14,8 +15,8 @@ GameScene::~GameScene()
 {
 	safe_delete(spriteBG);
 	safe_delete(object3d);
-	safe_delete(ball);
 	safe_delete(object3d2);//追加(SZK)
+	safe_delete(ball);
 }
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
@@ -44,6 +45,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	}
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
+	
 	// 3Dオブジェクト生成
 	object3d = Object3d::Create();
 	object3d->Update();
@@ -59,6 +61,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	//ブロック生成
 	block = Block::Create();
 	block->Update();
+
 
 }
 

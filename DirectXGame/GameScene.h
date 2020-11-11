@@ -11,12 +11,12 @@
 #include "Audio.h"
 #include "Ball.h"
 #include "Block.h"
-
+#include "BaseScene.h"
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene
+class GameScene :public BaseScene
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
@@ -45,31 +45,31 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio);
+	virtual void Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio);
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	virtual void Update();
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	virtual void Draw();
 
 private: // メンバ変数
 	DirectXCommon* dxCommon = nullptr;
 	Input* input = nullptr;
 	Audio* audio = nullptr;
-	DebugText debugText;	
+	DebugText debugText;
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
+	Object3d2* object3d2 = nullptr;
 	Ball* ball = nullptr;
 	Block* block = nullptr;
-	Object3d2* object3d2 = nullptr;
 };
 
