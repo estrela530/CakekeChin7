@@ -100,7 +100,7 @@ Ball * Ball::Create()
 	}
 
 	//スケールをセット
-	float scale_val = 5;
+	float scale_val = 3;
 	ball->scale = { scale_val,scale_val, scale_val };
 
 	return ball;
