@@ -37,7 +37,6 @@ public: // サブクラス
 		XMMATRIX mat;	// ３Ｄ変換行列
 	};
 
-#pragma region [2]追加
 	//マテリアル
 	struct Material
 	{
@@ -56,9 +55,7 @@ public: // サブクラス
 		}
 
 	};
-#pragma endregion
 
-#pragma region [2]追加
 	// 定数バッファ用データ構造体B0
 	struct ConstBufferDataB0
 	{
@@ -76,7 +73,6 @@ public: // サブクラス
 		float alpha;
 	};
 
-#pragma endregion
 private: // 定数
 	static const int division = 50;					// 分割数
 	static const float radius;				// 底面の半径
@@ -184,20 +180,11 @@ private: // 静的メンバ変数
 	// インデックスバッファビュー
 	static D3D12_INDEX_BUFFER_VIEW ibView;
 	// 頂点データ配列
-#pragma region [1]変更
-	//static VertexPosNormalUv vertices[vertexCount];
-#pragma endregion
 	static std::vector<VertexPosNormalUv> vertices;
 	// 頂点インデックス配列
-#pragma region [1]変更
-	//static unsigned short indices[planeCount * 3];
-#pragma endregion
 	static std::vector<unsigned short> indices;
-
-#pragma region [2]追加
 	//マテリアル
 	static Material material;
-#pragma endregion
 
 private:// 静的メンバ関数
 	/// <summary>
@@ -262,12 +249,8 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-#pragma region [2]変更
-
-	//ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
 	ComPtr<ID3D12Resource> constBuffB1; // 定数バッファ
-#pragma endregion
 	// 色
 	XMFLOAT4 color = { 1,1,1,1 };
 	// ローカルスケール

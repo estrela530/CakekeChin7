@@ -71,5 +71,7 @@ private: // メンバ変数
 	Object3d2* object3d2 = nullptr;
 	Ball* ball = nullptr;
 	Block* block = nullptr;
+	Block* block1 = nullptr;
+	Block* block2 = nullptr;
 };
 

@@ -35,15 +35,7 @@ XMFLOAT3 Block::target = { 0, 0, 0 };
 XMFLOAT3 Block::up = { 0, 1, 0 };
 D3D12_VERTEX_BUFFER_VIEW Block::vbView{};
 D3D12_INDEX_BUFFER_VIEW Block::ibView{};
-#pragma region [2]追加
 Block::Material Block::material;
-#pragma endregion
-
-#pragma region [1]変更
-//Object3d::VertexPosNormalUv Object3d::vertices[vertexCount];
-//unsigned short Object3d::indices[planeCount * 3];
-#pragma endregion
-
 
 std::vector<Block::VertexPosNormalUv>Block::vertices;
 std::vector<unsigned short>Block::indices;
@@ -95,23 +87,23 @@ void Block::PostDraw()
 Block * Block::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
-	Block* block = new Block();
-	if (block == nullptr) {
+	Block* object3d = new Block();
+	if (object3d == nullptr) {
 		return nullptr;
 	}
 
 	// 初期化
-	if (!block->Initialize()) {
-		delete block;
+	if (!object3d->Initialize()) {
+		delete object3d;
 		assert(0);
 		return nullptr;
 	}
 
 	//スケールをセット
 	float scale_val = 20;
-	block->scale = { scale_val,scale_val, scale_val };
+	object3d->scale = { scale_val,scale_val, scale_val };
 
-	return block;
+	return object3d;
 }
 
 void Block::SetEye(XMFLOAT3 eye)
@@ -268,8 +260,6 @@ bool Block::InitializeGraphicsPipeline()
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 	// ラスタライザステート
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	//gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
@@ -306,19 +296,12 @@ bool Block::InitializeGraphicsPipeline()
 	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
-#pragma region [2]変更
-	// ルートパラメータ
-	//CD3DX12_ROOT_PARAMETER rootparams[2];
-	//rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
-	//rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
-
 	// ルートパラメータ
 	CD3DX12_ROOT_PARAMETER rootparams[3];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
-#pragma endregion
 
 
 	// スタティックサンプラー
@@ -353,7 +336,6 @@ bool Block::LoadTexture(
 	const std::string& directoryPath,
 	const std::string& filename)
 {
-#pragma region [2]追加
 	//ファイルパスを結合
 	string filepath = directoryPath + filename;
 
@@ -361,7 +343,6 @@ bool Block::LoadTexture(
 	wchar_t wfilepath[128];
 	int iBufferSize = MultiByteToWideChar(CP_ACP, 0,
 		filepath.c_str(), -1, wfilepath, _countof(wfilepath));
-#pragma endregion
 
 	HRESULT result = S_FALSE;
 
@@ -369,7 +350,6 @@ bool Block::LoadTexture(
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-#pragma region [2]変更
 	//result = LoadFromWICFile(
 	//	L"Resources/tex1.png", WIC_FLAGS_NONE,
 	//	&metadata, scratchImg);
@@ -380,7 +360,6 @@ bool Block::LoadTexture(
 	result = LoadFromWICFile(
 		wfilepath, WIC_FLAGS_NONE,
 		&metadata, scratchImg);
-#pragma endregion
 
 	const Image* img = scratchImg.GetImage(0, 0, 0); // 生データ抽出
 
@@ -437,7 +416,6 @@ bool Block::LoadTexture(
 	return true;
 }
 
-#pragma region [2]追加
 void Block::LoadMaterial(
 	const std::string& directoryPath,
 	const std::string& filename)
@@ -510,7 +488,6 @@ void Block::LoadMaterial(
 
 	}
 }
-#pragma endregion
 
 void Block::CreateModel()
 {
@@ -518,10 +495,6 @@ void Block::CreateModel()
 
 	//ファイルストリーム
 	std::ifstream file;
-#pragma region [2]変更
-	//.objファイルを開く
-	//file.open("Resources/triangle_tex/triangle_tex.obj");
-	//const string modelname = "triangle_mat";
 	const string modelname = "block";
 	const string filename = modelname + ".obj"; //"triangle_mat.obj"
 	const string directoryPath = "Resources/" + modelname + "/"; //"Resources/triangle_mat/"
@@ -559,12 +532,6 @@ void Block::CreateModel()
 			//座標データに追加
 			positions.emplace_back(position);
 
-#pragma region [2]変更
-			//頂点データに追加
-			/*VertexPosNormalUv vertex{};
-			vertex.pos = position;
-			vertices.emplace_back(vertex);*/
-#pragma endregion
 		}
 		//先頭文字列がfならポリゴン（三角形）
 		if (key == "f")
@@ -617,7 +584,6 @@ void Block::CreateModel()
 			normals.emplace_back(normal);
 		}
 
-#pragma region [2]追加
 		//先頭文字列がmtllibならマテリアル
 		if (key == "mtllib")
 		{
@@ -626,141 +592,16 @@ void Block::CreateModel()
 			line_stream >> filename;
 			//マテリアル読み込み
 			LoadMaterial(directoryPath, filename);
-#pragma endregion
 		}
 	}
 	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUv)*vertices.size());
 	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short)*indices.size());
-
-#pragma region [1]かぶるのでコメントアウト
-	//std::vector<VertexPosNormalUv> realVertices;
-	//// 頂点座標の計算（重複あり）
-	//{
-	//	realVertices.resize((division + 1) * 2);
-	//	int index = 0;
-	//	float zValue;
-
-	//	// 底面
-	//	zValue = prizmHeight / 2.0f;
-	//	for (int i = 0; i < division; i++)
-	//	{
-	//		XMFLOAT3 vertex;
-	//		vertex.x = radius * sinf(XM_2PI / division * i);
-	//		vertex.y = radius * cosf(XM_2PI / division * i);
-	//		vertex.z = zValue;
-	//		realVertices[index++].pos = vertex;
-	//	}
-	//	realVertices[index++].pos = XMFLOAT3(0, 0, zValue);	// 底面の中心点
-	//	// 天面
-	//	zValue = -prizmHeight / 2.0f;
-	//	for (int i = 0; i < division; i++)
-	//	{
-	//		XMFLOAT3 vertex;
-	//		vertex.x = radius * sinf(XM_2PI / division * i);
-	//		vertex.y = radius * cosf(XM_2PI / division * i);
-	//		vertex.z = zValue;
-	//		realVertices[index++].pos = vertex;
-	//	}
-	//	realVertices[index++].pos = XMFLOAT3(0, 0, zValue);	// 天面の中心点
-	//}
-
-	//// 頂点座標の計算（重複なし）
-	//{
-	//	int index = 0;
-	//	// 底面
-	//	for (int i = 0; i < division; i++)
-	//	{
-	//		unsigned short index0 = i + 1;
-	//		unsigned short index1 = i;
-	//		unsigned short index2 = division;
-
-	//		vertices[index++] = realVertices[index0];
-	//		vertices[index++] = realVertices[index1];
-	//		vertices[index++] = realVertices[index2]; // 底面の中心点
-	//	}
-	//	// 底面の最後の三角形の1番目のインデックスを0に書き換え
-	//	vertices[index - 3] = realVertices[0];
-
-	//	int topStart = division + 1;
-	//	// 天面
-	//	for (int i = 0; i < division; i++)
-	//	{
-	//		unsigned short index0 = topStart + i;
-	//		unsigned short index1 = topStart + i + 1;
-	//		unsigned short index2 = topStart + division;
-
-	//		vertices[index++] = realVertices[index0];
-	//		vertices[index++] = realVertices[index1];
-	//		vertices[index++] = realVertices[index2]; // 天面の中心点
-	//	}
-	//	// 天面の最後の三角形の1番目のインデックスを0に書き換え
-	//	vertices[index - 2] = realVertices[topStart];
-
-	//	// 側面
-	//	for (int i = 0; i < division; i++)
-	//	{
-	//		unsigned short index0 = i + 1;
-	//		unsigned short index1 = topStart + i + 1;
-	//		unsigned short index2 = i;
-	//		unsigned short index3 = topStart + i;
-
-	//		if (i == division - 1)
-	//		{
-	//			index0 = 0;
-	//			index1 = topStart;
-	//		}
-
-	//		vertices[index++] = realVertices[index0];
-	//		vertices[index++] = realVertices[index1];
-	//		vertices[index++] = realVertices[index2];
-
-	//		vertices[index++] = realVertices[index2];
-	//		vertices[index++] = realVertices[index1];
-	//		vertices[index++] = realVertices[index3];
-	//	}
-	//}
-
-	//// 頂点インデックスの設定
-	//{
-	//	for (int i = 0; i < _countof(indices); i++)
-	//	{
-	//		indices[i] = i;
-	//	}
-	//}
-
-	//// 法線方向の計算
-	//for (int i = 0; i < _countof(indices) / 3; i++)
-	//{// 三角形１つごとに計算していく
-	//	// 三角形のインデックスを取得
-	//	unsigned short index0 = indices[i * 3 + 0];
-	//	unsigned short index1 = indices[i * 3 + 1];
-	//	unsigned short index2 = indices[i * 3 + 2];
-	//	// 三角形を構成する頂点座標をベクトルに代入
-	//	XMVECTOR p0 = XMLoadFloat3(&vertices[index0].pos);
-	//	XMVECTOR p1 = XMLoadFloat3(&vertices[index1].pos);
-	//	XMVECTOR p2 = XMLoadFloat3(&vertices[index2].pos);
-	//	// p0→p1ベクトル、p0→p2ベクトルを計算
-	//	XMVECTOR v1 = XMVectorSubtract(p1, p0);
-	//	XMVECTOR v2 = XMVectorSubtract(p2, p0);
-	//	// 外積は両方から垂直なベクトル
-	//	XMVECTOR normal = XMVector3Cross(v1, v2);
-	//	// 正規化（長さを1にする)
-	//	normal = XMVector3Normalize(normal);
-	//	// 求めた法線を頂点データに代入
-	//	XMStoreFloat3(&vertices[index0].normal, normal);
-	//	XMStoreFloat3(&vertices[index1].normal, normal);
-	//	XMStoreFloat3(&vertices[index2].normal, normal);
-	//}
-#pragma endregion 
 
 	// 頂点バッファ生成
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
 
-#pragma region [1]変更
-		//&CD3DX12_RESOURCE_DESC::Buffer(sizeof(vertices)),
-#pragma endregion
 
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeVB),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
@@ -776,9 +617,6 @@ void Block::CreateModel()
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 		D3D12_HEAP_FLAG_NONE,
 
-#pragma region [1]変更
-		//&CD3DX12_RESOURCE_DESC::Buffer(sizeof(indices)),
-#pragma endregion
 
 		&CD3DX12_RESOURCE_DESC::Buffer(sizeIB),
 		D3D12_RESOURCE_STATE_GENERIC_READ,
@@ -794,10 +632,6 @@ void Block::CreateModel()
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	if (SUCCEEDED(result)) {
 
-#pragma region [1]変更
-		//memcpy(vertMap, vertices, sizeof(vertices));
-#pragma endregion
-
 		std::copy(vertices.begin(), vertices.end(), vertMap);
 		vertBuff->Unmap(0, nullptr);
 	}
@@ -806,14 +640,6 @@ void Block::CreateModel()
 	unsigned short* indexMap = nullptr;
 	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
 	if (SUCCEEDED(result)) {
-
-#pragma region [1]変更
-		// 全インデックスに対して
-		//for (int i = 0; i < _countof(indices); i++)
-		//{
-		//	indexMap[i] = indices[i];	// インデックスをコピー
-		//}
-#pragma endregion
 		std::copy(indices.begin(), indices.end(), indexMap);
 
 		indexBuff->Unmap(0, nullptr);
@@ -822,9 +648,6 @@ void Block::CreateModel()
 	// 頂点バッファビューの作成
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 
-#pragma region [1]変更
-	//vbView.SizeInBytes = sizeof(vertices);
-#pragma endregion
 
 	vbView.SizeInBytes = sizeVB;
 	vbView.StrideInBytes = sizeof(vertices[0]);
@@ -832,9 +655,6 @@ void Block::CreateModel()
 	// インデックスバッファビューの作成
 	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
 	ibView.Format = DXGI_FORMAT_R16_UINT;
-#pragma region [1]変更
-	//ibView.SizeInBytes = sizeof(indices);
-#pragma endregion
 
 	ibView.SizeInBytes = sizeIB;
 
@@ -930,26 +750,14 @@ void Block::Draw()
 	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
-#pragma region [2]変更
-
-	//// 定数バッファビューをセット
-	//cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
-	//// シェーダリソースビューをセット
-	//cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
-
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 	cmdList->SetGraphicsRootConstantBufferView(1, constBuffB1->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(2, gpuDescHandleSRV);
 
-#pragma endregion
 
-
-#pragma region [1]変更
 	// 描画コマンド
-	//cmdList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-#pragma endregion
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 
 }

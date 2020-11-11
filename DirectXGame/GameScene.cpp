@@ -17,6 +17,9 @@ GameScene::~GameScene()
 	safe_delete(object3d);
 	safe_delete(object3d2);//追加(SZK)
 	safe_delete(ball);
+	safe_delete(block);
+	safe_delete(block1);
+	safe_delete(block2);
 }
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
@@ -39,7 +42,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	debugText.Initialize(debugTextTexNumber);
 
 	// テクスチャ読み込み
-	if (!Sprite::LoadTexture(1, L"Resources/back.png")) {
+	if (!Sprite::LoadTexture(1, L"Resources/back1111.png")) {
 		assert(0);
 		return;
 	}
@@ -58,10 +61,21 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	ball = Ball::Create();
 	ball->Update();
 
-	//ブロック生成
+	//ブロック1生成
 	block = Block::Create();
 	block->Update();
 
+	//ブロック2生成
+	block1 = Block::Create();
+	block->Update();
+
+	//ブロック3生成
+	block2 = Block::Create();
+	block->Update();
+
+	block->SetPosition({ 0,-30,50 });
+	block1->SetPosition({ 0,-30,250 });
+	block2->SetPosition({ 0,-30,450 });
 
 }
 
@@ -99,7 +113,7 @@ void GameScene::Update()
 
 
 	// ボール移動
-	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT) || input->PushKey(DIK_SPACE))
 	{
 		// 現在の座標を取得
 		XMFLOAT3 position = ball->GetPosition();
@@ -109,6 +123,10 @@ void GameScene::Update()
 		else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
 		if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
 		else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+		if (input->PushKey(DIK_SPACE))
+		{
+			position.z += 1.0f;
+		}
 
 		// 座標の変更を反映
 		ball->SetPosition(position);
@@ -168,6 +186,8 @@ void GameScene::Update()
 	object3d->Update();
 	ball->Update();
 	block->Update();
+	block1->Update();
+	block2->Update();
 }
 
 void GameScene::Draw()
@@ -215,6 +235,13 @@ void GameScene::Draw()
 
 	//ブロックの描画
 	block->Draw();
+
+	//ブロック2の描画
+	block1->Draw();
+
+	//ブロック3の描画
+	block2->Draw();
+
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
