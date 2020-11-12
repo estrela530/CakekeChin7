@@ -263,5 +263,9 @@ private: // メンバ変数
 	XMMATRIX matWorld;
 	// 親オブジェクト
 	Ball* parent = nullptr;
+
+	int ballJumpSeconds;
+	int notBallJumpSeconds;
+
 };
 

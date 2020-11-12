@@ -68,10 +68,21 @@ private: // メンバ変数
 	/// </summary>
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
-	//Object3d2* object3d2 = nullptr;
 	Ball* ball = nullptr;
 	Block* block = nullptr;
 	Block* block1 = nullptr;
 	Block* block2 = nullptr;
+	Block* block3 = nullptr;
+	Block* block4 = nullptr;
+	Block* block5 = nullptr;
+	Block* block6 = nullptr;
+	Block* block7 = nullptr;
+	Block* block8 = nullptr;
+	Block* block9 = nullptr;
+	//Object3d2* object3d2 = nullptr;
+
+	int blockGeneratorSeconds;
+	//Block::List<block> blockList = new List<block>();
+
 };
 

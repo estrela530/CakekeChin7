@@ -33,10 +33,12 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	this->input = input;
 	this->audio = audio;
 
+	blockGeneratorSeconds = 0;
+
 	// デバッグテキスト用テクスチャ読み込み
 	if (!Sprite::LoadTexture(debugTextTexNumber, L"Resources/debugfont.png")) {
 		assert(0);
-		return ;
+		return;
 	}
 	// デバッグテキスト初期化
 	debugText.Initialize(debugTextTexNumber);
@@ -48,39 +50,68 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	}
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
-	
 	// 3Dオブジェクト生成
 	object3d = Object3d::Create();
 	object3d->Update();
 
 	// 3Dオブジェクト2生成(SZK) 追加
-//	object3d2 = Object3d2::Create();
+	//object3d2 = Object3d2::Create();
 	//object3d2->Update();
 
 	//ボール生成
 	ball = Ball::Create();
 	ball->Update();
 
+	//生成ループ化のためにコメントアウト
 	//ブロック1生成
 	block = Block::Create();
-	block->Update();
-
 	//ブロック2生成
 	block1 = Block::Create();
-	block->Update();
-
 	//ブロック3生成
 	block2 = Block::Create();
-	block->Update();
+	//ブロック4生成
+	block3 = Block::Create();
+	//ブロック5生成
+	block4 = Block::Create();
+	//ブロック6生成
+	block5 = Block::Create();
+	//ブロック7生成
+	block6 = Block::Create();
+	//ブロック8生成
+	block7 = Block::Create();
+	//ブロック9生成
+	block8 = Block::Create();
+	//ブロック10生成
+	block9 = Block::Create();
 
 	block->SetPosition({ 0,-30,50 });
-	block1->SetPosition({ 0,-30,250 });
-	block2->SetPosition({ 0,-30,450 });
+	block1->SetPosition({ 0,-30,150 });
+	block2->SetPosition({ 0,-30,250 });
+	block3->SetPosition({ 0,-30,350 });
+	block4->SetPosition({ 0,-30,450 });
+	block5->SetPosition({ 0,-30,550 });
+	block6->SetPosition({ 0,-30,650 });
+	block7->SetPosition({ 0,-30,750 });
+	block8->SetPosition({ 0,-30,850 });
+	block9->SetPosition({ 0,-30,950 });
 
 }
 
 void GameScene::Update()
 {
+	//blockGeneratorSeconds += 1;
+
+	////ブロック生成処理
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	if (blockGeneratorSeconds >= 2)
+	//	{
+	//		block = Block::Create();
+	//		block->SetPosition({ 0,-30,450 });
+	//		blockGeneratorSeconds = 0;
+	//	}
+	//}
+
 #pragma region //(SZK・・・・復活させた↓)
 	//(SZK・・・・復活させた↓)
 	// 現在の座標を取得
@@ -90,66 +121,62 @@ void GameScene::Update()
 	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 	{
 
-		// 移動後の座標を計算
-		if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+		//// 移動後の座標を計算
+		//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+		//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+		//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+		//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
 	}
 	// 座標の変更を反映
 	object3d->SetPosition(position);
 	object3d->Update();
-//	object3d2->SetPosition(position);
-	//object3d2->Update();
 	//(SZK・・・・復活させた↑)
 #pragma endregion
 
 	// カメラ移動
 	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A))
 	{
-		if (input->PushKey(DIK_W)) { Ball::CameraMoveVector({ 0.0f,+1.0f,0.0f }); }
-		else if (input->PushKey(DIK_S)) { Ball::CameraMoveVector({ 0.0f,-1.0f,0.0f }); }
-		if (input->PushKey(DIK_D)) { Ball::CameraMoveVector({ +1.0f,0.0f,0.0f }); }
-		else if (input->PushKey(DIK_A)) { Ball::CameraMoveVector({ -1.0f,0.0f,0.0f }); }
+		//if (input->PushKey(DIK_W)) { Ball::CameraMoveVector({ 0.0f,+1.0f,0.0f }); }
+		//else if (input->PushKey(DIK_S)) { Ball::CameraMoveVector({ 0.0f,-1.0f,0.0f }); }
+		//if (input->PushKey(DIK_D)) { Ball::CameraMoveVector({ +1.0f,0.0f,0.0f }); }
+		//else if (input->PushKey(DIK_A)) { Ball::CameraMoveVector({ -1.0f,0.0f,0.0f }); }
 	}
 
 
 	// ボール移動
 	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT) || input->PushKey(DIK_SPACE))
 	{
-		// 現在の座標を取得
-		XMFLOAT3 position = ball->GetPosition();
+		//// 現在の座標を取得
+		//XMFLOAT3 position = ball->GetPosition();
 
-		// 移動後の座標を計算
-		if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
-		if (input->PushKey(DIK_SPACE))
-		{
-			position.z += 1.0f;
-		}
-
-		// 座標の変更を反映
-		ball->SetPosition(position);
+		//// 移動後の座標を計算
+		//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+		//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+		//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+		//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+		//if (input->PushKey(DIK_SPACE))
+		//{
+		//	position.z += 1.0f;
+		//}
+		//// 座標の変更を反映
+		//ball->SetPosition(position);
 	}
 
 	// ブロック移動
 	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 	{
 		// 現在の座標を取得
-		XMFLOAT3 position = ball->GetPosition();
+		//XMFLOAT3 position = ball->GetPosition();
 
-		// 移動後の座標を計算
-		if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+		//// 移動後の座標を計算
+		//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+		//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+		//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+		//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
 
-		// 座標の変更を反映
-		block->SetPosition(position);
+		//// 座標の変更を反映
+		//block->SetPosition(position);
 	}
-
 
 #pragma region オブジェクト2の座標系
 	// オブジェクト2の座標を取得
@@ -183,6 +210,7 @@ void GameScene::Update()
 	//}
 
 #pragma endregion
+
 	// 座標の変更を反映
 	object3d->SetPosition(position);
 	object3d->Update();
@@ -190,6 +218,14 @@ void GameScene::Update()
 	block->Update();
 	block1->Update();
 	block2->Update();
+	block3->Update();
+	block4->Update();
+	block5->Update();
+	block6->Update();
+	block7->Update();
+	block8->Update();
+	block9->Update();
+
 }
 
 void GameScene::Draw()
@@ -218,7 +254,7 @@ void GameScene::Draw()
 	Object3d::PreDraw(cmdList);
 
 	// 3Dオブジェクト2描画前処理
-//	Object3d2::PreDraw(cmdList);
+	//Object3d2::PreDraw(cmdList);
 
 	//ボール描画前処理
 	Ball::PreDraw(cmdList);
@@ -237,12 +273,24 @@ void GameScene::Draw()
 
 	//ブロックの描画
 	block->Draw();
-
 	//ブロック2の描画
 	block1->Draw();
-
 	//ブロック3の描画
 	block2->Draw();
+	//ブロック4の描画
+	block3->Draw();
+	//ブロック5の描画
+	block4->Draw();
+	//ブロック6の描画
+	block5->Draw();
+	//ブロック7の描画
+	block6->Draw();
+	//ブロック8の描画
+	block7->Draw();
+	//ブロック9の描画
+	block8->Draw();
+	//ブロック10の描画
+	block9->Draw();
 
 
 	/// <summary>
@@ -262,7 +310,6 @@ void GameScene::Draw()
 	Block::PostDraw();
 
 #pragma endregion
-
 
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理

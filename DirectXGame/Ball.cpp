@@ -722,6 +722,29 @@ void Ball::Update()
 	constMap1->alpha = material.alpha;
 	constBuffB1->Unmap(0, nullptr);
 
+#pragma region Œ©‚©‚¯‚¾‚¯‚Ìƒ„ƒo‚¢ˆ—
+	//Œ©‚©‚¯‚¾‚¯‚Ìƒ„ƒo‚¢ˆ—
+	ballJumpSeconds += 1;
+	notBallJumpSeconds += 1;
+	position.y += -0.915;
+
+	if (ballJumpSeconds >= 20 && ballJumpSeconds <= 30)
+	{
+		position.y += 1.5;
+	}
+	else if (ballJumpSeconds > 30 && ballJumpSeconds <= 70)
+	{
+		position.y += 1.2;
+	}
+	else if (ballJumpSeconds > 70)
+	{
+		ballJumpSeconds = 0;
+	}
+	if (notBallJumpSeconds >= 700)
+	{
+		ballJumpSeconds = 0;
+	}
+#pragma endregion
 }
 
 void Ball::Draw()

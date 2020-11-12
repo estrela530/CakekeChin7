@@ -733,6 +733,9 @@ void Block::Update()
 	constMap1->alpha = material.alpha;
 	constBuffB1->Unmap(0, nullptr);
 
+	//毎フレーム処理（手前に来る処理）
+	position.z -= 1.43f;
+
 }
 
 void Block::Draw()
