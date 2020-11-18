@@ -6,6 +6,9 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include<string>
+#include"DirectXCommon.h"
+#include"input.h"
+#include "Audio.h"
 
 /// <summary>
 /// 3Dオブジェクト
@@ -142,6 +145,12 @@ public: // 静的メンバ関数
 /// </summary>
 	static void LoadMaterial(const std::string& directoryPath, const std::string & filename);
 
+	/// <summary>
+	/// オブジェクトの削除
+	/// </summary>
+	static void DeleteB(Block* block);
+
+
 private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device* device;
@@ -246,6 +255,8 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="position">座標</param>
 	void SetPosition(XMFLOAT3 position) { this->position = position; }
+
+
 
 private: // メンバ変数
 

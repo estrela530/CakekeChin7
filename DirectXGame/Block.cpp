@@ -87,23 +87,28 @@ void Block::PostDraw()
 Block * Block::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
-	Block* object3d = new Block();
-	if (object3d == nullptr) {
+	Block* block = new Block();
+	if (block == nullptr) {
 		return nullptr;
 	}
 
 	// 初期化
-	if (!object3d->Initialize()) {
-		delete object3d;
+	if (!block->Initialize()) {
+		delete block;
 		assert(0);
 		return nullptr;
 	}
 
 	//スケールをセット
 	float scale_val = 20;
-	object3d->scale = { scale_val,scale_val, scale_val };
+	block->scale = { scale_val,scale_val, scale_val };
 
-	return object3d;
+	return block;
+}
+
+void Block::DeleteB(Block* block)
+{
+	delete block;
 }
 
 void Block::SetEye(XMFLOAT3 eye)
