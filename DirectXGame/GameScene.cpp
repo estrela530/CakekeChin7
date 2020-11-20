@@ -2,7 +2,7 @@
 
 #include "BaseScene.h"
 #include "SceneManager.h"
-#include "Object3d2.h"
+
 #include "Object3d.h"
 #include <cassert>
 using namespace DirectX;
@@ -15,7 +15,7 @@ GameScene::~GameScene()
 {
 	delete spriteBG;
 	delete object3d;
-//	delete object3d2;//追加(SZK)
+	//	delete object3d2;//追加(SZK)
 	delete ball;
 	delete block;
 	delete block1;
@@ -24,6 +24,7 @@ GameScene::~GameScene()
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 {
+
 	// nullptrチェック
 	assert(dxCommon);
 	assert(input);
@@ -95,12 +96,34 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	block8->SetPosition({ 0,-30,850 });
 	block9->SetPosition({ 0,-30,950 });
 
+	//フェード
+	alpha = 0;
 }
 
 void GameScene::Update()
 {
-	//blockGeneratorSeconds += 1;
+#pragma region シュレフェード試作
+	//フェード
+	alpha += 0.01f;
+	spriteBG->SetColor({ 0,1,0,alpha });//背景色
 
+	
+	/*while (alpha < 0.3f)
+	{
+		spriteBG->SetColor({ 1,1,0,alpha });
+	}*/
+	//if (a>=0.6f)
+	//{
+	//	a -= 0.01f;
+	//	spriteBG->SetColor({ 1,1,1,a });
+	//}
+	//else if(a<=0.6f )
+	//{
+	//	a += 0.01f;
+	//	spriteBG->SetColor({ 1,1,1,a });
+	//}
+	//blockGeneratorSeconds += 1;
+#pragma endregion
 	////ブロック生成処理
 	//for (int i = 0; i < 20; i++)
 	//{
@@ -132,6 +155,7 @@ void GameScene::Update()
 	object3d->Update();
 	//(SZK・・・・復活させた↑)
 #pragma endregion
+#pragma region カメラまわり
 
 	// カメラ移動
 	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A))
@@ -185,7 +209,7 @@ void GameScene::Update()
 	//object3d2->SetPosition(position2);
 
 #pragma endregion
-
+#pragma endregion
 #pragma region 当たり判定処理
 	////ヒット通知
 	//bool hit = false;

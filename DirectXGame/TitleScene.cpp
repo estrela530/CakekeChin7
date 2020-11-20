@@ -43,13 +43,16 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	//背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 
+	//spriteBG->SetPosition({ 100,100 });
+	alpha = 0;
 
 }
 
 
 void TitleScene::Update()
 {
-
+	alpha += 0.0095f;
+	spriteBG->SetColor({ 1,1,1,alpha });//テクスチャの色とα値名
 }
 
 void TitleScene::Draw()

@@ -42,13 +42,14 @@ void ResultScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio
 	//”wŒiƒXƒvƒ‰ƒCƒg¶¬
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 
-
+	fade = 0;
 }
 
 
 void ResultScene::Update()
 {
-
+	fade += 0.004f;
+	spriteBG->SetColor({ 1,1,1,fade });
 }
 
 void ResultScene::Draw()

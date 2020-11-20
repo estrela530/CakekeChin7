@@ -46,4 +46,6 @@ private://ƒƒ“ƒo•Ï”
 
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
+	
+	float alpha;
 };
