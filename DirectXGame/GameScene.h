@@ -6,7 +6,7 @@
 #include "Input.h"
 #include "Sprite.h"
 #include "Object3d.h"
-#include "Object3d2.h"
+
 #include "DebugText.h"
 #include "Audio.h"
 #include "Ball.h"
@@ -83,6 +83,6 @@ private: // メンバ変数
 
 	int blockGeneratorSeconds;
 	//Block::List<block> blockList = new List<block>();
-
+	float alpha;
 };
 
