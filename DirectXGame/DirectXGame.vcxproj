@@ -86,6 +86,7 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockManager.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -166,6 +167,8 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockManager.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="GameScene.h" />
