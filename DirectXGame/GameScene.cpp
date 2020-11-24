@@ -7,6 +7,19 @@
 #include <cassert>
 using namespace DirectX;
 
+int ss = 0;
+
+float k = 4.1f;
+float t = 0.0f;
+float m = 8.0f;//質量
+float v = 1.0f;
+float g = 1.5f;//重力加速度
+float ve;
+
+float vy = 0.5f;//物体の速度
+float fy;//Y軸に働く力
+float ay;//Y軸の加速度
+
 GameScene::GameScene()
 {
 }
@@ -230,10 +243,43 @@ void GameScene::Update()
 
 	//if (hit)
 	//{
+	//	ss = 1;
 	//	debugText.Print("Hit", 0, 0, 10);
 	//}
 
+#pragma region 上限へ行ったらssを0に(SZK)
+
+    //下に変更
+	/*if (position2.y > 30)
+	{
+		ss = 0;
+	}*/
 #pragma endregion
+
+#pragma region 変数1を使った重力加速(SZK)
+	//下へ行く処理
+	//if (ss == 0)
+	//{
+	//	fy = k * vy;//空気抵抗
+	//	ay = g - (fy / m);//自由落下
+	//	position2.y -= ay;
+	//}
+#pragma endregion
+
+#pragma region 変数1を使った反発(SZK)
+	//反発
+	//if (ss == 1)
+	//{
+	//	fy = k * vy;//空気抵抗
+	//	ay = g - (fy / m);//自由落下
+	//	position2.y += ay;
+	//}
+#pragma endregion
+
+
+#pragma endregion
+
+
 
 	// 座標の変更を反映
 	object3d->SetPosition(position);
