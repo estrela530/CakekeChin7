@@ -12,6 +12,7 @@
 #include "Ball.h"
 #include "Block.h"
 #include "BaseScene.h"
+#include <time.h>
 
 /// <summary>
 /// ゲームシーン
@@ -84,5 +85,23 @@ private: // メンバ変数
 	int blockGeneratorSeconds;
 	//Block::List<block> blockList = new List<block>();
 	float alpha;
+
+	int ss = 0;
+
+	float k = 4.1f;
+	float t = 0.0f;
+	float m = 8.0f;//質量
+	float v = 1.0f;
+	float g = 1.5f;//重力加速度
+	float ve;
+
+	float vy = 0.5f;//物体の速度
+	float fy;//Y軸に働く力
+	float ay;//Y軸の加速度
+	int time = 0.0f;
+	bool alal = true;//背景点滅余
+	float aa = 1;
+	float bb = 1;
+	float cc = 0;
 };
 

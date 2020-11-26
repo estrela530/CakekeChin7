@@ -5,23 +5,15 @@
 
 #include "Object3d.h"
 #include <cassert>
+#include <time.h>
+#include <sstream>
+
 using namespace DirectX;
 
-int ss = 0;
-
-float k = 4.1f;
-float t = 0.0f;
-float m = 8.0f;//質量
-float v = 1.0f;
-float g = 1.5f;//重力加速度
-float ve;
-
-float vy = 0.5f;//物体の速度
-float fy;//Y軸に働く力
-float ay;//Y軸の加速度
 
 GameScene::GameScene()
 {
+
 }
 
 GameScene::~GameScene()
@@ -75,7 +67,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	//ボール生成
 	ball = Ball::Create();
 	ball->Update();
-
+#pragma region 
 	//生成ループ化のためにコメントアウト
 	//ブロック1生成
 	block = Block::Create();
@@ -108,19 +100,76 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	block7->SetPosition({ 0,-30,750 });
 	block8->SetPosition({ 0,-30,850 });
 	block9->SetPosition({ 0,-30,950 });
-
+#pragma endregion
 	//フェード
-	alpha = 0;
+	alpha = 1;
+	time = 0.0f;
+
 }
 
 void GameScene::Update()
 {
-#pragma region シュレフェード試作
+#pragma region シュレフェード作
 	//フェード
-	alpha += 0.01f;
-	spriteBG->SetColor({ 0,1,0,alpha });//背景色
 
-	
+
+	time += 0.1f;
+	//spriteBG->SetColor({ 1,1,1,alpha });//背景色
+//alpha -= 0.01f;
+
+//spriteBG->SetColor({ 1,1,0,alpha });
+	if (alal == true)
+	{
+
+		alpha -= 0.01f;
+		/*	cc-= 0.001f;
+			if (cc < 1)
+			{
+				aa -= 0.005f;
+			}
+			if (aa >0)
+			{
+				aa += 0.005f;
+				bb -= 0.005f;
+			}
+	*/
+		spriteBG->SetColor({ aa,bb,cc,alpha });
+
+		if (alpha < 0.35)
+		{
+			alal = false;
+			aa -= 0.004f;
+			bb -= 0.004f;
+		}
+	}
+	else if (alal == false)
+	{
+		alpha += 0.01f;
+		spriteBG->SetColor({ aa,bb,cc,alpha });
+		cc += 0.005f;
+		if (alpha > 1)
+		{
+			alal = true;
+		}
+	/*	if (aa < 0.3|| bb < 0.3)
+		{
+			aa += 0.004f;
+			bb += 0.004f;
+		}*/
+	}
+	if (aa < 0 || bb < 0)
+	{
+		aa += 0.01f;
+		bb += 0.01f;
+	}
+
+
+
+
+
+
+
+
 	/*while (alpha < 0.3f)
 	{
 		spriteBG->SetColor({ 1,1,0,alpha });
@@ -135,8 +184,10 @@ void GameScene::Update()
 	//	a += 0.01f;
 	//	spriteBG->SetColor({ 1,1,1,a });
 	//}
-	//blockGeneratorSeconds += 1;
 #pragma endregion
+
+
+	//blockGeneratorSeconds += 1;
 	////ブロック生成処理
 	//for (int i = 0; i < 20; i++)
 	//{
@@ -249,7 +300,7 @@ void GameScene::Update()
 
 #pragma region 上限へ行ったらssを0に(SZK)
 
-    //下に変更
+	//下に変更
 	/*if (position2.y > 30)
 	{
 		ss = 0;
@@ -337,6 +388,7 @@ void GameScene::Draw()
 
 	//// 3Dオブクジェクト2の描画
 	//object3d2->Draw();
+#pragma region Ball
 
 	////ボールの描画
 	ball->Draw();
@@ -362,6 +414,7 @@ void GameScene::Draw()
 	//ブロック10の描画
 	block9->Draw();
 
+#pragma endregion 
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
