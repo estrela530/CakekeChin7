@@ -82,6 +82,7 @@ private: // メンバ変数
 	//Object3d2* object3d2 = nullptr;
 
 	int blockGeneratorSeconds;
+	int notBallJumpSeconds = 0;
 	//Block::List<block> blockList = new List<block>();
 	float alpha;
 };

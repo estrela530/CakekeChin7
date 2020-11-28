@@ -526,7 +526,6 @@ void Ball::CreateModel()
 			line_stream >> position.z;
 			//座標データに追加
 			positions.emplace_back(position);
-
 		}
 		//先頭文字列がfならポリゴン（三角形）
 		if (key == "f")
@@ -723,27 +722,27 @@ void Ball::Update()
 	constBuffB1->Unmap(0, nullptr);
 
 #pragma region 見かけだけのヤバい処理
-	//見かけだけのヤバい処理
-	ballJumpSeconds += 1;
-	notBallJumpSeconds += 1;
-	position.y += -0.915;
+	////見かけだけのヤバい処理
+	//ballJumpSeconds += 1;
+	//notBallJumpSeconds += 1;
+	//position.y += -0.915;
 
-	if (ballJumpSeconds >= 20 && ballJumpSeconds <= 30)
-	{
-		position.y += 1.5;
-	}
-	else if (ballJumpSeconds > 30 && ballJumpSeconds <= 70)
-	{
-		position.y += 1.2;
-	}
-	else if (ballJumpSeconds > 70)
-	{
-		ballJumpSeconds = 0;
-	}
-	if (notBallJumpSeconds >= 700)
-	{
-		ballJumpSeconds = 0;
-	}
+	//if (ballJumpSeconds >= 20 && ballJumpSeconds <= 30)
+	//{
+	//	position.y += 1.5;
+	//}
+	//else if (ballJumpSeconds > 30 && ballJumpSeconds <= 70)
+	//{
+	//	position.y += 1.2;
+	//}
+	//else if (ballJumpSeconds > 70)
+	//{
+	//	ballJumpSeconds = 0;
+	//}
+	//if (notBallJumpSeconds >= 700)
+	//{
+	//	ballJumpSeconds = 0;
+	//}
 #pragma endregion
 }
 

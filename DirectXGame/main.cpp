@@ -79,7 +79,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	smane->AddScene(SCENE::TITLE, new TitleScene());
 	smane->AddScene(SCENE::GAME, new GameScene());
 	smane->AddScene(SCENE::RESULT, new ResultScene());
-	smane->ChangeScene(TITLE);//ここでシーン切り替え
+	smane->ChangeScene(GAME);//ここでシーン切り替え
 #pragma endregion 
 
 
