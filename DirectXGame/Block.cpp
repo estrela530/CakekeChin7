@@ -15,7 +15,7 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-const float Block::radius = 5.0f;				// 底面の半径
+const float Block::radius = 15.0f;				// 底面の半径
 const float Block::prizmHeight = 8.0f;			// 柱の高さ
 ID3D12Device* Block::device = nullptr;
 UINT Block::descriptorHandleIncrementSize = 0;
@@ -513,6 +513,38 @@ void Block::CreateModel()
 		assert(0);
 	}
 
+	//1125
+	std::vector<VertexPosNormalUv> realVertices;
+	// 頂点座標の計算（重複あり）
+	{
+		realVertices.resize((division + 1) * 2);
+		int index = 0;
+		float zValue;
+
+		// 底面
+		zValue = prizmHeight / 2.0f;
+		for (int i = 0; i < division; i++)
+		{
+			XMFLOAT3 vertex;
+			vertex.x = radius * sinf(XM_2PI / division * i);
+			vertex.y = radius * cosf(XM_2PI / division * i);
+			vertex.z = zValue;
+			realVertices[index++].pos = vertex;
+		}
+		realVertices[index++].pos = XMFLOAT3(0, 0, zValue);	// 底面の中心点
+		// 天面
+		zValue = -prizmHeight / 2.0f;
+		for (int i = 0; i < division; i++)
+		{
+			XMFLOAT3 vertex;
+			vertex.x = radius * sinf(XM_2PI / division * i);
+			vertex.y = radius * cosf(XM_2PI / division * i);
+			vertex.z = zValue;
+			realVertices[index++].pos = vertex;
+		}
+		realVertices[index++].pos = XMFLOAT3(0, 0, zValue);	// 天面の中心点
+	}
+
 	vector<XMFLOAT3>positions;	//頂点座標
 	vector<XMFLOAT3>normals;	//法線ベクトル
 	vector<XMFLOAT2>texcoords;	//テクスチャUV
@@ -739,7 +771,7 @@ void Block::Update()
 	constBuffB1->Unmap(0, nullptr);
 
 	//毎フレーム処理（手前に来る処理）
-	position.z -= 1.43f;
+	position.z -= 1.50f;
 
 }
 
