@@ -8,6 +8,7 @@
 #include "Object3d.h"
 
 #include "DebugText.h"
+#include "DebugTT.h"
 #include "Audio.h"
 #include "Ball.h"
 #include "Block.h"
@@ -30,8 +31,12 @@ private: // エイリアス
 
 private: // 静的メンバ変数
 	static const int debugTextTexNumber = 0;
+<<<<<<< HEAD
 
 
+=======
+	static const int dTTN2 = 0;
+>>>>>>> origin/pooooooooooooooooo
 public: // メンバ関数
 
 	/// <summary>
@@ -64,6 +69,7 @@ private: // メンバ変数
 	Input* input = nullptr;
 	Audio* audio = nullptr;
 	DebugText debugText;
+	DebugTT debugText2;
 
 	/// <summary>
 	/// ゲームシーン用
@@ -90,9 +96,30 @@ private: // メンバ変数
 	int notBallJumpSeconds = 0;
 	//Block::List<block> blockList = new List<block>();
 	float alpha;
+<<<<<<< HEAD
 	float blockCreateTime = 0;
 	int blockCreateCount = 0;
 	std::vector<Block*> blocks;
 	float blockXPosition = 0;
+=======
+	int sco = 0;
+	int ss = 0;
+
+	float k = 4.1f;
+	float t = 0.0f;
+	float m = 8.0f;//質量
+	float v = 1.0f;
+	float g = 1.5f;//重力加速度
+	float ve;
+
+	float vy = 0.5f;//物体の速度
+	float fy;//Y軸に働く力
+	float ay;//Y軸の加速度
+	int time = 0.0f;
+	bool alal = true;//背景点滅余
+	float aa = 1;
+	float bb = 1;
+	float cc = 0;
+>>>>>>> origin/pooooooooooooooooo
 };
 

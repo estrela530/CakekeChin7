@@ -1,11 +1,22 @@
 ﻿#include "GameScene.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
+<<<<<<< HEAD
 //#include "BlockManager.h"
 #include "Object3d.h"
 #include <cassert>
 #include <iostream>
 #include <ctime>
+=======
+#include "Ball.h"
+
+#include "Object3d.h"
+#include <cassert>
+#include <time.h>
+#include <sstream>
+#include <iomanip>
+
+>>>>>>> origin/pooooooooooooooooo
 using namespace DirectX;
 using namespace std;
 
@@ -60,6 +71,16 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	// デバッグテキスト初期化
 	debugText.Initialize(debugTextTexNumber);
 
+	//new
+	// デバッグテキスト用テクスチャ読み込み
+	if (!Sprite::LoadTexture(dTTN2, L"Resources/suuji.png")) {
+		assert(0);
+		return;
+	}
+	// デバッグテキスト初期化
+	debugText2.Init(dTTN2);
+	//new
+	
 	// テクスチャ読み込み
 	if (!Sprite::LoadTexture(1, L"Resources/back1111.png")) {
 		assert(0);
@@ -128,11 +149,62 @@ void GameScene::Update()
 {
 #pragma region シュレフェード試作
 	//フェード
+<<<<<<< HEAD
 	alpha += 0.01f;
 	spriteBG->SetColor({ 1,1,1,alpha });//背景色
 
 	notBallJumpSeconds += 1;
 
+=======
+	time += 0.1f;
+	//spriteBG->SetColor({ 1,1,1,alpha });//背景色
+	//alpha -= 0.01f;
+	//spriteBG->SetColor({ 1,1,0,alpha });
+	if (alal == true)
+	{
+
+		alpha -= 0.01f;
+		/*	cc-= 0.001f;
+			if (cc < 1)
+			{
+				aa -= 0.005f;
+			}
+			if (aa >0)
+			{
+				aa += 0.005f;
+				bb -= 0.005f;
+			}
+	*/
+		spriteBG->SetColor({ aa,bb,cc,alpha });
+
+		if (alpha < 0.35)
+		{
+			alal = false;
+			aa -= 0.004f;
+			bb -= 0.004f;
+		}
+	}
+	else if (alal == false)
+	{
+		alpha += 0.01f;
+		spriteBG->SetColor({ aa,bb,cc,alpha });
+		cc += 0.005f;
+		if (alpha > 1)
+		{
+			alal = true;
+		}
+		/*	if (aa < 0.3|| bb < 0.3)
+			{
+				aa += 0.004f;
+				bb += 0.004f;
+			}*/
+	}
+	if (aa < 0 || bb < 0)
+	{
+		aa += 0.04f;
+		bb += 0.04f;
+	}
+>>>>>>> origin/pooooooooooooooooo
 
 	/*while (alpha < 0.3f)
 	{
@@ -150,6 +222,7 @@ void GameScene::Update()
 	//}
 	//blockGeneratorSeconds += 1;
 #pragma endregion
+<<<<<<< HEAD
 
 
 #pragma region BlockManager作成に伴い追加
@@ -173,6 +246,19 @@ void GameScene::Update()
 
 #pragma endregion
 
+=======
+	//blockGeneratorSeconds += 1;
+	////ブロック生成処理
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	if (blockGeneratorSeconds >= 2)
+	//	{
+	//		block = Block::Create();
+	//		block->SetPosition({ 0,-30,450 });
+	//		blockGeneratorSeconds = 0;
+	//	}
+	//}
+>>>>>>> origin/pooooooooooooooooo
 
 #pragma region //(SZK・・・・復活させた↓)
 	//(SZK・・・・復活させた↓)
@@ -448,7 +534,54 @@ void GameScene::Update()
 #pragma endregion
 
 #pragma endregion
+#pragma region score 処理
 
+	//座標読び
+//※とりあえず動いた、細かい調整必要※
+	bool score = true;
+
+<<<<<<< HEAD
+=======
+	if (score == true)
+	{
+		sco += 1;
+	}
+	else
+	{
+		score = true;
+	}
+
+	//ball->GetPosition
+	debugText.Print("Score:", 50, 200, 1.0f);
+	debugText2.Print2(std::to_string(sco).c_str(),
+		110, 200, 1.0f);//数字出し方
+//	char *numStr;
+//	printf("%d\n", sco);
+
+	//scanf()
+		//	debugText.Print(, 110, 200, 3.0f);
+		//
+		//std::ostringstream spherestr;
+		//XMVECTOR inter;
+		//spherestr << "("
+		//	<< std::fixed << std::setprecision(2)
+		//	<< ball->GetPosition.m128_f32[0] << ","
+		//	<< ball->GetPosition.m128_f32[1] << ","
+		//	<< ball->GetPosition.m128_f32[2] << ")";
+		//
+		//
+		//spherestr.str("");
+		//spherestr.clear();
+		//spherestr << "("
+		//	<< std::fixed << std::setprecision(2)
+		//	<< inter.m128_f32[0] << ","
+		//	<< inter.m128_f32[1] << ","
+		//	<< inter.m128_f32[2] << ")";
+
+#pragma endregion 
+
+
+>>>>>>> origin/pooooooooooooooooo
 	// 座標の変更を反映
 	object3d->SetPosition(position);
 	ball->SetPosition(ballPosition);
@@ -489,14 +622,21 @@ void GameScene::Update()
 	block6->Update();
 	block7->Update();
 	block8->Update();
+<<<<<<< HEAD
 	block9->Update();*/
 #pragma endregion
+=======
+	block9->Update();
+
+
+>>>>>>> origin/pooooooooooooooooo
 }
 
 void GameScene::Draw()
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
+	ID3D12GraphicsCommandList* cmdList2 = dxCommon->GetCommandList();
 
 #pragma region 背景スプライト描画
 	// 背景スプライト描画前処理
@@ -612,4 +752,9 @@ void GameScene::Draw()
 	// スプライト描画後処理
 	Sprite::PostDraw();
 #pragma endregion
+
+
+	Sprite::PreDraw(cmdList2);
+	debugText2.DrawAll2(cmdList2);
+	Sprite::PostDraw();
 }

@@ -88,6 +88,7 @@
     <ClCompile Include="BlockManager.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DebugText.cpp" />
+    <ClCompile Include="DebugTT.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="DebugText.h" />
+    <ClInclude Include="DebugTT.h" />
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
