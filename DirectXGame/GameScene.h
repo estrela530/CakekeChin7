@@ -8,6 +8,7 @@
 #include "Object3d.h"
 
 #include "DebugText.h"
+#include "DebugTT.h"
 #include "Audio.h"
 #include "Ball.h"
 #include "Block.h"
@@ -30,7 +31,7 @@ private: // エイリアス
 
 private: // 静的メンバ変数
 	static const int debugTextTexNumber = 0;
-
+	static const int dTTN2 = 0;
 public: // メンバ関数
 
 	/// <summary>
@@ -63,6 +64,7 @@ private: // メンバ変数
 	Input* input = nullptr;
 	Audio* audio = nullptr;
 	DebugText debugText;
+	DebugTT debugText2;
 
 	/// <summary>
 	/// ゲームシーン用
@@ -85,7 +87,7 @@ private: // メンバ変数
 	int blockGeneratorSeconds;
 	//Block::List<block> blockList = new List<block>();
 	float alpha;
-
+	int sco = 0;
 	int ss = 0;
 
 	float k = 4.1f;
