@@ -31,12 +31,7 @@ private: // エイリアス
 
 private: // 静的メンバ変数
 	static const int debugTextTexNumber = 0;
-<<<<<<< HEAD
-
-
-=======
 	static const int dTTN2 = 0;
->>>>>>> origin/pooooooooooooooooo
 public: // メンバ関数
 
 	/// <summary>
@@ -88,7 +83,7 @@ private: // メンバ変数
 	//Block* block6 = nullptr;
 	//Block* block7 = nullptr;
 	//Block* block8 = nullptr;
-	//Block* block9 = nullptr;
+	Block* block9 = nullptr;
 #pragma endregion
 	//Object3d2* object3d2 = nullptr;
 
@@ -96,12 +91,10 @@ private: // メンバ変数
 	int notBallJumpSeconds = 0;
 	//Block::List<block> blockList = new List<block>();
 	float alpha;
-<<<<<<< HEAD
 	float blockCreateTime = 0;
 	int blockCreateCount = 0;
 	std::vector<Block*> blocks;
 	float blockXPosition = 0;
-=======
 	int sco = 0;
 	int ss = 0;
 
@@ -120,6 +113,5 @@ private: // メンバ変数
 	float aa = 1;
 	float bb = 1;
 	float cc = 0;
->>>>>>> origin/pooooooooooooooooo
 };
 

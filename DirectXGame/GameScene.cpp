@@ -1,13 +1,11 @@
 ﻿#include "GameScene.h"
 #include "BaseScene.h"
 #include "SceneManager.h"
-<<<<<<< HEAD
 //#include "BlockManager.h"
 #include "Object3d.h"
 #include <cassert>
 #include <iostream>
 #include <ctime>
-=======
 #include "Ball.h"
 
 #include "Object3d.h"
@@ -16,7 +14,6 @@
 #include <sstream>
 #include <iomanip>
 
->>>>>>> origin/pooooooooooooooooo
 using namespace DirectX;
 using namespace std;
 
@@ -120,8 +117,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	//block7 = Block::Create();
 	////ブロック9生成
 	//block8 = Block::Create();
-	////ブロック10生成
-	//block9 = Block::Create();
+	//ブロック10生成
+	block9 = Block::Create();
 
 	//block->SetPosition({ 0,-30,150 });
 
@@ -134,7 +131,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	//block6->SetPosition({ 0,-30,650 });
 	//block7->SetPosition({ 0,-30,750 });
 	//block8->SetPosition({ 0,-30,850 });
-	//block9->SetPosition({ 0,-30,950 });
+	block9->SetPosition({ 0,-30,950 });
 #pragma endregion
 
 
@@ -149,13 +146,11 @@ void GameScene::Update()
 {
 #pragma region シュレフェード試作
 	//フェード
-<<<<<<< HEAD
 	alpha += 0.01f;
 	spriteBG->SetColor({ 1,1,1,alpha });//背景色
 
 	notBallJumpSeconds += 1;
 
-=======
 	time += 0.1f;
 	//spriteBG->SetColor({ 1,1,1,alpha });//背景色
 	//alpha -= 0.01f;
@@ -204,7 +199,6 @@ void GameScene::Update()
 		aa += 0.04f;
 		bb += 0.04f;
 	}
->>>>>>> origin/pooooooooooooooooo
 
 	/*while (alpha < 0.3f)
 	{
@@ -222,7 +216,6 @@ void GameScene::Update()
 	//}
 	//blockGeneratorSeconds += 1;
 #pragma endregion
-<<<<<<< HEAD
 
 
 #pragma region BlockManager作成に伴い追加
@@ -246,7 +239,6 @@ void GameScene::Update()
 
 #pragma endregion
 
-=======
 	//blockGeneratorSeconds += 1;
 	////ブロック生成処理
 	//for (int i = 0; i < 20; i++)
@@ -258,7 +250,6 @@ void GameScene::Update()
 	//		blockGeneratorSeconds = 0;
 	//	}
 	//}
->>>>>>> origin/pooooooooooooooooo
 
 #pragma region //(SZK・・・・復活させた↓)
 	//(SZK・・・・復活させた↓)
@@ -540,8 +531,6 @@ void GameScene::Update()
 //※とりあえず動いた、細かい調整必要※
 	bool score = true;
 
-<<<<<<< HEAD
-=======
 	if (score == true)
 	{
 		sco += 1;
@@ -580,8 +569,6 @@ void GameScene::Update()
 
 #pragma endregion 
 
-
->>>>>>> origin/pooooooooooooooooo
 	// 座標の変更を反映
 	object3d->SetPosition(position);
 	ball->SetPosition(ballPosition);
@@ -622,14 +609,11 @@ void GameScene::Update()
 	block6->Update();
 	block7->Update();
 	block8->Update();
-<<<<<<< HEAD
 	block9->Update();*/
 #pragma endregion
-=======
 	block9->Update();
 
 
->>>>>>> origin/pooooooooooooooooo
 }
 
 void GameScene::Draw()
