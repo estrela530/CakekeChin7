@@ -12,7 +12,7 @@
 #include "Ball.h"
 #include "Block.h"
 #include "BaseScene.h"
-#include <time.h>
+//#include "BlockManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -30,6 +30,7 @@ private: // エイリアス
 
 private: // 静的メンバ変数
 	static const int debugTextTexNumber = 0;
+
 
 public: // メンバ関数
 
@@ -70,39 +71,28 @@ private: // メンバ変数
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
 	Ball* ball = nullptr;
+
 	Block* block = nullptr;
-	Block* block1 = nullptr;
-	Block* block2 = nullptr;
-	Block* block3 = nullptr;
-	Block* block4 = nullptr;
-	Block* block5 = nullptr;
-	Block* block6 = nullptr;
-	Block* block7 = nullptr;
-	Block* block8 = nullptr;
-	Block* block9 = nullptr;
+#pragma region BlockManager作成に伴いコメントアウト
+	//Block* block1 = nullptr;
+	//Block* block2 = nullptr;
+	//Block* block3 = nullptr;
+	//Block* block4 = nullptr;
+	//Block* block5 = nullptr;
+	//Block* block6 = nullptr;
+	//Block* block7 = nullptr;
+	//Block* block8 = nullptr;
+	//Block* block9 = nullptr;
+#pragma endregion
 	//Object3d2* object3d2 = nullptr;
 
 	int blockGeneratorSeconds;
 	int notBallJumpSeconds = 0;
 	//Block::List<block> blockList = new List<block>();
 	float alpha;
-
-	int ss = 0;
-
-	float k = 4.1f;
-	float t = 0.0f;
-	float m = 8.0f;//質量
-	float v = 1.0f;
-	float g = 1.5f;//重力加速度
-	float ve;
-
-	float vy = 0.5f;//物体の速度
-	float fy;//Y軸に働く力
-	float ay;//Y軸の加速度
-	int time = 0.0f;
-	bool alal = true;//背景点滅余
-	float aa = 1;
-	float bb = 1;
-	float cc = 0;
+	float blockCreateTime = 0;
+	int blockCreateCount = 0;
+	std::vector<Block*> blocks;
+	float blockXPosition = 0;
 };
 

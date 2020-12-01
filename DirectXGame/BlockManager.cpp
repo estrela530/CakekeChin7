@@ -9,14 +9,14 @@ void BlockManager::Init(DirectXCommon * dxcommon, Input * input, Audio * audio)
 }
 
 //vectorにいれたブロックをいれるとき用関数
-void BlockManager::AddBlock()
+void BlockManager::AddBlock(Block* block)
 {
-	block = Block::Create();
+	//block = Block::Create();
 	blocks.push_back(block);
 }
 
 //vectorにいれたブロックを消すとき用関数
-void BlockManager::DeleteBlock()
+void BlockManager::DeleteBlock(Block* block)
 {
 	//pop_backは末尾の要素を削除
 	//blocks.pop_back();
@@ -27,13 +27,14 @@ void BlockManager::DeleteBlock()
 };
 
 //更新処理
-void BlockManager::Update()
+void BlockManager::Update(int blockNumber)
 {
+	blocks.at(blockNumber)->Update();
 
 };
 
 //描画用だけどブロッククラスのやつをこっちに持ってこないといけない
-void BlockManager::Draw()
+void BlockManager::Draw(int blockNumber)
 {
-
+	blocks.at(blockNumber)->Draw();
 };

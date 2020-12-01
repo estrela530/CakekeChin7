@@ -771,7 +771,8 @@ void Block::Update()
 	constBuffB1->Unmap(0, nullptr);
 
 	//毎フレーム処理（手前に来る処理）
-	position.z -= 1.50f;
+	//position.z -= 1.50f;
+	position.z -= 3.0f;
 
 }
 

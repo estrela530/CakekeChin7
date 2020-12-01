@@ -111,7 +111,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			smane->ChangeScene(RESULT);
 		}
-
 		// 描画終了
 		dxCommon->PostDraw();
 	}
