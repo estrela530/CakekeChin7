@@ -18,11 +18,11 @@ using namespace DirectX;
 using namespace std;
 
 int ss = 0;
-float k = 4.1f;
+float k = 1.0f;
 float t = 0.0f;
 float m = 8.0f;//質量
 float v = 1.0f;
-float g = 1.5f;//重力加速度
+float g = 2.5f;//重力加速度
 float ve;
 float vy = 0.5f;//物体の速度
 float fy;//Y軸に働く力
@@ -489,42 +489,30 @@ void GameScene::Update()
 	//}
 #pragma endregion
 
+#pragma region 新しい挙動まわりの処理(SZK)
+	ballPosition.y -= g;//重力
 	if (hit)
 	{
-		ss = 1;
+		//ss = 1;
+		sec += 1;
+		k -= 0.1;
+
+		ballPosition.y += k;//反発
+		if (sec > 38)
+		{
+			hit = false;
+			k = 7.0;
+			sec = 0;
+		}
 		debugText.Print("Hit", 0, 0, 10);
 	}
-
-#pragma region 上限へ行ったらssを0に(SZK)
-
-	//下に変更
-	if (ballPosition.y > 20)
+	else
 	{
-		ss = 0;
+		k = 5.5;
 	}
-#pragma endregion
-
-#pragma region 変数1を使った重力加速(SZK)
-	//下へ行く処理
-	if (ss == 0)
-	{
-		fy = k * vy;//空気抵抗
-		ay = g - (fy / m);//自由落下
-		ballPosition.y -= ay;
-	}
-#pragma endregion
-
-#pragma region 変数1を使った反発(SZK)
-	//反発
-	if (ss == 1)
-	{
-		fy = k * vy;//空気抵抗
-		ay = g - (fy / m);//自由落下
-		ballPosition.y += ay;
-	}
-#pragma endregion
 
 #pragma endregion
+
 #pragma region score 処理
 
 	//座標読び

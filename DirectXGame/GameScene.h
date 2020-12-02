@@ -113,5 +113,7 @@ private: // メンバ変数
 	float aa = 1;
 	float bb = 1;
 	float cc = 0;
+
+	int sec = 0;
 };
 
