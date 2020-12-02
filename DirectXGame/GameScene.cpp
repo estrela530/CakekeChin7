@@ -8,8 +8,6 @@
 #include <ctime>
 #include "Ball.h"
 
-#include "Object3d.h"
-#include <cassert>
 #include <time.h>
 #include <sstream>
 #include <iomanip>
@@ -36,7 +34,7 @@ GameScene::~GameScene()
 {
 	delete spriteBG;
 	delete object3d;
-	//	delete object3d2;//追加(SZK)
+	delete score;
 	delete ball;
 
 #pragma region BlockManager作成に伴いコメントアウト
@@ -77,21 +75,34 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	// デバッグテキスト初期化
 	debugText2.Init(dTTN2);
 	//new
-	
+	//上記テクスチャ
+
+	//下記背景
+
 	// テクスチャ読み込み
 	if (!Sprite::LoadTexture(1, L"Resources/back1111.png")) {
 		assert(0);
 		return;
 	}
+	//スコア
+	if (!Sprite::LoadTexture(1, L"Resources/score.png")) {
+		assert(0);
+		return;
+	}
+
+
+
+
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
 	object3d = Object3d::Create();
+	//zahyou 
+	score = Sprite::Create(1, { 1,126 });//スコア画像サイズ
+	score->Sprite::SetSize({ 135.0f,38.0f });//画像サイズ
 	object3d->Update();
 
-	// 3Dオブジェクト2生成(SZK) 追加
-	//object3d2 = Object3d2::Create();
-	//object3d2->Update();
+
 
 	//ボール生成
 	ball = Ball::Create();
@@ -159,25 +170,25 @@ void GameScene::Update()
 	{
 
 		alpha -= 0.01f;
-		/*	cc-= 0.001f;
-			if (cc < 1)
-			{
-				aa -= 0.005f;
-			}
-			if (aa >0)
-			{
-				aa += 0.005f;
-				bb -= 0.005f;
-			}
-	*/
+		cc -= 0.001f;
+		if (cc < 1)
+		{
+			aa -= 0.005f;
+		}
+		if (aa > 0)
+		{
+			aa += 0.005f;
+			bb -= 0.005f;
+		}
+
 		spriteBG->SetColor({ aa,bb,cc,alpha });
 
-		if (alpha < 0.35)
+		/*if (alpha < 0.35)
 		{
 			alal = false;
 			aa -= 0.004f;
 			bb -= 0.004f;
-		}
+		}*/
 	}
 	else if (alal == false)
 	{
@@ -188,11 +199,11 @@ void GameScene::Update()
 		{
 			alal = true;
 		}
-		/*	if (aa < 0.3|| bb < 0.3)
-			{
-				aa += 0.004f;
-				bb += 0.004f;
-			}*/
+		else if (aa < 0.3)
+		{
+			aa += 0.004f;
+			bb += 0.004f;
+		}
 	}
 	if (aa < 0 || bb < 0)
 	{
@@ -200,21 +211,7 @@ void GameScene::Update()
 		bb += 0.04f;
 	}
 
-	/*while (alpha < 0.3f)
-	{
-		spriteBG->SetColor({ 1,1,0,alpha });
-	}*/
-	//if (a>=0.6f)
-	//{
-	//	a -= 0.01f;
-	//	spriteBG->SetColor({ 1,1,1,a });
-	//}
-	//else if(a<=0.6f )
-	//{
-	//	a += 0.01f;
-	//	spriteBG->SetColor({ 1,1,1,a });
-	//}
-	//blockGeneratorSeconds += 1;
+
 #pragma endregion
 
 
@@ -271,16 +268,15 @@ void GameScene::Update()
 #pragma endregion
 
 
-	// オブジェクト移動
-	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-	{
-
-		//// 移動後の座標を計算
-		//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
-	}
+	//// オブジェクト移動
+	//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+	//{
+	//	//// 移動後の座標を計算
+	//	//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+	//	//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+	//	//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+	//	//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+	//}
 	// 座標の変更を反映
 	object3d->SetPosition(position);
 	object3d->Update();
@@ -290,48 +286,48 @@ void GameScene::Update()
 #pragma region カメラまわり
 
 	// カメラ移動
-	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A))
-	{
-		//if (input->PushKey(DIK_W)) { Ball::CameraMoveVector({ 0.0f,+1.0f,0.0f }); }
-		//else if (input->PushKey(DIK_S)) { Ball::CameraMoveVector({ 0.0f,-1.0f,0.0f }); }
-		//if (input->PushKey(DIK_D)) { Ball::CameraMoveVector({ +1.0f,0.0f,0.0f }); }
-		//else if (input->PushKey(DIK_A)) { Ball::CameraMoveVector({ -1.0f,0.0f,0.0f }); }
-	}
+	/*if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A))
+	{*/
+	//if (input->PushKey(DIK_W)) { Ball::CameraMoveVector({ 0.0f,+1.0f,0.0f }); }
+	//else if (input->PushKey(DIK_S)) { Ball::CameraMoveVector({ 0.0f,-1.0f,0.0f }); }
+	//if (input->PushKey(DIK_D)) { Ball::CameraMoveVector({ +1.0f,0.0f,0.0f }); }
+	//else if (input->PushKey(DIK_A)) { Ball::CameraMoveVector({ -1.0f,0.0f,0.0f }); }
+//}
 
-	// ボール移動
-	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT) || input->PushKey(DIK_SPACE))
-	{
-		//// 現在の座標を取得
-		//XMFLOAT3 position = ball->GetPosition();
+// ボール移動
+//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT) || input->PushKey(DIK_SPACE))
+//{
+//	//// 現在の座標を取得
+//	//XMFLOAT3 position = ball->GetPosition();
 
-		//// 移動後の座標を計算
-		//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
-		//if (input->PushKey(DIK_SPACE))
-		//{
-		//	position.z += 1.0f;
-		//}
-		//// 座標の変更を反映
-		//ball->SetPosition(position);
-	}
+//	//// 移動後の座標を計算
+//	//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+//	//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+//	//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+//	//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+//	//if (input->PushKey(DIK_SPACE))
+//	//{
+//	//	position.z += 1.0f;
+//	//}
+//	//// 座標の変更を反映
+//	//ball->SetPosition(position);
+//}
 
-	// ブロック移動
-	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-	{
-		// 現在の座標を取得
-		//XMFLOAT3 position = ball->GetPosition();
+//// ブロック移動
+//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+//{
+//	// 現在の座標を取得
+//	//XMFLOAT3 position = ball->GetPosition();
 
-		//// 移動後の座標を計算
-		//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-		//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-		//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-		//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
+//	//// 移動後の座標を計算
+//	//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
+//	//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
+//	//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
+//	//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
 
-		//// 座標の変更を反映
-		//block->SetPosition(position);
-	}
+//	//// 座標の変更を反映
+//	//block->SetPosition(position);
+//}
 
 #pragma region オブジェクト2の座標系
 	// オブジェクト2の座標を取得
@@ -527,34 +523,7 @@ void GameScene::Update()
 	{
 		score = true;
 	}
-
-	//ball->GetPosition
-	debugText.Print("Score:", 50, 200, 1.0f);
-	debugText2.Print2(std::to_string(sco).c_str(),
-		110, 200, 1.0f);//数字出し方
-//	char *numStr;
-//	printf("%d\n", sco);
-
-	//scanf()
-		//	debugText.Print(, 110, 200, 3.0f);
-		//
-		//std::ostringstream spherestr;
-		//XMVECTOR inter;
-		//spherestr << "("
-		//	<< std::fixed << std::setprecision(2)
-		//	<< ball->GetPosition.m128_f32[0] << ","
-		//	<< ball->GetPosition.m128_f32[1] << ","
-		//	<< ball->GetPosition.m128_f32[2] << ")";
-		//
-		//
-		//spherestr.str("");
-		//spherestr.clear();
-		//spherestr << "("
-		//	<< std::fixed << std::setprecision(2)
-		//	<< inter.m128_f32[0] << ","
-		//	<< inter.m128_f32[1] << ","
-		//	<< inter.m128_f32[2] << ")";
-
+	debugText2.Print2(std::to_string(sco).c_str(),140, 130, 1.0f);//スコア座標
 #pragma endregion 
 
 	// 座標の変更を反映
@@ -585,23 +554,7 @@ void GameScene::Update()
 	//blocks.at(1)->Update();
 
 #pragma endregion
-
-
-#pragma region BlockManager作成に伴いコメントアウト
-	/*block->Update();
-	block1->Update();
-	block2->Update();
-	block3->Update();
-	block4->Update();
-	block5->Update();
-	block6->Update();
-	block7->Update();
-	block8->Update();
-	block9->Update();*/
-#pragma endregion
 	block9->Update();
-
-
 }
 
 void GameScene::Draw()
@@ -615,16 +568,14 @@ void GameScene::Draw()
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
 	spriteBG->Draw();
-
-	/// <summary>
-	/// ここに背景スプライトの描画処理を追加できる
-	/// </summary>
-
+	score->Draw();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon->ClearDepthBuffer();
 #pragma endregion
+
+
 
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
@@ -725,8 +676,12 @@ void GameScene::Draw()
 	Sprite::PostDraw();
 #pragma endregion
 
+#pragma region スコア数字
 
 	Sprite::PreDraw(cmdList2);
 	debugText2.DrawAll2(cmdList2);
 	Sprite::PostDraw();
+
+#pragma endregion
+
 }

@@ -72,8 +72,10 @@ private: // メンバ変数
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
 	Ball* ball = nullptr;
+	Sprite* score = nullptr;
 
 	Block* block = nullptr;
+
 #pragma region BlockManager作成に伴いコメントアウト
 	//Block* block1 = nullptr;
 	//Block* block2 = nullptr;
@@ -95,8 +97,10 @@ private: // メンバ変数
 	int blockCreateCount = 0;
 	std::vector<Block*> blocks;
 	float blockXPosition = 0;
-	int sco = 0;
+
+	int sco = 0;//フェード
 	int ss = 0;
+	int time = 0.0f;
 
 	float k = 4.1f;
 	float t = 0.0f;
@@ -108,7 +112,7 @@ private: // メンバ変数
 	float vy = 0.5f;//物体の速度
 	float fy;//Y軸に働く力
 	float ay;//Y軸の加速度
-	int time = 0.0f;
+
 	bool alal = true;//背景点滅余
 	float aa = 1;
 	float bb = 1;
