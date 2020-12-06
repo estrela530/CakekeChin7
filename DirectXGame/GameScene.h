@@ -77,10 +77,10 @@ private: // メンバ変数
 	Block* block = nullptr;
 
 #pragma region BlockManager作成に伴いコメントアウト
-	//Block* block1 = nullptr;
-	//Block* block2 = nullptr;
-	//Block* block3 = nullptr;
-	//Block* block4 = nullptr;
+	Block* block1 = nullptr;
+	Block* block2 = nullptr;
+	Block* block3 = nullptr;
+	Block* block4 = nullptr;
 	//Block* block5 = nullptr;
 	//Block* block6 = nullptr;
 	//Block* block7 = nullptr;
@@ -102,22 +102,18 @@ private: // メンバ変数
 	int ss = 0;
 	int time = 0.0f;
 
-	float k = 4.1f;
-	float t = 0.0f;
-	float m = 8.0f;//質量
-	float v = 1.0f;
-	float g = 1.5f;//重力加速度
+	float k = 1.0f;
+	float g = 2.5f;//重力加速度
 	float ve;
 
-	float vy = 0.5f;//物体の速度
-	float fy;//Y軸に働く力
-	float ay;//Y軸の加速度
-
+	//フェード
 	bool alal = true;//背景点滅余
 	float aa = 1;
 	float bb = 1;
 	float cc = 0;
 
 	int sec = 0;
+	bool hit = false;
+
 };
 

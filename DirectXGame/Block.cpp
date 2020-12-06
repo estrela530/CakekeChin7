@@ -15,7 +15,7 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-const float Block::radius = 15.0f;				// 底面の半径
+const float Block::radius = 5.0f;				// 底面の半径
 const float Block::prizmHeight = 8.0f;			// 柱の高さ
 ID3D12Device* Block::device = nullptr;
 UINT Block::descriptorHandleIncrementSize = 0;
@@ -771,7 +771,7 @@ void Block::Update()
 	constBuffB1->Unmap(0, nullptr);
 
 	//毎フレーム処理（手前に来る処理）
-	//position.z -= 1.50f;
+	//position.z -= 1.5f;
 	position.z -= 3.0f;
 
 }

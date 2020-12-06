@@ -15,16 +15,12 @@
 using namespace DirectX;
 using namespace std;
 
+//SZK　変数
 int ss = 0;
 float k = 1.0f;
-float t = 0.0f;
-float m = 8.0f;//質量
-float v = 1.0f;
 float g = 2.5f;//重力加速度
 float ve;
-float vy = 0.5f;//物体の速度
-float fy;//Y軸に働く力
-float ay;//Y軸の加速度
+int sec = 0;
 
 GameScene::GameScene()
 {
@@ -38,9 +34,11 @@ GameScene::~GameScene()
 	delete ball;
 
 #pragma region BlockManager作成に伴いコメントアウト
-	//delete block;
-	//delete block1;
-	//delete block2;
+	delete block;
+	delete block1;
+	delete block2;
+	delete block3;
+	delete block4;
 #pragma endregion
 }
 
@@ -111,40 +109,22 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 #pragma region BlockManager作成に伴いコメントアウト
 	////生成ループ化のためにコメントアウト
 	//ブロック1生成
-	//block = Block::Create();
-	////ブロック2生成
-	//block1 = Block::Create();
-	////ブロック3生成
-	//block2 = Block::Create();
-	////ブロック4生成
-	//block3 = Block::Create();
-	////ブロック5生成
-	//block4 = Block::Create();
-	////ブロック6生成
-	//block5 = Block::Create();
-	////ブロック7生成
-	//block6 = Block::Create();
-	////ブロック8生成
-	//block7 = Block::Create();
-	////ブロック9生成
-	//block8 = Block::Create();
-	//ブロック10生成
-	block9 = Block::Create();
+	block = Block::Create();
+	//ブロック2生成
+	block1 = Block::Create();
+	//ブロック3生成
+	block2 = Block::Create();
+	//ブロック4生成
+	block3 = Block::Create();
+	//ブロック5生成
+	block4 = Block::Create();
 
-	//block->SetPosition({ 0,-30,150 });
-
-	//block->SetPosition({ 0,-30,50 });
-	//block1->SetPosition({ 0,-30,150 });
-	//block2->SetPosition({ 0,-30,250 });
-	//block3->SetPosition({ 0,-30,350 });
-	//block4->SetPosition({ 0,-30,450 });
-	//block5->SetPosition({ 0,-30,550 });
-	//block6->SetPosition({ 0,-30,650 });
-	//block7->SetPosition({ 0,-30,750 });
-	//block8->SetPosition({ 0,-30,850 });
-	block9->SetPosition({ 0,-30,950 });
+	block->SetPosition({ 0,-30,50 }); //変更前　150
+	block1->SetPosition({ 0,-30,200 });
+	block2->SetPosition({ 0,-30,380 });
+	block3->SetPosition({ 0,-30,560 });
+	block4->SetPosition({ 0,-30,740 });
 #pragma endregion
-
 
 	//フェード
 	alpha = 0;
@@ -217,36 +197,19 @@ void GameScene::Update()
 
 #pragma region BlockManager作成に伴い追加
 
-	//BlockManager::AddBlock(block);
-
 	blockCreateTime += 1;
 
-	if (blockCreateTime > 30)
+	if (blockCreateTime > 60)
 	{
 		block = Block::Create();
 		blockXPosition = rand() % 101 + (-50);
-		block->SetPosition({ blockXPosition,-30,550 });
+		block->SetPosition({ blockXPosition,-30,900 });//変更前　ｚ座標　550
 		blocks.push_back(block);
 		blockCreateTime = 0;
 	}
-	//blocks.push_back(block);
-	//blocks.push_back(block1);
-	//blockCreateTime = 0;
-
 
 #pragma endregion
 
-	//blockGeneratorSeconds += 1;
-	////ブロック生成処理
-	//for (int i = 0; i < 20; i++)
-	//{
-	//	if (blockGeneratorSeconds >= 2)
-	//	{
-	//		block = Block::Create();
-	//		block->SetPosition({ 0,-30,450 });
-	//		blockGeneratorSeconds = 0;
-	//	}
-	//}
 
 #pragma region //(SZK・・・・復活させた↓)
 	//(SZK・・・・復活させた↓)
@@ -255,28 +218,23 @@ void GameScene::Update()
 	XMFLOAT3 ballPosition = ball->GetPosition();
 
 #pragma region BlockManager作成に伴いコメントアウト
-	//XMFLOAT3 blockPosition = block->GetPosition();
-	//XMFLOAT3 block1Position = block1->GetPosition();
-	//XMFLOAT3 block2Position = block2->GetPosition();
-	//XMFLOAT3 block3Position = block3->GetPosition();
-	//XMFLOAT3 block4Position = block4->GetPosition();
-	//XMFLOAT3 block5Position = block5->GetPosition();
-	//XMFLOAT3 block6Position = block6->GetPosition();
-	//XMFLOAT3 block7Position = block7->GetPosition();
-	//XMFLOAT3 block8Position = block8->GetPosition();
-	//XMFLOAT3 block9Position = block9->GetPosition();
+
+	XMFLOAT3 blockPosition = block->GetPosition();
+	XMFLOAT3 block1Position = block1->GetPosition();
+	XMFLOAT3 block2Position = block2->GetPosition();
+	XMFLOAT3 block3Position = block3->GetPosition();
+	XMFLOAT3 block4Position = block4->GetPosition();
+
 #pragma endregion
 
 
-	//// オブジェクト移動
-	//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-	//{
-	//	//// 移動後の座標を計算
-	//	//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-	//	//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-	//	//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-	//	//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
-	//}
+	// オブジェクト移動
+	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+	{
+		// 移動後の座標を計算
+		if (input->PushKey(DIK_RIGHT)) { ballPosition.x += 1.0f; }
+		else if (input->PushKey(DIK_LEFT)) { ballPosition.x -= 1.0f; }
+	}
 	// 座標の変更を反映
 	object3d->SetPosition(position);
 	object3d->Update();
@@ -340,167 +298,124 @@ void GameScene::Update()
 
 #pragma region 当たり判定処理
 	//ヒット通知
-	bool hit = false;
+	//bool hit = false;
 
 #pragma region BlockManager作成に伴いコメントアウト
-	////座標の差を求める
-	//XMVECTOR pos_sub = XMVectorSet(
-	//	blockPosition.x - ballPosition.x,
-	//	blockPosition.y - ballPosition.y,
-	//	blockPosition.z - ballPosition.z,
-	//	0);
+	//座標の差を求める
+	XMVECTOR pos_sub = XMVectorSet(
+		blockPosition.x - ballPosition.x,
+		blockPosition.y - ballPosition.y,
+		blockPosition.z - ballPosition.z,
+		0);
 
-	////座標の差を求める
-	//XMVECTOR pos_sub1 = XMVectorSet(
-	//	block1Position.x - ballPosition.x,
-	//	block1Position.y - ballPosition.y,
-	//	block1Position.z - ballPosition.z,
-	//	0);
-	////座標の差を求める
-	//XMVECTOR pos_sub2 = XMVectorSet(
-	//	block2Position.x - ballPosition.x,
-	//	block2Position.y - ballPosition.y,
-	//	block2Position.z - ballPosition.z,
-	//	0);
-	////座標の差を求める
-	//XMVECTOR pos_sub3 = XMVectorSet(
-	//	block3Position.x - ballPosition.x,
-	//	block3Position.y - ballPosition.y,
-	//	block3Position.z - ballPosition.z,
-	//	0);
-	////座標の差を求める
-	//XMVECTOR pos_sub4 = XMVectorSet(
-	//	block4Position.x - ballPosition.x,
-	//	block4Position.y - ballPosition.y,
-	//	block4Position.z - ballPosition.z,
-	//	0);
-	////座標の差を求める
-	//XMVECTOR pos_sub5 = XMVectorSet(
-	//	block5Position.x - ballPosition.x,
-	//	block5Position.y - ballPosition.y,
-	//	block5Position.z - ballPosition.z,
-	//	0);
-	////座標の差を求める
-	//XMVECTOR pos_sub6 = XMVectorSet(
-	//	block6Position.x - ballPosition.x,
-	//	block6Position.y - ballPosition.y,
-	//	block6Position.z - ballPosition.z,
-	//	0);
-	////座標の差を求める
-	//XMVECTOR pos_sub7 = XMVectorSet(
-	//	block7Position.x - ballPosition.x,
-	//	block7Position.y - ballPosition.y,
-	//	block7Position.z - ballPosition.z,
-	//	0);
-	////座標の差を求める
-	//XMVECTOR pos_sub8 = XMVectorSet(
-	//	block8Position.x - ballPosition.x,
-	//	block8Position.y - ballPosition.y,
-	//	block8Position.z - ballPosition.z,
-	//	0);
-	////座標の差を求める
-	//XMVECTOR pos_sub9 = XMVectorSet(
-	//	block9Position.x - ballPosition.x,
-	//	block9Position.y - ballPosition.y,
-	//	block9Position.z - ballPosition.z,
-	//	0);
+	//座標の差を求める
+	XMVECTOR pos_sub1 = XMVectorSet(
+		block1Position.x - ballPosition.x,
+		block1Position.y - ballPosition.y,
+		block1Position.z - ballPosition.z,
+		0);
+	//座標の差を求める
+	XMVECTOR pos_sub2 = XMVectorSet(
+		block2Position.x - ballPosition.x,
+		block2Position.y - ballPosition.y,
+		block2Position.z - ballPosition.z,
+		0);
+	//座標の差を求める
+	XMVECTOR pos_sub3 = XMVectorSet(
+		block3Position.x - ballPosition.x,
+		block3Position.y - ballPosition.y,
+		block3Position.z - ballPosition.z,
+		0);
+	//座標の差を求める
+	XMVECTOR pos_sub4 = XMVectorSet(
+		block4Position.x - ballPosition.x,
+		block4Position.y - ballPosition.y,
+		block4Position.z - ballPosition.z,
+		0);
 
-	////2つの距離を計算
-	//pos_sub = XMVector3Length(pos_sub);
-	//float dist = pos_sub.m128_f32[0];
-
-	////2つの距離を計算
-	//pos_sub1 = XMVector3Length(pos_sub1);
-	//float dist1 = pos_sub1.m128_f32[0];
-	////2つの距離を計算
-	//pos_sub2 = XMVector3Length(pos_sub2);
-	//float dist2 = pos_sub2.m128_f32[0];
-	////2つの距離を計算
-	//pos_sub3 = XMVector3Length(pos_sub3);
-	//float dist3 = pos_sub3.m128_f32[0];
-	////2つの距離を計算
-	//pos_sub4 = XMVector3Length(pos_sub4);
-	//float dist4 = pos_sub4.m128_f32[0];
-	////2つの距離を計算
-	//pos_sub5 = XMVector3Length(pos_sub5);
-	//float dist5 = pos_sub5.m128_f32[0];
-	////2つの距離を計算
-	//pos_sub6 = XMVector3Length(pos_sub6);
-	//float dist6 = pos_sub6.m128_f32[0];
-	////2つの距離を計算
-	//pos_sub7 = XMVector3Length(pos_sub7);
-	//float dist7 = pos_sub7.m128_f32[0];
-	////2つの距離を計算
-	//pos_sub8 = XMVector3Length(pos_sub8);
-	//float dist8 = pos_sub8.m128_f32[0];
+	//2つの距離を計算
+	pos_sub = XMVector3Length(pos_sub);
+	float dist = pos_sub.m128_f32[0];
+	//2つの距離を計算
+	pos_sub1 = XMVector3Length(pos_sub1);
+	float dist1 = pos_sub1.m128_f32[0];
+	//2つの距離を計算
+	pos_sub2 = XMVector3Length(pos_sub2);
+	float dist2 = pos_sub2.m128_f32[0];
+	//2つの距離を計算
+	pos_sub3 = XMVector3Length(pos_sub3);
+	float dist3 = pos_sub3.m128_f32[0];
+	//2つの距離を計算
+	pos_sub4 = XMVector3Length(pos_sub4);
+	float dist4 = pos_sub4.m128_f32[0];
 
 
-	////if (dist <= ballPosition.y + blockPosition.y || 
-	////	dist <= ballPosition.y + block1Position.y || 
-	////	dist <= ballPosition.y + block2Position.y)
-	////{
-	////	hit = true;
-	////}
-	///*if(ballPosition.y <= -20 && notBallJumpSeconds < 600)
-	//{
-	//	hit = true;
-	//}*/
-
-
-	//if (dist <= ball->radius + block->radius)
-	//{
-	//	hit = true;
-	//}
-	//if (dist1 <= ball->radius + block1->radius)
-	//{
-	//	hit = true;
-	//}
-	//if (dist2 <= ball->radius + block2->radius)
-	//{
-	//	hit = true;
-	//}
-	//if (dist3 <= ball->radius + block3->radius)
-	//{
-	//	hit = true;
-	//}
-	//if (dist4 <= ball->radius + block4->radius)
-	//{
-	//	hit = true;
-	//}
-	//if (dist5 <= ball->radius + block5->radius)
-	//{
-	//	hit = true;
-	//}
-	//if (dist6 <= ball->radius + block6->radius)
-	//{
-	//	hit = true;
-	//}
-	//if (dist7 <= ball->radius + block7->radius)
-	//{
-	//	hit = true;
-	//}
-	//if (dist8 <= ball->radius + block8->radius)
-	//{
-	//	hit = true;
-	//}
+	if (dist <= ball->radius + block->radius)
+	{
+		hit = true;
+	}
+	if (dist1 <= ball->radius + block1->radius)
+	{
+		hit = true;
+	}
+	if (dist2 <= ball->radius + block2->radius)
+	{
+		hit = true;
+	}
+	if (dist3 <= ball->radius + block3->radius)
+	{
+		hit = true;
+	}
+	if (dist4 <= ball->radius + block4->radius)
+	{
+		hit = true;
+	}
 #pragma endregion
+
+
+#pragma region BlockManager作成に伴い追加
+
+	for (Block* &x : blocks)
+	{
+		XMFLOAT3 blocksPosition = x->GetPosition();
+
+		//座標の差を求める
+		XMVECTOR pos_subs = XMVectorSet(
+			blocksPosition.x - ballPosition.x,
+			blocksPosition.y - ballPosition.y,
+			blocksPosition.z - ballPosition.z,
+			0);
+
+		//2つの距離を計算
+		pos_subs = XMVector3Length(pos_subs);
+		float dists = pos_subs.m128_f32[0];
+
+		if (dists <= ball->radius + block->radius)
+		{
+			hit = true;
+		}
+	}
+
+#pragma endregion
+
 
 #pragma region 新しい挙動まわりの処理(SZK)
 	ballPosition.y -= g;//重力
 	if (hit)
 	{
-		//ss = 1;
 		sec += 1;
 		k -= 0.1;
 
 		ballPosition.y += k;//反発
-		if (sec > 38)
+		if (sec > 45) //38
 		{
 			hit = false;
 			k = 7.0;
 			sec = 0;
 		}
-		debugText.Print("Hit", 0, 0, 10);
+
+		//ballPosition.y += 20.0f;
+		debugText.Print("Hit", 50, 50, 3);
 	}
 	else
 	{
@@ -515,15 +430,16 @@ void GameScene::Update()
 //※とりあえず動いた、細かい調整必要※
 	bool score = true;
 
-	if (score == true)
+	if (sec == 1)
 	{
-		sco += 1;
+		sco += 10;
+		//score = false;
 	}
-	else
-	{
-		score = true;
-	}
-	debugText2.Print2(std::to_string(sco).c_str(),140, 130, 1.0f);//スコア座標
+	//else
+	//{
+	//	score = true;
+	//}
+	debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
 #pragma endregion 
 
 	// 座標の変更を反映
@@ -534,27 +450,18 @@ void GameScene::Update()
 
 #pragma region BlockManager作成に伴い追加
 
-	/*for (size_t i = 0; i < BlockManager::blocks.size(); i++)
-	{
-		BlockManager::Update(i);
-	}*/
-
-	/*for (size_t i = 0; i < blocks.size(); i++)
-	{
-		blocks.at(i)->Update();
-	}*/
 
 	for (Block* &x : blocks)
 	{
 		x->Update();
 	}
 
-
-	//blocks.at(0)->Update();
-	//blocks.at(1)->Update();
-
 #pragma endregion
-	block9->Update();
+	block->Update();
+	block1->Update();
+	block2->Update();
+	block3->Update();
+	block4->Update();
 }
 
 void GameScene::Draw()
@@ -601,15 +508,6 @@ void GameScene::Draw()
 
 #pragma region BlockManager作成に伴い追加
 
-	/*for (size_t i = 0; i < BlockManager::blocks.size(); i++)
-	{
-		BlockManager::Draw(i);
-	}*/
-
-	/*for (size_t i = 0; i < blocks.size(); i++)
-	{
-		blocks.at(i)->Draw();
-	}*/
 
 	for (Block* &x : blocks)
 	{
@@ -620,26 +518,16 @@ void GameScene::Draw()
 
 
 #pragma region BlockManager作成に伴いコメントアウト
-	////ブロックの描画
-	//block->Draw();
-	////ブロック2の描画
-	//block1->Draw();
-	////ブロック3の描画
-	//block2->Draw();
-	////ブロック4の描画
-	//block3->Draw();
-	////ブロック5の描画
-	//block4->Draw();
-	////ブロック6の描画
-	//block5->Draw();
-	////ブロック7の描画
-	//block6->Draw();
-	////ブロック8の描画
-	//block7->Draw();
-	////ブロック9の描画
-	//block8->Draw();
-	////ブロック10の描画
-	////block9->Draw();
+	//ブロックの描画
+	block->Draw();
+	//ブロック2の描画
+	block1->Draw();
+	//ブロック3の描画
+	block2->Draw();
+	//ブロック4の描画
+	block3->Draw();
+	//ブロック5の描画
+	block4->Draw();
 #pragma endregion
 
 	/// <summary>
