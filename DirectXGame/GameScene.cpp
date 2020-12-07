@@ -199,7 +199,7 @@ void GameScene::Update()
 
 	blockCreateTime += 1;
 
-	if (blockCreateTime > 60)
+	if (blockCreateTime > 57)
 	{
 		block = Block::Create();
 		blockXPosition = rand() % 101 + (-50);
