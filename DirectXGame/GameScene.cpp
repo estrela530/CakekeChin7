@@ -150,7 +150,6 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	alpha = 0;
 
 	notBallJumpSeconds = 0;
-
 }
 
 void GameScene::Update()

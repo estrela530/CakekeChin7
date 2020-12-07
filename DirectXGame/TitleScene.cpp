@@ -11,6 +11,7 @@ TitleScene::TitleScene()
 TitleScene::~TitleScene()
 {
 	delete spriteBG;
+	delete wip;
 }
 
 
@@ -37,14 +38,24 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 		return;
 	}
 
+	if (!Sprite::LoadTexture(1, L"Resources/tex1.png"))
+	{
+		assert(0);
+		return;
+	}
+
 	///	// 3Dオブジェクト生成
 	//object3d = Object3d::Create();
 	//object3d->Update();
 	//背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
-
+	//ワイプ生成処
+	wip = Sprite::Create(1, { 0.0f,0.0 });
+	wip->Sprite::SetSize({ 128.0f,72.0f });//実験３
 	//spriteBG->SetPosition({ 100,100 });
 	alpha = 0;
+	//alpha2 = 1;
+	timer = 0.0f;
 
 }
 
@@ -52,7 +63,32 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 void TitleScene::Update()
 {
 	alpha += 0.0095f;
+	timer += 1;		
 	spriteBG->SetColor({ 1,1,1,alpha });//テクスチャの色とα値名
+
+	if (wips == false)
+	{
+		if (alpha > 1.0f)
+		{
+			//debugText.Print(std::string&,)
+			wips = true;
+		}
+	}
+	else if (wips == true)
+	{
+
+		//	alpha2 -= 0.0095f;
+			//wip->SetColor({ 1,1,1,alpha2 });
+		if (timer <=1000)
+		{
+			wips = false;
+			//delete wip;
+		}
+	}
+
+
+
+
 }
 
 void TitleScene::Draw()
@@ -65,7 +101,7 @@ void TitleScene::Draw()
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
 	spriteBG->Draw();
-
+	wip->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -78,6 +114,12 @@ void TitleScene::Draw()
 	debugText.DrawAll(cmdList);
 	//スプライト描画後の処理
 	Sprite::PostDraw();
-#pragma endregion 
+#pragma endregion
 
+#pragma region ワイプ
+
+
+
+
+#pragma endregion 
 }

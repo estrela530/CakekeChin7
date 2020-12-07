@@ -46,6 +46,11 @@ private://ƒƒ“ƒo•Ï”
 
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
-	
+	Sprite* wip = nullptr;
 	float alpha;
+	//float alpha2;
+	//int wip;
+	//float wip;
+	int timer;
+	bool wips = false;
 };
