@@ -33,12 +33,12 @@ GameScene::~GameScene()
 	delete score;
 	delete ball;
 
-#pragma region BlockManager作成に伴いコメントアウト
-	delete block;
+#pragma region 最初の確定沸きBlock5っ
 	delete block1;
 	delete block2;
 	delete block3;
 	delete block4;
+	delete block5;
 #pragma endregion
 }
 
@@ -88,9 +88,6 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 		return;
 	}
 
-
-
-
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
@@ -100,30 +97,29 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	score->Sprite::SetSize({ 135.0f,38.0f });//画像サイズ
 	object3d->Update();
 
-
-
 	//ボール生成
 	ball = Ball::Create();
 	ball->Update();
 
-#pragma region BlockManager作成に伴いコメントアウト
-	////生成ループ化のためにコメントアウト
-	//ブロック1生成
-	block = Block::Create();
-	//ブロック2生成
-	block1 = Block::Create();
-	//ブロック3生成
-	block2 = Block::Create();
-	//ブロック4生成
-	block3 = Block::Create();
-	//ブロック5生成
-	block4 = Block::Create();
+#pragma region 最初の確定沸きBlock5っ
 
-	block->SetPosition({ 0,-30,50 }); //変更前　150
-	block1->SetPosition({ 0,-30,200 });
-	block2->SetPosition({ 0,-30,380 });
-	block3->SetPosition({ 0,-30,560 });
-	block4->SetPosition({ 0,-30,740 });
+	//ブロック1生成
+	block1 = Block::Create();
+	//ブロック2生成
+	block2 = Block::Create();
+	//ブロック3生成
+	block3 = Block::Create();
+	//ブロック4生成
+	block4 = Block::Create();
+	//ブロック5生成
+	block5 = Block::Create();
+
+	block1->SetPosition({ 0,-30,50 }); //変更前　150
+	block2->SetPosition({ 0,-30,200 });
+	block3->SetPosition({ 0,-30,380 });
+	block4->SetPosition({ 0,-30,560 });
+	block5->SetPosition({ 0,-30,740 });
+
 #pragma endregion
 
 	//フェード
@@ -194,7 +190,7 @@ void GameScene::Update()
 #pragma endregion
 
 
-#pragma region BlockManager作成に伴い追加
+#pragma region Blockのランダム生成＆連続生成
 
 	blockCreateTime += 1;
 
@@ -202,30 +198,18 @@ void GameScene::Update()
 	{
 		block = Block::Create();
 		blockXPosition = rand() % 101 + (-50);
-		block->SetPosition({ blockXPosition,-30,900 });//変更前　ｚ座標　550
+		block->SetPosition({ blockXPosition,-30,730 });//変更前　ｚ座標　550
 		blocks.push_back(block);
 		blockCreateTime = 0;
 	}
 
 #pragma endregion
 
-
 #pragma region //(SZK・・・・復活させた↓)
 	//(SZK・・・・復活させた↓)
 	// 現在の座標を取得
 	XMFLOAT3 position = object3d->GetPosition();
 	XMFLOAT3 ballPosition = ball->GetPosition();
-
-#pragma region BlockManager作成に伴いコメントアウト
-
-	XMFLOAT3 blockPosition = block->GetPosition();
-	XMFLOAT3 block1Position = block1->GetPosition();
-	XMFLOAT3 block2Position = block2->GetPosition();
-	XMFLOAT3 block3Position = block3->GetPosition();
-	XMFLOAT3 block4Position = block4->GetPosition();
-
-#pragma endregion
-
 
 	// オブジェクト移動
 	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
@@ -295,17 +279,21 @@ void GameScene::Update()
 #pragma endregion
 #pragma endregion
 
-#pragma region 当たり判定処理
-	//ヒット通知
-	//bool hit = false;
+#pragma region 最初の確定沸きBlock5っ
 
-#pragma region BlockManager作成に伴いコメントアウト
-	//座標の差を求める
-	XMVECTOR pos_sub = XMVectorSet(
-		blockPosition.x - ballPosition.x,
-		blockPosition.y - ballPosition.y,
-		blockPosition.z - ballPosition.z,
-		0);
+	XMFLOAT3 block1Position = block1->GetPosition();
+	XMFLOAT3 block2Position = block2->GetPosition();
+	XMFLOAT3 block3Position = block3->GetPosition();
+	XMFLOAT3 block4Position = block4->GetPosition();
+	XMFLOAT3 block5Position = block5->GetPosition();
+
+#pragma endregion
+
+#pragma region 当たり判定処理
+
+#pragma region 最初の確定沸きBlock5っ
+
+#pragma region 座標の差を求める
 
 	//座標の差を求める
 	XMVECTOR pos_sub1 = XMVectorSet(
@@ -331,10 +319,16 @@ void GameScene::Update()
 		block4Position.y - ballPosition.y,
 		block4Position.z - ballPosition.z,
 		0);
+	//座標の差を求める
+	XMVECTOR pos_sub5 = XMVectorSet(
+		block5Position.x - ballPosition.x,
+		block5Position.y - ballPosition.y,
+		block5Position.z - ballPosition.z,
+		0);
 
-	//2つの距離を計算
-	pos_sub = XMVector3Length(pos_sub);
-	float dist = pos_sub.m128_f32[0];
+#pragma endregion
+
+#pragma region 2つの距離を計算
 	//2つの距離を計算
 	pos_sub1 = XMVector3Length(pos_sub1);
 	float dist1 = pos_sub1.m128_f32[0];
@@ -347,12 +341,12 @@ void GameScene::Update()
 	//2つの距離を計算
 	pos_sub4 = XMVector3Length(pos_sub4);
 	float dist4 = pos_sub4.m128_f32[0];
+	//2つの距離を計算
+	pos_sub5 = XMVector3Length(pos_sub5);
+	float dist5 = pos_sub5.m128_f32[0];
+#pragma endregion
 
-
-	if (dist <= ball->radius + block->radius)
-	{
-		hit = true;
-	}
+#pragma region 2つの半径以下ならHit判定
 	if (dist1 <= ball->radius + block1->radius)
 	{
 		hit = true;
@@ -369,10 +363,13 @@ void GameScene::Update()
 	{
 		hit = true;
 	}
+	if (dist5 <= ball->radius + block5->radius)
+	{
+		hit = true;
+	}
 #pragma endregion
 
-
-#pragma region BlockManager作成に伴い追加
+#pragma region vector型 Block達の当たり判定
 
 	for (Block* &x : blocks)
 	{
@@ -397,6 +394,8 @@ void GameScene::Update()
 
 #pragma endregion
 
+#pragma endregion
+#pragma endregion
 
 #pragma region 新しい挙動まわりの処理(SZK)
 	ballPosition.y -= g;//重力
@@ -425,20 +424,12 @@ void GameScene::Update()
 
 #pragma region score 処理
 
-	//座標読び
-//※とりあえず動いた、細かい調整必要※
-	bool score = true;
-
 	if (sec == 1)
 	{
 		sco += 10;
-		//score = false;
 	}
-	//else
-	//{
-	//	score = true;
-	//}
 	debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
+
 #pragma endregion 
 
 	// 座標の変更を反映
@@ -447,8 +438,7 @@ void GameScene::Update()
 	object3d->Update();
 	ball->Update();
 
-#pragma region BlockManager作成に伴い追加
-
+#pragma region blocksのUpdate処理
 
 	for (Block* &x : blocks)
 	{
@@ -456,11 +446,14 @@ void GameScene::Update()
 	}
 
 #pragma endregion
-	block->Update();
+
+#pragma region 最初の確定沸きBlock5っ
 	block1->Update();
 	block2->Update();
 	block3->Update();
 	block4->Update();
+	block5->Update();
+#pragma endregion
 }
 
 void GameScene::Draw()
@@ -481,14 +474,9 @@ void GameScene::Draw()
 	dxCommon->ClearDepthBuffer();
 #pragma endregion
 
-
-
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(cmdList);
-
-	// 3Dオブジェクト2描画前処理
-	//Object3d2::PreDraw(cmdList);
 
 	//ボール描画前処理
 	Ball::PreDraw(cmdList);
@@ -496,17 +484,10 @@ void GameScene::Draw()
 	//ブロック描画前処理
 	Block::PreDraw(cmdList);
 
-	// 3Dオブクジェクトの描画
-	//object3d->Draw();
-
-	//// 3Dオブクジェクト2の描画
-	//object3d2->Draw();
-
-	////ボールの描画
+	//ボールの描画
 	ball->Draw();
 
-#pragma region BlockManager作成に伴い追加
-
+#pragma region blocksのDraw処理
 
 	for (Block* &x : blocks)
 	{
@@ -516,17 +497,17 @@ void GameScene::Draw()
 #pragma endregion
 
 
-#pragma region BlockManager作成に伴いコメントアウト
-	//ブロックの描画
-	block->Draw();
-	//ブロック2の描画
+#pragma region 最初の確定沸きBlock5っ
+	//ブロック1の描画
 	block1->Draw();
-	//ブロック3の描画
+	//ブロック2の描画
 	block2->Draw();
-	//ブロック4の描画
+	//ブロック3の描画
 	block3->Draw();
-	//ブロック5の描画
+	//ブロック4の描画
 	block4->Draw();
+	//ブロック5の描画
+	block5->Draw();
 #pragma endregion
 
 	/// <summary>

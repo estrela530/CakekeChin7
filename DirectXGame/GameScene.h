@@ -76,22 +76,16 @@ private: // メンバ変数
 
 	Block* block = nullptr;
 
-#pragma region BlockManager作成に伴いコメントアウト
+#pragma region 最初の確定沸きBlock4っ
 	Block* block1 = nullptr;
 	Block* block2 = nullptr;
 	Block* block3 = nullptr;
 	Block* block4 = nullptr;
-	//Block* block5 = nullptr;
-	//Block* block6 = nullptr;
-	//Block* block7 = nullptr;
-	//Block* block8 = nullptr;
-	Block* block9 = nullptr;
+	Block* block5 = nullptr;
 #pragma endregion
-	//Object3d2* object3d2 = nullptr;
 
 	int blockGeneratorSeconds;
 	int notBallJumpSeconds = 0;
-	//Block::List<block> blockList = new List<block>();
 	float alpha;
 	float blockCreateTime = 0;
 	int blockCreateCount = 0;
