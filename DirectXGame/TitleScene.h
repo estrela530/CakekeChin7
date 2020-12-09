@@ -53,4 +53,6 @@ private://ƒƒ“ƒo•Ï”
 	//float wip;
 	int timer;
 	bool wips = false;
+	float wip_x;
+	float wip_y;
 };

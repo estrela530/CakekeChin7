@@ -438,6 +438,10 @@ void GameScene::Update()
 	//{
 	//	score = true;
 	//}
+	if (input->PushKey(DIK_R) || input->PushKey(DIK_2))//Ror2を押すとスコアをリセット⇒0にする
+	{
+		sco = 0;
+	}
 	debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
 #pragma endregion 
 
@@ -474,13 +478,12 @@ void GameScene::Draw()
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
 	spriteBG->Draw();
-	score->Draw();
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon->ClearDepthBuffer();
 #pragma endregion
-
 
 
 #pragma region 3Dオブジェクト描画
@@ -554,6 +557,7 @@ void GameScene::Draw()
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	score->Draw();
 
 	// デバッグテキストの描画
 	debugText.DrawAll(cmdList);
