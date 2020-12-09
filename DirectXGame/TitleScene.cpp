@@ -71,6 +71,11 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 
 void TitleScene::Update()
 {
+#pragma region BGM再生
+	//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
+	audio->PlayWave("Resources/Alarm01.wav");
+#pragma endregion
+
 	alpha += 0.01f;
 	timer += 1;
 	spriteBG->SetColor({ 1,1,1,alpha });//テクスチャの色とα値名

@@ -130,6 +130,12 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 
 void GameScene::Update()
 {
+#pragma region BGM再生
+	//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
+	audio->PlayWave("Resources/Alarm01.wav");
+#pragma endregion
+
+
 #pragma region シュレフェード試作
 	//フェード
 	alpha += 0.01f;
@@ -428,9 +434,12 @@ void GameScene::Update()
 	if (sec == 1)
 	{
 		sco += 10;
+#pragma region BGM再生
+		//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
+		audio->PlayWave("Resources/Alarm01.wav");
+#pragma endregion
+
 	}
-
-
 
 #pragma region 
 	if (input->PushKey(DIK_2)||input->PushKey(DIK_R))
