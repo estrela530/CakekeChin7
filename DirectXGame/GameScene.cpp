@@ -224,6 +224,7 @@ void GameScene::Update()
 	//(SZK・・・・復活させた↑)
 #pragma endregion
 
+
 #pragma region カメラまわり
 
 	// カメラ移動
@@ -428,6 +429,16 @@ void GameScene::Update()
 	{
 		sco += 10;
 	}
+
+
+
+#pragma region 
+	if (input->PushKey(DIK_2)||input->PushKey(DIK_R))
+	{
+		sco = 0;
+	}
+
+#pragma endregion 
 	debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
 
 #pragma endregion 
