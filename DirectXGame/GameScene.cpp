@@ -122,6 +122,12 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 
 #pragma endregion
 
+#pragma region BGM再生
+	//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
+	audio->PlayWaveBGM("Resources/aladdin.wav");
+#pragma endregion
+
+
 	//フェード
 	alpha = 0;
 
@@ -131,8 +137,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 void GameScene::Update()
 {
 #pragma region BGM再生
-	//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
-	audio->PlayWave("Resources/Alarm01.wav");
+	//Spaceを押したらストップする実験用
+	if (input->PushKey(DIK_SPACE))
+	{
+		audio->StopWave();
+	}
 #pragma endregion
 
 
@@ -434,19 +443,22 @@ void GameScene::Update()
 	if (sec == 1)
 	{
 		sco += 10;
+		audio->PlayWaveSE("Resources/button.wav");
+	}
+	if (hit)
+	{
 #pragma region BGM再生
 		//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
-		audio->PlayWave("Resources/Alarm01.wav");
+		//audio->PlayWaveSE("Resources/file_20131208_Cursor3.wav");
+		//audio->StopWave();
 #pragma endregion
-
 	}
 
 #pragma region 
-	if (input->PushKey(DIK_2)||input->PushKey(DIK_R))
+	if (input->PushKey(DIK_2) || input->PushKey(DIK_R))
 	{
 		sco = 0;
 	}
-
 #pragma endregion 
 	debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
 

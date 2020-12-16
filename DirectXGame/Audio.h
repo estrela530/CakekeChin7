@@ -68,12 +68,24 @@ public: // メンバ関数
 	/// <returns>成否</returns>
 	bool Initialize();
 
-	// サウンドファイルの読み込みと再生
-	void PlayWave(const char* filename);
+	// サウンドファイルの読み込みと再生BGM
+	void PlayWaveBGM(const char* filename);
+
+	// サウンドファイルの読み込みと再生SE
+	void PlayWaveSE(const char* filename);
+
+	// サウンドファイルの停止
+	void StopWave();
 
 private: // メンバ変数
 	ComPtr<IXAudio2> xAudio2;
 	IXAudio2MasteringVoice* masterVoice;
 	XAudio2VoiceCallback voiceCallback;
+
+public:
+	HRESULT result;
+	IXAudio2SourceVoice* pSourceVoice;
+
+
 };
 

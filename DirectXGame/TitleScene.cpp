@@ -73,7 +73,7 @@ void TitleScene::Update()
 {
 #pragma region BGM再生
 	//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
-	audio->PlayWave("Resources/Alarm01.wav");
+	//audio->PlayWaveBGM("Resources/Alarm01.wav");
 #pragma endregion
 
 	alpha += 0.01f;

@@ -53,8 +53,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		return 1;
 	}
 
-
-
 	// ボールの静的初期化
 	if (!Ball::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {
 		assert(0);
@@ -71,8 +69,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// ゲームシーンの初期化
 #pragma region //シーンマネージャー用＠Shu
-	gameScene = new GameScene();
-	gameScene->Initialize(dxCommon, input, audio);
 	smane = new SceneManager();//追加ーーーー
 	smane->Init(dxCommon, input, audio);
 
@@ -109,6 +105,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 		if (input->PushKey(DIK_3))
 		{
+			audio->PlayWaveSE("Resources/button.wav");
 			smane->ChangeScene(RESULT);
 		}
 		// 描画終了
