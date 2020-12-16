@@ -15,7 +15,7 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-const float Block::radius = 5.0f;				// 底面の半径
+const float Block::radius = 18.0f;				// 底面の半径
 const float Block::prizmHeight = 8.0f;			// 柱の高さ
 ID3D12Device* Block::device = nullptr;
 UINT Block::descriptorHandleIncrementSize = 0;
@@ -531,7 +531,7 @@ void Block::CreateModel()
 			vertex.z = zValue;
 			realVertices[index++].pos = vertex;
 		}
-		realVertices[index++].pos = XMFLOAT3(0, 0, zValue);	// 底面の中心点
+		realVertices[index++].pos = XMFLOAT3(0, -30, zValue);	// 底面の中心点
 		// 天面
 		zValue = -prizmHeight / 2.0f;
 		for (int i = 0; i < division; i++)
@@ -542,7 +542,7 @@ void Block::CreateModel()
 			vertex.z = zValue;
 			realVertices[index++].pos = vertex;
 		}
-		realVertices[index++].pos = XMFLOAT3(0, 0, zValue);	// 天面の中心点
+		realVertices[index++].pos = XMFLOAT3(0, -30, zValue);	// 天面の中心点
 	}
 
 	vector<XMFLOAT3>positions;	//頂点座標
