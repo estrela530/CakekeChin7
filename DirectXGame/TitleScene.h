@@ -47,6 +47,10 @@ private://ƒƒ“ƒo•Ï”
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
 	Sprite* wip = nullptr;
+	Sprite* wip2 = nullptr;
+	Sprite* sima = nullptr;
+
+	//SceneManager* scenemanger = nullptr;
 	float alpha;
 	//float alpha2;
 	//int wip;
@@ -55,4 +59,8 @@ private://ƒƒ“ƒo•Ï”
 	bool wips = false;
 	float wip_x;
 	float wip_y;
+	float alpha2;
+	float alpha3;
+	float w2x;
+	float w2y;
 };
