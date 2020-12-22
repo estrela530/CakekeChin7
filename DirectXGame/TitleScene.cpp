@@ -1,12 +1,12 @@
-#include "SceneManager.h"
+
 #include "TitleScene.h"
 #include "WinApp.h"
 
 #include <cassert>//ヘッダで式が真であることを表す
-
-
-TitleScene::TitleScene()
+TitleScene::TitleScene(SceneManager* smane) :smane(smane)
 {
+	//smane->AddScene(SCENE::GAME, new GameScene());
+
 }
 
 TitleScene::~TitleScene()
@@ -144,7 +144,7 @@ void TitleScene::Update()
 			}
 			if (alpha3 > 1.0f)
 			{
-				
+				smane->ChangeScene(SCENE::GAME);
 			}
 		}
 	}

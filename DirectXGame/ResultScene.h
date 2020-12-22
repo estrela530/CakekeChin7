@@ -25,7 +25,7 @@ private: // エイリアス
 private://静的メンバ変数
 	static const int debugTextTexNumber = 0;
 public:
-	ResultScene();
+	ResultScene(SceneManager* smane);
 	//デストラクタ
 	~ResultScene();
 	//初期化
@@ -36,7 +36,7 @@ public:
 	virtual void Draw() override;
 
 private://メンバ変数
-
+	SceneManager* smane;
 	DirectXCommon* dxCommon = nullptr;
 	Input* input = nullptr;
 	Audio* audio = nullptr;

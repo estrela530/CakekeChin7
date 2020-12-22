@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "SceneManager.h"
 #include "SafeDelete.h"
 #include "DirectXCommon.h"
 #include <DirectXMath.h>
@@ -37,7 +37,7 @@ public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
-	GameScene();
+	GameScene(SceneManager* smane);
 
 	/// <summary>
 	/// デストラクタ
@@ -60,6 +60,7 @@ public: // メンバ関数
 	virtual void Draw();
 
 private: // メンバ変数
+	SceneManager* smane;
 	DirectXCommon* dxCommon = nullptr;
 	Input* input = nullptr;
 	Audio* audio = nullptr;

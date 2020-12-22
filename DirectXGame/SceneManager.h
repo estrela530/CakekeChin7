@@ -1,8 +1,5 @@
 #pragma once
 #include "BaseScene.h"
-#include "GameScene.h"
-#include "TitleScene.h"
-#include "ResultScene.h"
 #include <map>
 
 enum SCENE
@@ -18,20 +15,24 @@ public:
 
 	void Init(DirectXCommon* dxcommon, Input* input, Audio* audio);
 
-	std::map<SCENE, BaseScene*> scenes;
+	//std::map<SCENE, BaseScene*> scenes;
+	//static BaseScene* m_pScene;
 	// シーンを追加
-	void AddScene(SCENE sceneEnum, BaseScene* scene);
+	//void AddScene(SCENE sceneEnum, BaseScene* scene);
 	//シーンを引数によって変える関数
-	void ChangeScene(SCENE scene);
-	//static void Initialize();
+	virtual	void ChangeScene(SCENE scene);
+
 	//現在のシーン更新
-	void Update();
+	virtual void Update();
 	//描画関数
-	void Draw();
+	virtual void Draw();
+	void shutdown();
 private:
-	BaseScene* m_pScene = nullptr;//現在のシーン　
+	static BaseScene* m_pScene;//現在のシーン　
 
 	DirectXCommon* m_DXCommon;
-	Input* m_Input;
 	Audio* m_Audio;
+	Input* m_Input;
+
+
 };

@@ -1,12 +1,11 @@
 ﻿#include "GameScene.h"
 #include "BaseScene.h"
-#include "SceneManager.h"
+
 //#include "BlockManager.h"
 #include "Object3d.h"
 #include <cassert>
 #include <iostream>
 #include <ctime>
-#include "Ball.h"
 
 #include <time.h>
 #include <sstream>
@@ -22,7 +21,7 @@ float g = 2.5f;//重力加速度
 float ve;
 int sec = 0;
 
-GameScene::GameScene()
+GameScene::GameScene(SceneManager* smane) :smane(smane)
 {
 }
 

@@ -1,9 +1,8 @@
-#include "SceneManager.h"
 #include "ResultScene.h"
 #include <cassert>//ヘッダで式が真であることを表す
 
 
-ResultScene::ResultScene()
+ResultScene::ResultScene(SceneManager* smane)
 {
 }
 
