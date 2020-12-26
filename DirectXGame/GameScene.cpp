@@ -31,7 +31,9 @@ GameScene::~GameScene()
 	delete object3d;
 	delete score;
 	delete ball;
-
+	//フェード
+	delete fade_1;
+	delete fade_saku;
 #pragma region 最初の確定沸きBlock5っ
 	delete block1;
 	delete block2;
@@ -82,17 +84,24 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 		return;
 	}
 	//スコア
-	if (!Sprite::LoadTexture(1, L"Resources/score.png")) {
+	if (!Sprite::LoadTexture(2, L"Resources/score.png")) {
 		assert(0);
 		return;
 	}
-
+	if (!Sprite::LoadTexture(3, L"Resources/black.png")) {
+		assert(0);
+		return;
+	}
+	if (!Sprite::LoadTexture(4, L"Resources/170.png")) {
+		assert(0);
+		return;
+	}
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
 	object3d = Object3d::Create();
 	//zahyou 
-	score = Sprite::Create(1, { 1,126 });//スコア画像サイズ
+	score = Sprite::Create(2, { 1,126 });//スコア画像サイズ
 	score->Sprite::SetSize({ 135.0f,38.0f });//画像サイズ
 	object3d->Update();
 
@@ -129,6 +138,18 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 
 	//フェード
 	alpha = 0;
+	//fade 生成
+	fade_1 = Sprite::Create(3, { 0.0f,0.0f });
+	gwip_x = 1280.0f;
+	gwip_y = 720.0f;
+	//fade_1->Sprite::SetSize({ 0,0 });
+	//フェード
+	alpha = 0;
+	timer = 0;
+	alpha_f = 1;
+	alpha_f2 = 1;
+	fade_saku = Sprite::Create(4, { 0.0f,0.0f });
+	fade_saku->Sprite::SetSize({ gwip_x,gwip_y });
 
 	notBallJumpSeconds = 0;
 }
@@ -145,60 +166,80 @@ void GameScene::Update()
 
 
 #pragma region シュレフェード試作
-	//フェード
-	alpha += 0.01f;
-	spriteBG->SetColor({ 1,1,1,alpha });//背景色
+	////フェード
+	//alpha += 0.01f;
+	//spriteBG->SetColor({ 1,1,1,alpha });//背景色
 
 	notBallJumpSeconds += 1;
 
-	time += 0.1f;
-	//spriteBG->SetColor({ 1,1,1,alpha });//背景色
-	//alpha -= 0.01f;
-	//spriteBG->SetColor({ 1,1,0,alpha });
-	if (alal == true)
-	{
+	//フェード
+	alpha += 0.01f;//背景フェード（試作
+	spriteBG->Sprite::SetColor({ 0,0,0,alpha });
+	timer += 1;//ゲームシーンまでのタイム
+	alpha_f -= 0.008f;//黒い画面
+	//alpha_f2 -= 0.05f;
+	fade_1->Sprite::SetColor({ 0,0,0,alpha_f });
+	fade_1->Sprite::SetSize({ gwip_x,gwip_y });
 
-		alpha -= 0.01f;
-		cc -= 0.001f;
-		if (cc < 1)
-		{
-			aa -= 0.005f;
-		}
-		if (aa > 0)
-		{
-			aa += 0.005f;
-			bb -= 0.005f;
-		}
+	alpha_f2 -= 0.008f;//柵
+	fade_saku->Sprite::SetColor({ 0,0,0,alpha_f2 });
 
-		spriteBG->SetColor({ aa,bb,cc,alpha });
+	//if (alpha_f < 0.3f)
+	//{
+	//	timer += 1;
+	//}
+	if (timer > 70)//ゲームシーンの中身開始時間
+	{
+		spriteBG->SetColor({ 1,1,1,alpha });//背景色
 
-		/*if (alpha < 0.35)
+		if (alal == true)
 		{
-			alal = false;
-			aa -= 0.004f;
-			bb -= 0.004f;
-		}*/
-	}
-	else if (alal == false)
-	{
-		alpha += 0.01f;
-		spriteBG->SetColor({ aa,bb,cc,alpha });
-		cc += 0.005f;
-		if (alpha > 1)
-		{
-			alal = true;
+
+			alpha -= 0.01f;
+			cc -= 0.001f;
+			if (cc < 1)
+			{
+				aa -= 0.005f;
+			}
+			if (aa > 0)
+			{
+				aa += 0.005f;
+				bb -= 0.005f;
+			}
+
+			spriteBG->SetColor({ aa,bb,cc,alpha });
+
+			/*if (alpha < 0.35)
+			{
+				alal = false;
+				aa -= 0.004f;
+				bb -= 0.004f;
+			}*/
 		}
-		else if (aa < 0.3)
+		else if (alal == false)
 		{
-			aa += 0.004f;
-			bb += 0.004f;
+			alpha += 0.01f;
+			spriteBG->SetColor({ aa,bb,cc,alpha });
+			cc += 0.005f;
+			if (alpha > 1)
+			{
+				alal = true;
+			}
+			else if (aa < 0.3)
+			{
+				aa += 0.004f;
+				bb += 0.004f;
+			}
 		}
-	}
-	if (aa < 0 || bb < 0)
-	{
-		aa += 0.04f;
-		bb += 0.04f;
-	}
+		if (aa < 0 || bb < 0)
+		{
+			aa -= 0.04f;
+			bb += 0.04f;
+			if (aa > 0.8)
+			{
+				aa += 0.04f;
+			}
+		}
 
 
 #pragma endregion
@@ -206,36 +247,36 @@ void GameScene::Update()
 
 #pragma region Blockのランダム生成＆連続生成
 
-	blockCreateTime += 1;
+		blockCreateTime += 1;
 
-	if (blockCreateTime > 57)
-	{
-		block = Block::Create();
-		blockXPosition = rand() % 101 + (-50);
-		block->SetPosition({ blockXPosition,-30,730 });//変更前　ｚ座標　550
-		blocks.push_back(block);
-		blockCreateTime = 0;
-	}
+		if (blockCreateTime > 57)
+		{
+			block = Block::Create();
+			blockXPosition = rand() % 101 + (-50);
+			block->SetPosition({ blockXPosition,-30,730 });//変更前　ｚ座標　550
+			blocks.push_back(block);
+			blockCreateTime = 0;
+		}
 
 #pragma endregion
 
 #pragma region //(SZK・・・・復活させた↓)
-	//(SZK・・・・復活させた↓)
-	// 現在の座標を取得
-	XMFLOAT3 position = object3d->GetPosition();
-	XMFLOAT3 ballPosition = ball->GetPosition();
+		//(SZK・・・・復活させた↓)
+		// 現在の座標を取得
+		XMFLOAT3 position = object3d->GetPosition();
+		XMFLOAT3 ballPosition = ball->GetPosition();
 
-	// オブジェクト移動
-	if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-	{
-		// 移動後の座標を計算
-		if (input->PushKey(DIK_RIGHT)) { ballPosition.x += 1.0f; }
-		else if (input->PushKey(DIK_LEFT)) { ballPosition.x -= 1.0f; }
-	}
-	// 座標の変更を反映
-	object3d->SetPosition(position);
-	object3d->Update();
-	//(SZK・・・・復活させた↑)
+		// オブジェクト移動
+		if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+		{
+			// 移動後の座標を計算
+			if (input->PushKey(DIK_RIGHT)) { ballPosition.x += 1.0f; }
+			else if (input->PushKey(DIK_LEFT)) { ballPosition.x -= 1.0f; }
+		}
+		// 座標の変更を反映
+		object3d->SetPosition(position);
+		object3d->Update();
+		//(SZK・・・・復活させた↑)
 #pragma endregion
 
 
@@ -296,11 +337,11 @@ void GameScene::Update()
 
 #pragma region 最初の確定沸きBlock5っ
 
-	XMFLOAT3 block1Position = block1->GetPosition();
-	XMFLOAT3 block2Position = block2->GetPosition();
-	XMFLOAT3 block3Position = block3->GetPosition();
-	XMFLOAT3 block4Position = block4->GetPosition();
-	XMFLOAT3 block5Position = block5->GetPosition();
+		XMFLOAT3 block1Position = block1->GetPosition();
+		XMFLOAT3 block2Position = block2->GetPosition();
+		XMFLOAT3 block3Position = block3->GetPosition();
+		XMFLOAT3 block4Position = block4->GetPosition();
+		XMFLOAT3 block5Position = block5->GetPosition();
 
 #pragma endregion
 
@@ -310,102 +351,102 @@ void GameScene::Update()
 
 #pragma region 座標の差を求める
 
-	//座標の差を求める
-	XMVECTOR pos_sub1 = XMVectorSet(
-		block1Position.x - ballPosition.x,
-		block1Position.y - ballPosition.y,
-		block1Position.z - ballPosition.z,
-		0);
-	//座標の差を求める
-	XMVECTOR pos_sub2 = XMVectorSet(
-		block2Position.x - ballPosition.x,
-		block2Position.y - ballPosition.y,
-		block2Position.z - ballPosition.z,
-		0);
-	//座標の差を求める
-	XMVECTOR pos_sub3 = XMVectorSet(
-		block3Position.x - ballPosition.x,
-		block3Position.y - ballPosition.y,
-		block3Position.z - ballPosition.z,
-		0);
-	//座標の差を求める
-	XMVECTOR pos_sub4 = XMVectorSet(
-		block4Position.x - ballPosition.x,
-		block4Position.y - ballPosition.y,
-		block4Position.z - ballPosition.z,
-		0);
-	//座標の差を求める
-	XMVECTOR pos_sub5 = XMVectorSet(
-		block5Position.x - ballPosition.x,
-		block5Position.y - ballPosition.y,
-		block5Position.z - ballPosition.z,
-		0);
+		//座標の差を求める
+		XMVECTOR pos_sub1 = XMVectorSet(
+			block1Position.x - ballPosition.x,
+			block1Position.y - ballPosition.y,
+			block1Position.z - ballPosition.z,
+			0);
+		//座標の差を求める
+		XMVECTOR pos_sub2 = XMVectorSet(
+			block2Position.x - ballPosition.x,
+			block2Position.y - ballPosition.y,
+			block2Position.z - ballPosition.z,
+			0);
+		//座標の差を求める
+		XMVECTOR pos_sub3 = XMVectorSet(
+			block3Position.x - ballPosition.x,
+			block3Position.y - ballPosition.y,
+			block3Position.z - ballPosition.z,
+			0);
+		//座標の差を求める
+		XMVECTOR pos_sub4 = XMVectorSet(
+			block4Position.x - ballPosition.x,
+			block4Position.y - ballPosition.y,
+			block4Position.z - ballPosition.z,
+			0);
+		//座標の差を求める
+		XMVECTOR pos_sub5 = XMVectorSet(
+			block5Position.x - ballPosition.x,
+			block5Position.y - ballPosition.y,
+			block5Position.z - ballPosition.z,
+			0);
 
 #pragma endregion
 
 #pragma region 2つの距離を計算
-	//2つの距離を計算
-	pos_sub1 = XMVector3Length(pos_sub1);
-	float dist1 = pos_sub1.m128_f32[0];
-	//2つの距離を計算
-	pos_sub2 = XMVector3Length(pos_sub2);
-	float dist2 = pos_sub2.m128_f32[0];
-	//2つの距離を計算
-	pos_sub3 = XMVector3Length(pos_sub3);
-	float dist3 = pos_sub3.m128_f32[0];
-	//2つの距離を計算
-	pos_sub4 = XMVector3Length(pos_sub4);
-	float dist4 = pos_sub4.m128_f32[0];
-	//2つの距離を計算
-	pos_sub5 = XMVector3Length(pos_sub5);
-	float dist5 = pos_sub5.m128_f32[0];
+		//2つの距離を計算
+		pos_sub1 = XMVector3Length(pos_sub1);
+		float dist1 = pos_sub1.m128_f32[0];
+		//2つの距離を計算
+		pos_sub2 = XMVector3Length(pos_sub2);
+		float dist2 = pos_sub2.m128_f32[0];
+		//2つの距離を計算
+		pos_sub3 = XMVector3Length(pos_sub3);
+		float dist3 = pos_sub3.m128_f32[0];
+		//2つの距離を計算
+		pos_sub4 = XMVector3Length(pos_sub4);
+		float dist4 = pos_sub4.m128_f32[0];
+		//2つの距離を計算
+		pos_sub5 = XMVector3Length(pos_sub5);
+		float dist5 = pos_sub5.m128_f32[0];
 #pragma endregion
 
 #pragma region 2つの半径以下ならHit判定
-	if (dist1 <= ball->radius + block1->radius)
-	{
-		hit = true;
-	}
-	if (dist2 <= ball->radius + block2->radius)
-	{
-		hit = true;
-	}
-	if (dist3 <= ball->radius + block3->radius)
-	{
-		hit = true;
-	}
-	if (dist4 <= ball->radius + block4->radius)
-	{
-		hit = true;
-	}
-	if (dist5 <= ball->radius + block5->radius)
-	{
-		hit = true;
-	}
+		if (dist1 <= ball->radius + block1->radius)
+		{
+			hit = true;
+		}
+		if (dist2 <= ball->radius + block2->radius)
+		{
+			hit = true;
+		}
+		if (dist3 <= ball->radius + block3->radius)
+		{
+			hit = true;
+		}
+		if (dist4 <= ball->radius + block4->radius)
+		{
+			hit = true;
+		}
+		if (dist5 <= ball->radius + block5->radius)
+		{
+			hit = true;
+		}
 #pragma endregion
 
 #pragma region vector型 Block達の当たり判定
 
-	for (Block* &x : blocks)
-	{
-		XMFLOAT3 blocksPosition = x->GetPosition();
-
-		//座標の差を求める
-		XMVECTOR pos_subs = XMVectorSet(
-			blocksPosition.x - ballPosition.x,
-			blocksPosition.y - ballPosition.y,
-			blocksPosition.z - ballPosition.z,
-			0);
-
-		//2つの距離を計算
-		pos_subs = XMVector3Length(pos_subs);
-		float dists = pos_subs.m128_f32[0];
-
-		if (dists <= ball->radius + block->radius)
+		for (Block* &x : blocks)
 		{
-			hit = true;
+			XMFLOAT3 blocksPosition = x->GetPosition();
+
+			//座標の差を求める
+			XMVECTOR pos_subs = XMVectorSet(
+				blocksPosition.x - ballPosition.x,
+				blocksPosition.y - ballPosition.y,
+				blocksPosition.z - ballPosition.z,
+				0);
+
+			//2つの距離を計算
+			pos_subs = XMVector3Length(pos_subs);
+			float dists = pos_subs.m128_f32[0];
+
+			if (dists <= ball->radius + block->radius)
+			{
+				hit = true;
+			}
 		}
-	}
 
 #pragma endregion
 
@@ -413,78 +454,84 @@ void GameScene::Update()
 #pragma endregion
 
 #pragma region 新しい挙動まわりの処理(SZK)
-	ballPosition.y -= g;//重力
-	if (hit)
-	{
-		sec += 1;
-		k -= 0.1;
-
-		ballPosition.y += k;//反発
-		if (sec > 45) //38
+		ballPosition.y -= g;//重力
+		if (hit)
 		{
-			hit = false;
-			k = 7.0;
-			sec = 0;
-		}
+			sec += 1;
+			k -= 0.1;
 
-		//ballPosition.y += 20.0f;
-		debugText.Print("Hit", 50, 50, 3);
-	}
-	else
-	{
-		k = 5.5;
-	}
+			ballPosition.y += k;//反発
+			if (sec > 45) //38
+			{
+				hit = false;
+				k = 7.0;
+				sec = 0;
+			}
+
+			//ballPosition.y += 20.0f;
+			debugText.Print("Hit", 50, 50, 3);
+		}
+		else
+		{
+			k = 5.5;
+		}
 
 #pragma endregion
 
 #pragma region score 処理
 
-	if (sec == 1)
-	{
-		sco += 10;
-		audio->PlayWaveSE("Resources/button.wav");
-	}
-	if (hit)
-	{
+		if (sec == 1)
+		{
+			sco += 10;
+			audio->PlayWaveSE("Resources/button.wav");
+		}
+		if (hit)
+		{
 #pragma region BGM再生
-		//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
-		//audio->PlayWaveSE("Resources/file_20131208_Cursor3.wav");
-		//audio->StopWave();
+			//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
+			//audio->PlayWaveSE("Resources/file_20131208_Cursor3.wav");
+			//audio->StopWave();
 #pragma endregion
-	}
+		}
 
 #pragma region 
-	if (input->PushKey(DIK_2) || input->PushKey(DIK_R))
-	{
-		sco = 0;
-	}
+		if (input->PushKey(DIK_2) || input->PushKey(DIK_R))
+		{
+			sco = 0;
+		}
 #pragma endregion 
-	debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
+		debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
 
 #pragma endregion 
 
 	// 座標の変更を反映
-	object3d->SetPosition(position);
-	ball->SetPosition(ballPosition);
-	object3d->Update();
-	ball->Update();
+		object3d->SetPosition(position);
+		ball->SetPosition(ballPosition);
+		object3d->Update();
+		ball->Update();
 
 #pragma region blocksのUpdate処理
 
-	for (Block* &x : blocks)
-	{
-		x->Update();
-	}
+		for (Block* &x : blocks)
+		{
+			x->Update();
+		}
 
 #pragma endregion
 
 #pragma region 最初の確定沸きBlock5っ
-	block1->Update();
-	block2->Update();
-	block3->Update();
-	block4->Update();
-	block5->Update();
+		block1->Update();
+		block2->Update();
+		block3->Update();
+		block4->Update();
+		block5->Update();
 #pragma endregion
+		//※更新した後に下記ないとシーン変更出来ず
+		if (sco == 80)
+		{
+			smane->ChangeScene(SCENE::RESULT);
+		}
+	}
 }
 
 void GameScene::Draw()
@@ -559,22 +606,6 @@ void GameScene::Draw()
 
 #pragma endregion
 
-#pragma region 前景スプライト描画
-	// 前景スプライト描画前処理
-	Sprite::PreDraw(cmdList);
-
-	/// <summary>
-	/// ここに前景スプライトの描画処理を追加できる
-	/// </summary>
-
-	// デバッグテキストの描画
-	debugText.DrawAll(cmdList);
-
-
-	// スプライト描画後処理
-	Sprite::PostDraw();
-#pragma endregion
-
 #pragma region スコア数字
 
 	Sprite::PreDraw(cmdList2);
@@ -582,5 +613,18 @@ void GameScene::Draw()
 	Sprite::PostDraw();
 
 #pragma endregion
+#pragma region 前景スプライト描画
+	// 前景スプライト描画前処理
+	Sprite::PreDraw(cmdList);
+	/// <summary>
+	/// ここに前景スプライトの描画処理を追加できる
+	/// </summary>
 
+	fade_saku->Draw();
+	fade_1->Draw();
+	// デバッグテキストの描画
+	debugText.DrawAll(cmdList);
+	// スプライト描画後処理
+	Sprite::PostDraw();
+#pragma endregion
 }

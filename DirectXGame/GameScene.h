@@ -74,9 +74,12 @@ private: // メンバ変数
 	Object3d* object3d = nullptr;
 	Ball* ball = nullptr;
 	Sprite* score = nullptr;
-
 	Block* block = nullptr;
-
+	//フェード画像
+private:
+	Sprite* fade_1 = nullptr;
+	Sprite* fade_saku = nullptr;
+public:
 #pragma region 最初の確定沸きBlock4っ
 	Block* block1 = nullptr;
 	Block* block2 = nullptr;
@@ -95,7 +98,7 @@ private: // メンバ変数
 
 	int sco = 0;//フェード
 	int ss = 0;
-	int time = 0.0f;
+	//int time = 0.0f;
 
 	float k = 1.0f;
 	float g = 2.5f;//重力加速度
@@ -109,6 +112,13 @@ private: // メンバ変数
 
 	int sec = 0;
 	bool hit = false;
-
+	//シュレ
+	int timer = 0;
+	//開幕フェード処理
+	//bool fade_i= false;
+	float gwip_x;
+	float gwip_y;
+	float alpha_f;
+	float alpha_f2;
 };
 
