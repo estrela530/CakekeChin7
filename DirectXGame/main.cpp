@@ -71,7 +71,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region //シーンマネージャー用＠Shu
 	smane = new SceneManager();//追加ーーーー
 	smane->Init(dxCommon, input, audio);
-	smane->ChangeScene(TITLE);//ここでシーン切り替え
+	smane->ChangeScene(SCENE::TITLE);//ここでシーン切り替え
 #pragma endregion 
 
 
@@ -80,13 +80,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		// メッセージ処理
 		if (win->ProcessMessage()) { break; }
-
 		// 入力関連の毎フレーム処理
 		input->Update();
-
 		// 描画開始
 		dxCommon->PreDraw();
-
 
 		if (input->PushKey(DIK_1))
 		{
@@ -108,13 +105,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// 描画終了
 		dxCommon->PostDraw();
 	}
-
 	// 各種解放
 	delete smane;
 	delete audio;
 	delete input;
 	delete dxCommon;
-
 
 	// ゲームウィンドウの破棄
 	win->TerminateGameWindow();

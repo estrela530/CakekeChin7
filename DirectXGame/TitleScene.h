@@ -29,10 +29,8 @@ public:
 	~TitleScene();
 	//‰Šú‰»
 	virtual void Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio) override;
-
 	//–ˆƒtƒŒ[ƒ€ŠÇ—
 	virtual void Update() override;
-
 	//•`‰æ
 	virtual void Draw() override;
 
@@ -49,11 +47,7 @@ private://ƒƒ“ƒo•Ï”
 	Sprite* wip2 = nullptr;
 	Sprite* sima = nullptr;
 
-	//SceneManager* scenemanger = nullptr;
 	float alpha;
-	//float alpha2;
-	//int wip;
-	//float wip;
 	int timer;
 	bool wips = false;
 	float wip_x;

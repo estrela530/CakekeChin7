@@ -79,6 +79,9 @@ private: // メンバ変数
 private:
 	Sprite* fade_1 = nullptr;
 	Sprite* fade_saku = nullptr;
+	//スコア+時の描画画像
+	Sprite* score10 = nullptr;
+	Sprite* score100 = nullptr;
 public:
 #pragma region 最初の確定沸きBlock4っ
 	Block* block1 = nullptr;
@@ -120,5 +123,14 @@ public:
 	float gwip_y;
 	float alpha_f;
 	float alpha_f2;
+	bool sososo = false;
+	//試作調整用＠シュ
+	int afk = 0;
+	//score＋用
+	float sal;
+	bool sal2 = false;
+	float  sco_x;
+	float sco_y;
+	//float score___y;
 };
 

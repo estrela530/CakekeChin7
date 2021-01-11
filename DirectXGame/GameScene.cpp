@@ -2,7 +2,7 @@
 #include "BaseScene.h"
 
 //#include "BlockManager.h"
-#include "Object3d.h"
+//#include "Object3d.h"
 #include <cassert>
 #include <iostream>
 #include <ctime>
@@ -31,9 +31,11 @@ GameScene::~GameScene()
 	delete object3d;
 	delete score;
 	delete ball;
-	//フェード
+	//フェード・画像
 	delete fade_1;
 	delete fade_saku;
+	//画像
+	delete score10;
 #pragma region 最初の確定沸きBlock5っ
 	delete block1;
 	delete block2;
@@ -96,6 +98,16 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 		assert(0);
 		return;
 	}
+	if (!Sprite::LoadTexture(5, L"Resources/10.png"))
+	{
+		assert(0);
+		return;
+	}
+	if (!Sprite::LoadTexture(6, L"Resources/100.png"))
+	{
+		assert(0);
+		return;
+	}
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
@@ -150,7 +162,14 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	alpha_f2 = 1;
 	fade_saku = Sprite::Create(4, { 0.0f,0.0f });
 	fade_saku->Sprite::SetSize({ gwip_x,gwip_y });
-
+	//score10 = Sprite::Create(5, { 130.0f,130.0f });
+	sco_x = 130.0f;
+	sco_y = 130.0f;
+	//score___y = 0;
+	score10 = Sprite::Create(5, { sco_x,sco_y });
+	sal = 0;
+	sososo = false;
+	sal2 = false;
 	notBallJumpSeconds = 0;
 }
 
@@ -183,7 +202,7 @@ void GameScene::Update()
 
 	alpha_f2 -= 0.008f;//柵
 	fade_saku->Sprite::SetColor({ 0,0,0,alpha_f2 });
-
+	score10->Sprite::SetColor({ 1,1,1, sal });
 	//if (alpha_f < 0.3f)
 	//{
 	//	timer += 1;
@@ -478,12 +497,56 @@ void GameScene::Update()
 
 #pragma endregion
 
-#pragma region score 処理
+#pragma region score 処理(+score)
 
 		if (sec == 1)
 		{
-			sco += 10;
+		//	sco += 10;
+			afk++;
+			sososo = true;
+			sal2 = true;
 			audio->PlayWaveSE("Resources/button.wav");
+		}
+		if (sososo == true)
+		{
+			sco++;
+			if (sco > 10 * afk)
+			{
+				sco -= 1;
+				sososo = false;
+			}
+		}
+		if (sososo == false)
+		{
+			if (sco < 10 * afk)
+			{
+				sososo = true;
+			}
+		}
+		if (sal2 == true)
+		{
+			sal += 0.07f;//+scoreの明るくなるまでの時間
+			//score___y -= 0.1f;
+			if (sal > 0.9f)
+			{
+				sco_y -= 1.0f;
+				sal += 0.1f;
+				if (sco_y == 126.0f)
+				{
+					sco_y = 130.0f;
+				}
+				score10->SetPosition({ sco_x,sco_y });
+				sal2 = false;
+			}
+		}
+		if (sal2 == false)
+		{
+			sal -= 0.05f;
+			if (sal < 0.001f)
+			{
+				sal = 0;
+			}
+			//sal = true;
 		}
 		if (hit)
 		{
@@ -498,6 +561,7 @@ void GameScene::Update()
 		if (input->PushKey(DIK_2) || input->PushKey(DIK_R))
 		{
 			sco = 0;
+			afk = 0;
 		}
 #pragma endregion 
 		debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
@@ -527,7 +591,7 @@ void GameScene::Update()
 		block5->Update();
 #pragma endregion
 		//※更新した後に下記ないとシーン変更出来ず
-		if (sco == 80)
+		if (sco == 150)
 		{
 			smane->ChangeScene(SCENE::RESULT);
 		}
@@ -538,7 +602,7 @@ void GameScene::Draw()
 {
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* cmdList = dxCommon->GetCommandList();
-	ID3D12GraphicsCommandList* cmdList2 = dxCommon->GetCommandList();
+	//ID3D12GraphicsCommandList* cmdList2 = dxCommon->GetCommandList();
 
 #pragma region 背景スプライト描画
 	// 背景スプライト描画前処理
@@ -608,8 +672,9 @@ void GameScene::Draw()
 
 #pragma region スコア数字
 
-	Sprite::PreDraw(cmdList2);
-	debugText2.DrawAll2(cmdList2);
+	Sprite::PreDraw(cmdList);
+	debugText2.DrawAll2(cmdList);
+	score10->Draw();
 	Sprite::PostDraw();
 
 #pragma endregion
