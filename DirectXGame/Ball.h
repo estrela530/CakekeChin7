@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include<string>
+#include "Model.h"
 
 /// <summary>
 /// 3Dオブジェクト
@@ -106,7 +107,7 @@ public: // 静的メンバ関数
 	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
-	static Ball* Create();
+	static Ball* Create(Model* model = nullptr);
 
 	/// <summary>
 	/// 視点座標の取得
@@ -248,6 +249,26 @@ public: // メンバ関数
 	/// <param name="position">座標</param>
 	void SetPosition(XMFLOAT3 position) { this->position = position; }
 
+
+	/// <summary>
+/// スケールの設定
+/// </summary>
+/// <param name="position">スケール</param>
+	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
+
+	/// <summary>
+	/// モデルのセット
+	/// </summary>
+	/// <param name="model">モデル</param>
+	void SetModel(Model* model) { this->model = model; }
+
+	/// <summary>
+	/// ビルボードフラグのセット
+	/// </summary>
+	/// <param name="isBillboard">ビルボードか</param>
+	void SetBillboard(bool isBillboard) { this->isBillboard = isBillboard; }
+
+
 private: // メンバ変数
 
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ
@@ -264,9 +285,14 @@ private: // メンバ変数
 	XMMATRIX matWorld;
 	// 親オブジェクト
 	Ball* parent = nullptr;
+	// モデル
+	Model* model = nullptr;
 
 	int ballJumpSeconds;
 	int notBallJumpSeconds;
+
+	// ビルボード
+	bool isBillboard = false;
 
 };
 

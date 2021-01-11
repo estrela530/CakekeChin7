@@ -117,9 +117,12 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	score->Sprite::SetSize({ 135.0f,38.0f });//画像サイズ
 	object3d->Update();
 
+	// モデル読み込み
+	modelSphere = Model::CreateFromOBJ("sphere", true);
+
 	//ボール生成
-	ball = Ball::Create();
-	ball->Update();
+	ball = Ball::Create(modelSphere);
+
 
 #pragma region 最初の確定沸きBlock5っ
 
@@ -171,6 +174,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	sososo = false;
 	sal2 = false;
 	notBallJumpSeconds = 0;
+	distance = 18;
+
 }
 
 void GameScene::Update()
@@ -422,23 +427,23 @@ void GameScene::Update()
 #pragma endregion
 
 #pragma region 2つの半径以下ならHit判定
-		if (dist1 <= ball->radius + block1->radius)
+		if (dist1 <= ball->radius + distance)
 		{
 			hit = true;
 		}
-		if (dist2 <= ball->radius + block2->radius)
+		if (dist2 <= ball->radius + distance)
 		{
 			hit = true;
 		}
-		if (dist3 <= ball->radius + block3->radius)
+		if (dist3 <= ball->radius + distance)
 		{
 			hit = true;
 		}
-		if (dist4 <= ball->radius + block4->radius)
+		if (dist4 <= ball->radius + distance)
 		{
 			hit = true;
 		}
-		if (dist5 <= ball->radius + block5->radius)
+		if (dist5 <= ball->radius + distance)
 		{
 			hit = true;
 		}
@@ -461,7 +466,8 @@ void GameScene::Update()
 			pos_subs = XMVector3Length(pos_subs);
 			float dists = pos_subs.m128_f32[0];
 
-			if (dists <= ball->radius + block->radius)
+			//岩崎変更
+			if (dists <= ball->radius + distance)
 			{
 				hit = true;
 			}

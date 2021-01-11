@@ -75,6 +75,8 @@ private: // メンバ変数
 	Ball* ball = nullptr;
 	Sprite* score = nullptr;
 	Block* block = nullptr;
+	Model* modelSphere = nullptr;
+
 	//フェード画像
 private:
 	Sprite* fade_1 = nullptr;
@@ -132,5 +134,13 @@ public:
 	float  sco_x;
 	float sco_y;
 	//float score___y;
+
+	//2点間の距離の差（Block）
+	int distance;
+
+	//ランキング機能関連
+	std::vector<int> scoreRankingVec;
+	//Ranking* ranking;
+
 };
 

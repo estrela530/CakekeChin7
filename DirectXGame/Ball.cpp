@@ -59,6 +59,9 @@ bool Ball::StaticInitialize(ID3D12Device * device, int window_width, int window_
 	// モデル生成
 	CreateModel();
 
+	// モデルの静的初期化
+	Model::StaticInitialize(device);
+
 	return true;
 }
 
@@ -84,7 +87,7 @@ void Ball::PostDraw()
 	Ball::cmdList = nullptr;
 }
 
-Ball * Ball::Create()
+Ball * Ball::Create(Model* model)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	Ball* ball = new Ball();
@@ -99,8 +102,13 @@ Ball * Ball::Create()
 		return nullptr;
 	}
 
+	if (model) {
+		ball->SetModel(model);
+	}
+
+
 	//スケールをセット
-	float scale_val = 3;
+	float scale_val = 10;
 	ball->scale = { scale_val,scale_val, scale_val };
 
 	return ball;
@@ -492,7 +500,7 @@ void Ball::CreateModel()
 	//.objファイルを開く
 	//file.open("Resources/triangle_tex/triangle_tex.obj");
 	//const string modelname = "triangle_mat";
-	const string modelname = "ball";
+	const string modelname = "sphere";
 	const string filename = modelname + ".obj"; //"triangle_mat.obj"
 	const string directoryPath = "Resources/" + modelname + "/"; //"Resources/triangle_mat/"
 	file.open(directoryPath + filename);//"Resources/triangle_mat/triangle_mat.obj"
@@ -744,6 +752,11 @@ void Ball::Update()
 	//	ballJumpSeconds = 0;
 	//}
 #pragma endregion
+
+	rotation.x += 100.0f;
+	rotation.y += 100.0f;
+	rotation.z += 100.0f;
+
 }
 
 void Ball::Draw()

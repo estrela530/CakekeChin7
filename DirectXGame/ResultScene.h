@@ -10,6 +10,9 @@
 #include "DebugText.h"
 #include "Audio.h"
 #include "BaseScene.h"
+#include "GameScene.h"
+//#include "Ranking.h"
+
 
 class ResultScene :public BaseScene
 {
@@ -45,4 +48,11 @@ private://メンバ変数
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
 	float fade;
+
+public:
+	GameScene* gameScene = nullptr;
+	int sco2;
+	//ランキング機能関連
+	//Ranking* ranking = nullptr;
+
 };
