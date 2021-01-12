@@ -150,6 +150,21 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	audio->PlayWaveBGM("Resources/aladdin.wav");
 #pragma endregion
 
+#pragma region パーティクル関連
+	// カメラ生成
+	camera = new DebugCamera(WinApp::window_width, WinApp::window_height, input);
+
+	// 3Dオブジェクトにカメラをセット
+	//Object3d::SetCamera(camera);
+
+	// パーティクルマネージャ生成
+	particleManager = ParticleManager::GetInstance();
+	particleManager->SetCamera(camera);
+
+	// カメラ注視点をセット
+	camera->SetTarget({ 0, 1, 0 });
+	camera->SetDistance(3.0f);
+#pragma endregion
 
 	//フェード
 	alpha = 0;
@@ -188,6 +203,11 @@ void GameScene::Update()
 	}
 #pragma endregion
 
+#pragma region パーティクルの更新
+	// パーティクル生成
+	camera->Update();
+	particleManager->Update();
+#pragma endregion
 
 #pragma region シュレフェード試作
 	////フェード
@@ -478,6 +498,22 @@ void GameScene::Update()
 #pragma endregion
 #pragma endregion
 
+#pragma region パーティクルの描画と挙動
+		//X,Y,Z{-5.0f,+5.0f}でランダムに分布
+		const float rnd_pos = 4.0f;
+
+		//X,Y,Z{-0.05f,+0.05f}でランダムに分布
+		const float rnd_vel = 0.5f;
+		XMFLOAT3 vel{};//速度
+		vel.x = (float)rand() / RAND_MAX * rnd_vel / 2.0f;
+		vel.y += (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
+		
+		//重力に見立ててYのみ[-0.001f,0]でランダム分布
+		XMFLOAT3 acc{};//加速度
+		const float rnd_acc = 0.001f;
+		acc.y += rnd_acc;
+#pragma endregion
+
 #pragma region 新しい挙動まわりの処理(SZK)
 		ballPosition.y -= g;//重力
 		if (hit)
@@ -492,6 +528,9 @@ void GameScene::Update()
 				k = 7.0;
 				sec = 0;
 			}
+
+			//パーティクルの描画
+			particleManager->Add(7, XMFLOAT3{ ballPosition.x,0,0 }, vel, acc, 1, 0);//描画
 
 			//ballPosition.y += 20.0f;
 			debugText.Print("Hit", 50, 50, 3);
@@ -620,6 +659,11 @@ void GameScene::Draw()
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon->ClearDepthBuffer();
+#pragma endregion
+
+#pragma region パーティクルの描画
+	// パーティクルの描画
+	particleManager->Draw(cmdList);
 #pragma endregion
 
 #pragma region 3Dオブジェクト描画

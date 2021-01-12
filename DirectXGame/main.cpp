@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "Input.h"
 #include "TitleScene.h"
+#include "ParticleManager.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -64,6 +65,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(0);
 		return 1;
 	}
+
+	//パーティクル
+	ParticleManager::GetInstance()->Initialize(dxCommon->GetDevice());
 
 #pragma endregion
 

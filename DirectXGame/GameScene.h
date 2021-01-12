@@ -13,6 +13,9 @@
 #include "Ball.h"
 #include "Block.h"
 #include "BaseScene.h"
+
+#include "ParticleManager.h"
+#include "DebugCamera.h"
 //#include "BlockManager.h"
 
 /// <summary>
@@ -66,6 +69,10 @@ private: // メンバ変数
 	Audio* audio = nullptr;
 	DebugText debugText;
 	DebugTT debugText2;
+
+	//追加
+	DebugCamera* camera = nullptr;
+	ParticleManager* particleManager = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
