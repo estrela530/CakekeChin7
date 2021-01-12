@@ -56,4 +56,6 @@ private://ƒƒ“ƒo•Ï”
 	float alpha3;
 	float w2x;
 	float w2y;
+
+	bool goGameScene;
 };

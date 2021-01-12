@@ -30,7 +30,7 @@ void ResultScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio
 	debugText.Initialize(debugTextTexNumber);
 
 	// テクスチャ読み込み
-	if (!Sprite::LoadTexture(1, L"Resources/RESULT.png")) {
+	if (!Sprite::LoadTexture(1, L"Resources/Result555.png")) {
 		assert(0);
 		return;
 	}

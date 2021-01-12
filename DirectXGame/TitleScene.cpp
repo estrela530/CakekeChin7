@@ -14,7 +14,7 @@ TitleScene::~TitleScene()
 	delete spriteBG;
 	delete sima;
 	delete wip;
-
+	goGameScene = false;
 }
 
 
@@ -36,7 +36,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	debugText.Initialize(debugTextTexNumber);
 
 	// テクスチャ読み込み	↓1番目に読込
-	if (!Sprite::LoadTexture(1, L"Resources/title.png")) {
+	if (!Sprite::LoadTexture(1, L"Resources/TitleSpace.png")) {
 		assert(0);
 		return;
 	}
@@ -82,6 +82,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	alpha2 = 0;
 	alpha3 = 0;
 
+	goGameScene = false;
 	//alpha2 = 1;
 #pragma endregion
 }
@@ -106,48 +107,60 @@ void TitleScene::Update()
 		//{
 		//wip->SetColor({ 0,1,1,alpha });
 
-	if (alpha > 0.9f)
+	if (input->PushKey(DIK_SPACE))
 	{
-		alpha2 += 0.008f;
+		goGameScene = true;
 	}
 
-	if (alpha > 1.2f)
+	if (goGameScene == true)
 	{
-		alpha3 += 0.03f;
 
-		if (wips == false)
+
+		if (alpha > 0.9f)
 		{
-			//wip->SetPosition({ wip_x,wip_y });
-			wip_x += 7;
-			wip_y += 4;
-			//sima->Sprite::SetPosition({ 0,0 });
-			wip->Sprite::SetSize({ wip_x,wip_y });
-			if (wip_x > 1280)
-			{
-				wips = true;
-			}
+			alpha2 += 0.008f;
 		}
-		else if (wips == true)
-		{
-			if (wip_x > 1280)
-			{
-				//ワイプ画像座標を0に固定
-				/*wip_x += 0;
-				wip_y += 0;*/
-				//wip->Sprite::SetSize({ wip_x,wip_y });
 
-				wips == true;
-			}
-			if (input->PushKey(DIK_1) || input->PushKey(DIK_2))
+		if (alpha > 1.2f)
+		{
+			alpha3 += 0.03f;
+
+			if (wips == false)
 			{
-				wips = false;
+				//wip->SetPosition({ wip_x,wip_y });
+				wip_x += 7;
+				wip_y += 4;
+				//sima->Sprite::SetPosition({ 0,0 });
+				wip->Sprite::SetSize({ wip_x,wip_y });
+				if (wip_x > 1280)
+				{
+					wips = true;
+				}
 			}
-			if (alpha3 > 1.0f)
+			else if (wips == true)
 			{
-				smane->ChangeScene(SCENE::GAME);
+				if (wip_x > 1280)
+				{
+					//ワイプ画像座標を0に固定
+					/*wip_x += 0;
+					wip_y += 0;*/
+					//wip->Sprite::SetSize({ wip_x,wip_y });
+
+					wips == true;
+				}
+				if (input->PushKey(DIK_1) || input->PushKey(DIK_2))
+				{
+					wips = false;
+				}
+				if (alpha3 > 1.0f)
+				{
+					smane->ChangeScene(SCENE::GAME);
+
+				}
 			}
 		}
 	}
+
 
 	//}
 	//else if (wips == true)

@@ -81,7 +81,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	//下記背景
 
 	// テクスチャ読み込み
-	if (!Sprite::LoadTexture(1, L"Resources/back1111.png")) {
+	if (!Sprite::LoadTexture(1, L"Resources/haikei.png")) {
 		assert(0);
 		return;
 	}
@@ -166,6 +166,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	camera->SetDistance(3.0f);
 #pragma endregion
 
+#pragma region 変数
 	//フェード
 	alpha = 0;
 	//fade 生成
@@ -190,7 +191,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	sal2 = false;
 	notBallJumpSeconds = 0;
 	distance = 18;
-
+#pragma endregion
 }
 
 void GameScene::Update()
@@ -636,10 +637,16 @@ void GameScene::Update()
 		block5->Update();
 #pragma endregion
 		//※更新した後に下記ないとシーン変更出来ず
-		if (sco == 150)
+		//if (sco == 150)
+		//{
+		//	smane->ChangeScene(SCENE::RESULT);
+		//}
+
+		if (ballPosition.y <= -70)
 		{
 			smane->ChangeScene(SCENE::RESULT);
 		}
+
 	}
 }
 
@@ -728,6 +735,7 @@ void GameScene::Draw()
 	Sprite::PostDraw();
 
 #pragma endregion
+
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
