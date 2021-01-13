@@ -20,6 +20,7 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 {
+
 	//nullptrチェック
 	assert(dxCommon);
 	assert(input);
@@ -52,7 +53,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 		assert(0);
 		return;
 	}
-
+	audio->Initialize();
 	// 3Dオブジェクト生成
 	//object3d = Object3d::Create();
 	//object3d->Update();
@@ -85,6 +86,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	goGameScene = false;
 	//alpha2 = 1;
 #pragma endregion
+
 }
 
 

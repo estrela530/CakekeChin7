@@ -2,13 +2,14 @@
 #include <cassert>//ヘッダで式が真であることを表す
 
 
-ResultScene::ResultScene(SceneManager* smane)
+ResultScene::ResultScene(SceneManager* smane) :smane(smane)
 {
 }
 
 ResultScene::~ResultScene()
 {
 	delete spriteBG;
+
 }
 
 
@@ -50,12 +51,16 @@ void ResultScene::Update()
 	fade += 0.004f;
 	spriteBG->SetColor({ 1,1,1,fade });
 
-	//↓岩﨑変更
-	/*debugText.Print(gameScene->sco)*/
-	//debugText2.Print2(std::to_string(gameScene->sco).c_str(), 140, 130, 1.0f);//スコア座標
-	
-	//debugText.Print(ranking->scoreRankingVec.begin(), 160, 150, 1.0f);//スコア座標
-	//debugText.Print("Hit", 160, 150, 1.0f);//スコア座標
+	//	//↓岩﨑変更
+	//	/*debugText.Print(gameScene->sco)*/
+		////debugText2.Print2(std::to_string(gameScene->sco).c_str(), 140, 130, 1.0f);//スコア座標
+		////debugText.Print(ranking->scoreRankingVec.begin(), 160, 150, 1.0f);//スコア座標
+		////debugText.Print("Hit", 160, 150, 1.0f);//スコア座標
+
+	if (input->PushKey(DIK_SPACE))
+	{
+		smane->ChangeScene(SCENE::TITLE);
+	}
 
 }
 

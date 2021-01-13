@@ -36,6 +36,7 @@ GameScene::~GameScene()
 	delete fade_saku;
 	//画像
 	delete score10;
+	//delete score100;
 #pragma region 最初の確定沸きBlock5っ
 	delete block1;
 	delete block2;
@@ -58,7 +59,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	this->audio = audio;
 
 	blockGeneratorSeconds = 0;
-
+	audio->Initialize();
+	
 	// デバッグテキスト用テクスチャ読み込み
 	if (!Sprite::LoadTexture(debugTextTexNumber, L"Resources/debugfont.png")) {
 		assert(0);
@@ -103,11 +105,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 		assert(0);
 		return;
 	}
-	if (!Sprite::LoadTexture(6, L"Resources/100.png"))
-	{
-		assert(0);
-		return;
-	}
+	//if (!Sprite::LoadTexture(6, L"Resources/100.png"))
+	//{
+	//	assert(0);
+	//	return;
+	//}
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
@@ -147,7 +149,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 
 #pragma region BGM再生
 	//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
-	audio->PlayWaveBGM("Resources/aladdin.wav");
+
 #pragma endregion
 
 #pragma region パーティクル関連
@@ -192,10 +194,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	notBallJumpSeconds = 0;
 	distance = 18;
 #pragma endregion
+	audio->PlayWaveBGM("Resources/aladdin.wav");
+
 }
 
 void GameScene::Update()
 {
+
 #pragma region BGM再生
 	//Spaceを押したらストップする実験用
 	if (input->PushKey(DIK_SPACE))
@@ -508,7 +513,7 @@ void GameScene::Update()
 		XMFLOAT3 vel{};//速度
 		vel.x = (float)rand() / RAND_MAX * rnd_vel / 2.0f;
 		vel.y += (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
-		
+
 		//重力に見立ててYのみ[-0.001f,0]でランダム分布
 		XMFLOAT3 acc{};//加速度
 		const float rnd_acc = 0.001f;
@@ -534,7 +539,7 @@ void GameScene::Update()
 			particleManager->Add(7, XMFLOAT3{ ballPosition.x,0,0 }, vel, acc, 1, 0);//描画
 
 			//ballPosition.y += 20.0f;
-			debugText.Print("Hit", 50, 50, 3);
+			//debugText.Print("Hit", 50, 50, 3);
 		}
 		else
 		{
@@ -547,7 +552,7 @@ void GameScene::Update()
 
 		if (sec == 1)
 		{
-		//	sco += 10;
+			//	sco += 10;
 			afk++;
 			sososo = true;
 			sal2 = true;
@@ -608,6 +613,7 @@ void GameScene::Update()
 		{
 			sco = 0;
 			afk = 0;
+			audio->StopWave();
 		}
 #pragma endregion 
 		debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
@@ -635,19 +641,21 @@ void GameScene::Update()
 		block3->Update();
 		block4->Update();
 		block5->Update();
+
 #pragma endregion
 		//※更新した後に下記ないとシーン変更出来ず
 		//if (sco == 150)
 		//{
 		//	smane->ChangeScene(SCENE::RESULT);
 		//}
-
+//audio->StopWave();
 		if (ballPosition.y <= -70)
 		{
 			smane->ChangeScene(SCENE::RESULT);
 		}
 
 	}
+
 }
 
 void GameScene::Draw()
@@ -709,16 +717,8 @@ void GameScene::Draw()
 	block5->Draw();
 #pragma endregion
 
-	/// <summary>
-	/// ここに3Dオブジェクトの描画処理を追加できる
-	/// </summary>
-
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
-
-	// 3Dオブジェクト2描画後処理
-	//Object3d2::PostDraw();
-
 	//ボール描画後処理
 	Ball::PostDraw();
 
@@ -739,10 +739,6 @@ void GameScene::Draw()
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
-	/// <summary>
-	/// ここに前景スプライトの描画処理を追加できる
-	/// </summary>
-
 	fade_saku->Draw();
 	fade_1->Draw();
 	// デバッグテキストの描画

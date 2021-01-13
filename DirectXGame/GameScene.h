@@ -35,7 +35,7 @@ private: // 静的メンバ変数
 	static const int debugTextTexNumber = 0;
 	static const int dTTN2 = 0;
 public: // メンバ関数
-
+#pragma region 
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
@@ -60,6 +60,7 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	virtual void Draw();
+#pragma endregion
 
 private: // メンバ変数
 	SceneManager* smane;
@@ -89,7 +90,7 @@ private:
 	Sprite* fade_saku = nullptr;
 	//スコア+時の描画画像
 	Sprite* score10 = nullptr;
-	Sprite* score100 = nullptr;
+	//Sprite* score100 = nullptr;
 public:
 #pragma region 最初の確定沸きBlock4っ
 	Block* block1 = nullptr;
@@ -147,6 +148,7 @@ public:
 	//ランキング機能関連
 	std::vector<int> scoreRankingVec;
 	//Ranking* ranking;
+	//bool check_bgm=false;
 
 };
 
