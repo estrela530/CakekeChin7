@@ -117,7 +117,8 @@ public:
 	float ve;
 
 	//フェード
-	bool alal = true;//背景点滅余
+	bool alal = false;//背景点滅余
+	bool alalal = false;
 	float aa = 1;
 	float bb = 1;
 	float cc = 0;

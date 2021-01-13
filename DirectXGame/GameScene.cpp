@@ -60,7 +60,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 
 	blockGeneratorSeconds = 0;
 	audio->Initialize();
-	
+
 	// デバッグテキスト用テクスチャ読み込み
 	if (!Sprite::LoadTexture(debugTextTexNumber, L"Resources/debugfont.png")) {
 		assert(0);
@@ -195,7 +195,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	distance = 18;
 #pragma endregion
 	audio->PlayWaveBGM("Resources/aladdin.wav");
-
+	alal = false;
+	alalal = false;
 }
 
 void GameScene::Update()
@@ -242,55 +243,64 @@ void GameScene::Update()
 	{
 		spriteBG->SetColor({ 1,1,1,alpha });//背景色
 
-		if (alal == true)
-		{
+		////if (alal == true)
+		////{
+		////	alpha -= 0.01f;
+		////	bb -= 0.00001f;
+		////	if (bb > 0.01f)
+		////	{
+		////		bb += 0.0001f;
+		////	}
+		////	/*cc -= 0.001f;
+		////	if (cc < 1)
+		////	{
+		////		aa -= 0.005f;
+		////		bb -= 0.005f;
+		////	}
+		////	if (aa == 0.3 || bb == 0.3)
+		////	{
+		////		aa += 0.005f;
+		////		cc += 0.005f;
+		////	}*/
+		////	/*	if (aa > 0)
+		////		{
+		////			aa += 0.005f;
+		////		}*/
+		////		//if (alpha < 0.35)
+		////		//{
+		////		//	alal = false;
+		////		//	aa -= 0.0004f;
+		////		//	//bb -= 0.004f;
+		////		//	cc += 0.0001f;
+		////		//}
+		////}
+		///*	else if (alal == false)
+		//	{
+		//		alpha += 0.01f;
+		//		spriteBG->SetColor({ aa,bb,cc,alpha });
+		//		cc += 0.0005f;
 
-			alpha -= 0.01f;
-			cc -= 0.001f;
-			if (cc < 1)
-			{
-				aa -= 0.005f;
-			}
-			if (aa > 0)
-			{
-				aa += 0.005f;
-				bb -= 0.005f;
-			}
-
-			spriteBG->SetColor({ aa,bb,cc,alpha });
-
-			/*if (alpha < 0.35)
-			{
-				alal = false;
-				aa -= 0.004f;
-				bb -= 0.004f;
-			}*/
-		}
-		else if (alal == false)
-		{
-			alpha += 0.01f;
-			spriteBG->SetColor({ aa,bb,cc,alpha });
-			cc += 0.005f;
-			if (alpha > 1)
-			{
-				alal = true;
-			}
-			else if (aa < 0.3)
-			{
-				aa += 0.004f;
-				bb += 0.004f;
-			}
-		}
-		if (aa < 0 || bb < 0)
-		{
-			aa -= 0.04f;
-			bb += 0.04f;
-			if (aa > 0.8)
-			{
-				aa += 0.04f;
-			}
-		}
-
+		//		if (alpha < 1)
+		//		{
+		//			alal = true;
+		//		}
+		//		else if (aa < 0.3)
+		//		{
+		//			aa += 0.004f;
+		//			bb += 0.004f;
+		//		}
+		//	}*/
+		//	//if (aa < 1 )
+		//	//{
+		//	////	aa -= 0.04f;
+		//	//	bb += 0.04f;
+		//	//	cc += 0.001f;
+		//	//	if (aa > 0.8)
+		//	//	{
+		//	//		aa += 0.04f;
+		//	//	}
+		//	//}
+		spriteBG->SetColor({ aa,bb,cc,alpha });
 
 #pragma endregion
 
@@ -509,7 +519,7 @@ void GameScene::Update()
 		const float rnd_pos = 4.0f;
 
 		//X,Y,Z{-0.05f,+0.05f}でランダムに分布
-		const float rnd_vel = 0.5f;
+		const float rnd_vel = 1.5f;
 		XMFLOAT3 vel{};//速度
 		vel.x = (float)rand() / RAND_MAX * rnd_vel / 2.0f;
 		vel.y += (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
@@ -536,7 +546,7 @@ void GameScene::Update()
 			}
 
 			//パーティクルの描画
-			particleManager->Add(7, XMFLOAT3{ ballPosition.x,0,0 }, vel, acc, 1, 0);//描画
+			particleManager->Add(7, XMFLOAT3{ ballPosition.x ,0,0 }, vel, acc, 1, 0);//描画
 
 			//ballPosition.y += 20.0f;
 			//debugText.Print("Hit", 50, 50, 3);
@@ -561,6 +571,7 @@ void GameScene::Update()
 		if (sososo == true)
 		{
 			sco++;
+			//sco =+ 1000;
 			if (sco > 10 * afk)
 			{
 				sco -= 1;
@@ -585,6 +596,10 @@ void GameScene::Update()
 				if (sco_y == 126.0f)
 				{
 					sco_y = 130.0f;
+				}
+				if (sco > 999)
+				{
+					sco_x = 145;
 				}
 				score10->SetPosition({ sco_x,sco_y });
 				sal2 = false;
@@ -617,10 +632,39 @@ void GameScene::Update()
 		}
 #pragma endregion 
 		debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
+		//背景変色箇所スコア⇒変換
+		if (sco < 50)
+		{
+			alal = true;
+			//alalal = false;
+		}
+		if (alal == true)
+		{
+			//aa = R //  bb  =G  //cc =B//abc->rgb
+			aa -= 0.001f;
+			bb -= 0.001f;
+			cc += 0.001f;
+		}
+		if (alal == false)
+		{
+			cc -= 0.001f;
+		}
+		if (sco == 100)
+		{
+			alal = false;
+			alalal = true;
+			//	cc = 0.5f;
 
+		}
+		if (alalal = true)
+		{
+			aa += 0.0002f;
+			//bb += 0.0001f;
+			cc -= 0.000001f;
+		}
 #pragma endregion 
 
-	// 座標の変更を反映
+		// 座標の変更を反映
 		object3d->SetPosition(position);
 		ball->SetPosition(ballPosition);
 		object3d->Update();
