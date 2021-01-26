@@ -519,15 +519,15 @@ void GameScene::Update()
 		const float rnd_pos = 4.0f;
 
 		//X,Y,Z{-0.05f,+0.05f}でランダムに分布
-		const float rnd_vel = 1.5f;
+		const float rnd_vel = 0.5f;
 		XMFLOAT3 vel{};//速度
-		vel.x = (float)rand() / RAND_MAX * rnd_vel / 2.0f;
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.y += (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
 
 		//重力に見立ててYのみ[-0.001f,0]でランダム分布
 		XMFLOAT3 acc{};//加速度
 		const float rnd_acc = 0.001f;
-		acc.y += rnd_acc;
+		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
 #pragma endregion
 
 #pragma region 新しい挙動まわりの処理(SZK)
@@ -546,7 +546,7 @@ void GameScene::Update()
 			}
 
 			//パーティクルの描画
-			particleManager->Add(7, XMFLOAT3{ ballPosition.x ,0,0 }, vel, acc, 1, 0);//描画
+			particleManager->Add(5, XMFLOAT3{ ballPosition.x ,0.8f,1.8f }, vel, acc, 0.5f, 1.5f);//描画
 
 			//ballPosition.y += 20.0f;
 			//debugText.Print("Hit", 50, 50, 3);
