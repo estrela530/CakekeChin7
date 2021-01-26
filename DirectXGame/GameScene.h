@@ -121,7 +121,7 @@ public:
 	bool alalal = false;
 	float aa = 1;
 	float bb = 1;
-	float cc = 0;
+	float cc = 1;
 
 	int sec = 0;
 	bool hit = false;

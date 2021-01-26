@@ -566,6 +566,7 @@ void GameScene::Update()
 			afk++;
 			sososo = true;
 			sal2 = true;
+
 			audio->PlayWaveSE("Resources/button.wav");
 		}
 		if (sososo == true)
@@ -622,45 +623,56 @@ void GameScene::Update()
 			//audio->StopWave();
 #pragma endregion
 		}
-
+		aa = sco * 0.001f;
+		bb = sco * 0.001f;
+		cc = sco * 0.001f;
 #pragma region 
 		if (input->PushKey(DIK_2) || input->PushKey(DIK_R))
 		{
 			sco = 0;
 			afk = 0;
-			audio->StopWave();
+			//audio->StopWave();
 		}
 #pragma endregion 
 		debugText2.Print2(std::to_string(sco).c_str(), 140, 130, 1.0f);//スコア座標
 		//背景変色箇所スコア⇒変換
-		if (sco < 50)
-		{
-			alal = true;
-			//alalal = false;
-		}
-		if (alal == true)
-		{
-			//aa = R //  bb  =G  //cc =B//abc->rgb
-			aa -= 0.001f;
-			bb -= 0.001f;
-			cc += 0.001f;
-		}
+		//if (sco < 50)
+		//{
+		//	alal = true;
+		//	//alalal = false;
+		//}
 		if (alal == false)
 		{
-			cc -= 0.001f;
-		}
-		if (sco == 100)
-		{
-			alal = false;
-			alalal = true;
-			//	cc = 0.5f;
+			//	//aa = R //  bb  =G  //cc =B//abc->rgb
+			//	aa -= 0.0001f;
+			//	bb -= 0.0001f;
+			//	cc += 0.0001f;
+			//	
+			//	if (sco == 100)
+			//	{
+			//		cc -= 0.001f;
+			//	}
+			//}
+			//if (alal == false)
+			//{
+			//	cc -= 0.001f;
+			//}
+			//if (sco == 150)
+			//{
+			//	alal = false;
+			//	alalal = true;
+			//	//	cc = 0.5f;
+			//}
+			//if (alalal = true)
+			//{
+			//	aa += 0.002f;
+			//	bb += 0.0001f;
+			//	cc += 0.0001f;
 
-		}
-		if (alalal = true)
-		{
-			aa += 0.0002f;
-			//bb += 0.0001f;
-			cc -= 0.000001f;
+			///////////////////////////////////////
+			//aa = sco /-100;
+			//bb = sco / -100;
+
 		}
 #pragma endregion 
 
