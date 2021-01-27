@@ -46,6 +46,7 @@ private://メンバ変数
 	Sprite* wip = nullptr;
 	Sprite* wip2 = nullptr;
 	Sprite* sima = nullptr;
+	Sprite* spel = nullptr;
 
 	float alpha;
 	int timer;
@@ -58,4 +59,9 @@ private://メンバ変数
 	float w2y;
 
 	bool goGameScene;
+	//タイトルの試作＠シュレ
+	int tspel;
+	float tspel_alpha;
+	bool spelcheck;
+	/*bool aks;*/
 };

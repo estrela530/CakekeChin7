@@ -14,6 +14,7 @@ TitleScene::~TitleScene()
 	delete spriteBG;
 	delete sima;
 	delete wip;
+	delete spel;
 	goGameScene = false;
 }
 
@@ -37,7 +38,7 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	debugText.Initialize(debugTextTexNumber);
 
 	// テクスチャ読み込み	↓1番目に読込
-	if (!Sprite::LoadTexture(1, L"Resources/TitleSpace.png")) {
+	if (!Sprite::LoadTexture(1, L"Resources/Title2.png")) {
 		assert(0);
 		return;
 	}
@@ -49,6 +50,11 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	}
 	//画像２　				↓画像的には2番目に表記されている。
 	if (!Sprite::LoadTexture(3, L"Resources/170.png"))
+	{
+		assert(0);
+		return;
+	}
+	if (!Sprite::LoadTexture(4, L"Resources/TitleTSTS.png"))
 	{
 		assert(0);
 		return;
@@ -83,7 +89,14 @@ void TitleScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio* audio)
 	alpha2 = 0;
 	alpha3 = 0;
 
+	//タイトルスぺース用
+	spel = Sprite::Create(4, { 0.0f, 0.0f });
+	tspel_alpha = 1;
+	tspel = 0;
+
 	goGameScene = false;
+	spelcheck = false;
+	//aks = false;
 	//alpha2 = 1;
 #pragma endregion
 
@@ -99,24 +112,57 @@ void TitleScene::Update()
 
 	alpha += 0.01f;
 	timer += 1;
+	//タイトルの文字用
+	tspel++;
+
 	spriteBG->SetColor({ 1,1,1,alpha });//テクスチャの色とα値名
 	sima->SetColor({ 1,1,1,alpha2 });
 	wip->SetColor({ 0,0,0,alpha3 });
-	//	wip2->SetColor({ 0,0,0,1 });
 
+	//タイトル文字用
+	spel->SetColor({ 1,1,1,tspel_alpha });
+	if (spelcheck == false)
+	{
+		tspel_alpha -= 0.0125f;
+		if (tspel > 25)
+		{
+			spelcheck = true;
+		}
+		//tspel -= 0;
+	}
+	if (spelcheck == true)
+	{
+		if (tspel > 50)
+		{
+			tspel_alpha += 0.0125f;
 
-		//if (wips == false)
-		//{
-		//wip->SetColor({ 0,1,1,alpha });
+		}
+		if (tspel > 75)
+		{
+			tspel = 0;
+			spelcheck = false;
+		}
+	}
 
 	if (input->PushKey(DIK_SPACE))
 	{
 		goGameScene = true;
+	////	aks = false;
 	}
-
+	////タイトルの文字点滅試作
+	//if (aks == false)
+	//{
+	//	tspel_alpha = 0.001f;
+	//	aks = true;
+	//}
+	//if (aks == true)
+	//{
+	//	tspel_alpha = 1.0f;
+	//	aks = false;
+	//}
 	if (goGameScene == true)
 	{
-
+	
 
 		if (alpha > 0.9f)
 		{
@@ -164,6 +210,7 @@ void TitleScene::Update()
 	}
 
 
+	
 	//}
 	//else if (wips == true)
 	//{
@@ -184,8 +231,8 @@ void TitleScene::Draw()
 	// 背景スプライト描画
 	spriteBG->Draw();
 	sima->Draw();
+	spel->Draw();
 	wip->Draw();
-
 	// スプライト描画後処理
 	Sprite::PostDraw();
 	// 深度バッファクリア
