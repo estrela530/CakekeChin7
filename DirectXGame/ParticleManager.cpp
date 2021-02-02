@@ -399,7 +399,7 @@ void ParticleManager::LoadTexture()
 	ScratchImage scratchImg{};
 
 	result = LoadFromWICFile(
-		L"Resources/right2.png", WIC_FLAGS_NONE,
+		L"Resources/5.png", WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 	if (FAILED(result)) {
 		assert(0);
