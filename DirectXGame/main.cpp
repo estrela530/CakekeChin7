@@ -49,16 +49,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 	// 3Dオブジェクト静的初期化
-	if (!Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {
-		assert(0);
-		return 1;
-	}
+	Ball::StaticInitialize(dxCommon->GetDevice());
 
 	// ボールの静的初期化
-	if (!Ball::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {
-		assert(0);
-		return 1;
-	}
+	//if (!Ball::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {
+	//	assert(0);
+	//	return 1;
+	//}
 
 	// ブロックの静的初期化
 	if (!Block::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height)) {

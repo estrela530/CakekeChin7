@@ -83,6 +83,7 @@ private: // メンバ変数
 	Sprite* score = nullptr;
 	Block* block = nullptr;
 	Model* modelSphere = nullptr;
+	Ball* objSphere = nullptr;
 
 	//フェード画像
 private:
@@ -124,7 +125,11 @@ public:
 	float cc = 1;
 
 	int sec = 0;
-	bool hit = false;
+	bool hit1 = false;
+	bool hit2 = false;
+	bool hit3 = false;
+	bool hit4 = false;
+	bool hit5 = false;
 	//シュレ
 	int timer = 0;
 	//開幕フェード処理

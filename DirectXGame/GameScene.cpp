@@ -114,17 +114,20 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
-	object3d = Object3d::Create();
+	//object3d = Object3d::Create();
 	//zahyou 
 	score = Sprite::Create(2, { 1,126 });//スコア画像サイズ
 	score->Sprite::SetSize({ 135.0f,38.0f });//画像サイズ
-	object3d->Update();
+	//object3d->Update();
 
-	// モデル読み込み
-	modelSphere = Model::CreateFromOBJ("sphere", true);
+	//// モデル読み込み
+	//modelSphere = Model::CreateFromOBJ("sphere", true);
 
-	//ボール生成
-	ball = Ball::Create(modelSphere);
+	////ボール生成
+	//ball = Ball::Create(modelSphere);
+
+	modelSphere = Model::CreateFromOBJ("sphere");
+	objSphere = Ball::Create(modelSphere);
 
 
 #pragma region 最初の確定沸きBlock5っ
@@ -158,7 +161,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	camera = new DebugCamera(WinApp::window_width, WinApp::window_height, input);
 
 	// 3Dオブジェクトにカメラをセット
-	//Object3d::SetCamera(camera);
+	Ball::SetCamera(camera);
 
 	// パーティクルマネージャ生成
 	particleManager = ParticleManager::GetInstance();
@@ -166,7 +169,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 
 	// カメラ注視点をセット
 	camera->SetTarget({ 0, 1, 0 });
-	camera->SetDistance(3.0f);
+	camera->SetDistance(50.0f);
 #pragma endregion
 
 #pragma region 変数
@@ -200,6 +203,12 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	alalal = false;
 	hitBlocks = false;
 	blocksNumber = 0;
+	hit1 = false;
+	hit2 = false;
+	hit3 = false;
+	hit4 = false;
+	hit5 = false;
+
 }
 
 void GameScene::Update()
@@ -326,8 +335,7 @@ void GameScene::Update()
 #pragma region //(SZK・・・・復活させた↓)
 		//(SZK・・・・復活させた↓)
 		// 現在の座標を取得
-		XMFLOAT3 position = object3d->GetPosition();
-		XMFLOAT3 ballPosition = ball->GetPosition();
+		XMFLOAT3 ballPosition = objSphere->GetPosition();
 
 		// オブジェクト移動
 		if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
@@ -337,65 +345,10 @@ void GameScene::Update()
 			else if (input->PushKey(DIK_LEFT)) { ballPosition.x -= 1.0f; }
 		}
 		// 座標の変更を反映
-		object3d->SetPosition(position);
-		object3d->Update();
 		//(SZK・・・・復活させた↑)
 #pragma endregion
 
 
-#pragma region カメラまわり
-
-	// カメラ移動
-	/*if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A))
-	{*/
-	//if (input->PushKey(DIK_W)) { Ball::CameraMoveVector({ 0.0f,+1.0f,0.0f }); }
-	//else if (input->PushKey(DIK_S)) { Ball::CameraMoveVector({ 0.0f,-1.0f,0.0f }); }
-	//if (input->PushKey(DIK_D)) { Ball::CameraMoveVector({ +1.0f,0.0f,0.0f }); }
-	//else if (input->PushKey(DIK_A)) { Ball::CameraMoveVector({ -1.0f,0.0f,0.0f }); }
-//}
-
-// ボール移動
-//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT) || input->PushKey(DIK_SPACE))
-//{
-//	//// 現在の座標を取得
-//	//XMFLOAT3 position = ball->GetPosition();
-
-//	//// 移動後の座標を計算
-//	//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-//	//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-//	//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-//	//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
-//	//if (input->PushKey(DIK_SPACE))
-//	//{
-//	//	position.z += 1.0f;
-//	//}
-//	//// 座標の変更を反映
-//	//ball->SetPosition(position);
-//}
-
-//// ブロック移動
-//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-//{
-//	// 現在の座標を取得
-//	//XMFLOAT3 position = ball->GetPosition();
-
-//	//// 移動後の座標を計算
-//	//if (input->PushKey(DIK_UP)) { position.y += 1.0f; }
-//	//else if (input->PushKey(DIK_DOWN)) { position.y -= 1.0f; }
-//	//if (input->PushKey(DIK_RIGHT)) { position.x += 1.0f; }
-//	//else if (input->PushKey(DIK_LEFT)) { position.x -= 1.0f; }
-
-//	//// 座標の変更を反映
-//	//block->SetPosition(position);
-//}
-
-#pragma region オブジェクト2の座標系
-	// オブジェクト2の座標を取得
-	//XMFLOAT3 position2 = object3d2->GetPosition();
-	// オブジェクト2の座標の変更を反映
-	//object3d2->SetPosition(position2);
-
-#pragma endregion
 #pragma endregion
 
 #pragma region 最初の確定沸きBlock5っ
@@ -468,23 +421,23 @@ void GameScene::Update()
 #pragma region 2つの半径以下ならHit判定
 		if (dist1 <= ball->radius + distance)
 		{
-			hit = true;
+			hit1 = true;
 		}
 		if (dist2 <= ball->radius + distance)
 		{
-			hit = true;
+			hit2 = true;
 		}
 		if (dist3 <= ball->radius + distance)
 		{
-			hit = true;
+			hit3 = true;
 		}
 		if (dist4 <= ball->radius + distance)
 		{
-			hit = true;
+			hit4 = true;
 		}
 		if (dist5 <= ball->radius + distance)
 		{
-			hit = true;
+			hit5 = true;
 		}
 #pragma endregion
 
@@ -557,7 +510,28 @@ void GameScene::Update()
 			{
 				particleManager->Add(5, XMFLOAT3{ pos.x,pos.y + 7.0f,pos.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
 			}
-			if (!hit)
+			else if (hit1)
+			{
+				particleManager->Add(5, XMFLOAT3{ block1Position.x,block1Position.y + 7.0f,block1Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+			}
+			else if (hit2)
+			{
+				particleManager->Add(5, XMFLOAT3{ block2Position.x,block2Position.y + 7.0f,block2Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+			}
+			else if (hit3)
+			{
+				particleManager->Add(5, XMFLOAT3{ block3Position.x,block3Position.y + 7.0f,block3Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+			}
+			else if (hit4)
+			{
+				particleManager->Add(5, XMFLOAT3{ block4Position.x,block4Position.y + 7.0f,block4Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+			}
+			else if (hit5)
+			{
+				particleManager->Add(5, XMFLOAT3{ block5Position.x,block5Position.y + 7.0f,block5Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+			}
+
+			if (!hit1 || !hit2 || !hit3 || !hit4 || !hit5 || !hitBlocks)
 			{
 				spe = 1.0f;
 			}
@@ -566,7 +540,7 @@ void GameScene::Update()
 
 #pragma region 新しい挙動まわりの処理(SZK)
 		ballPosition.y -= g;//重力
-		if (hit)
+		if (hit1 || hit2 || hit3 || hit4 || hit5)
 		{
 			sec += 1;
 			k -= 0.1;
@@ -574,7 +548,11 @@ void GameScene::Update()
 			ballPosition.y += k;//反発
 			if (sec > 45) //38
 			{
-				hit = false;
+				hit1 = false;
+				hit2 = false;
+				hit3 = false;
+				hit4 = false;
+				hit5 = false;
 				k = 7.0;
 				sec = 0;
 			}
@@ -670,7 +648,7 @@ void GameScene::Update()
 			}
 			//sal = true;
 		}
-		if (hit)
+		if (hit1 || hit2 || hit3 || hit4 || hit5 || hitBlocks)
 		{
 #pragma region BGM再生
 			//※変更必要（「.wav」のデータResourcesフォルダに入れたやつ読み込めず{Alarm01.wav}のみ再生可）
@@ -732,10 +710,12 @@ void GameScene::Update()
 #pragma endregion 
 
 		// 座標の変更を反映
-		object3d->SetPosition(position);
-		ball->SetPosition(ballPosition);
-		object3d->Update();
-		ball->Update();
+		//object3d->SetPosition(position);
+		//ball->SetPosition(ballPosition);
+		//object3d->Update();
+		//ball->Update();
+		objSphere->SetPosition(ballPosition);
+		objSphere->Update();
 
 #pragma region blocksのUpdate処理
 
@@ -794,16 +774,17 @@ void GameScene::Draw()
 
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
-	Object3d::PreDraw(cmdList);
+	//Object3d::PreDraw(cmdList);
 
 	//ボール描画前処理
 	Ball::PreDraw(cmdList);
+	objSphere->Draw();
 
 	//ブロック描画前処理
 	Block::PreDraw(cmdList);
 
 	//ボールの描画
-	ball->Draw();
+	//ball->Draw();
 
 #pragma region blocksのDraw処理
 
