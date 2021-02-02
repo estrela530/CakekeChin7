@@ -20,6 +20,7 @@ float k = 1.0f;
 float g = 2.5f;//重力加速度
 float ve;
 int sec = 0;
+float spe = 1.0f;
 
 GameScene::GameScene(SceneManager* smane) :smane(smane)
 {
@@ -197,6 +198,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	audio->PlayWaveBGM("Resources/aladdin.wav");
 	alal = false;
 	alalal = false;
+	hitBlocks = false;
+	blocksNumber = 0;
 }
 
 void GameScene::Update()
@@ -505,7 +508,8 @@ void GameScene::Update()
 			//岩崎変更
 			if (dists <= ball->radius + distance)
 			{
-				hit = true;
+				//hit = true;
+				hitBlocks = true;
 			}
 		}
 
@@ -515,19 +519,49 @@ void GameScene::Update()
 #pragma endregion
 
 #pragma region パーティクルの描画と挙動
-		//X,Y,Z{-5.0f,+5.0f}でランダムに分布
-		const float rnd_pos = 4.0f;
+		for (Block* &x : blocks)
+		{
+			XMFLOAT3 blocksPosition = x->GetPosition();
+			XMFLOAT3 pos/*{ blocksPosition.x,ballPosition.y,blocksPosition.z }*/;
+			//pos = blocksPosition;
 
-		//X,Y,Z{-0.05f,+0.05f}でランダムに分布
-		const float rnd_vel = 0.5f;
-		XMFLOAT3 vel{};//速度
-		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
-		vel.y += (float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f;
+			//pos = blocks.front()->GetPosition();
 
-		//重力に見立ててYのみ[-0.001f,0]でランダム分布
-		XMFLOAT3 acc{};//加速度
-		const float rnd_acc = 0.001f;
-		acc.y = -(float)rand() / RAND_MAX * rnd_acc;
+
+			pos = blocks.at(blocksNumber)->GetPosition();
+
+
+
+			//X,Y,Z{-5.0f,+5.0f}でランダムに分布
+			const float rnd_pos = 4.0f;
+
+			//X,Y,Z{-0.05f,+0.05f}でランダムに分布
+			const float rnd_vel = 10.2f;
+			XMFLOAT3 vel{};//速度
+			vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+			spe += 2.5;
+			vel.y += spe/*(float)rand() / RAND_MAX * rnd_vel + rnd_vel / 2.0f*/;
+			/*
+			vel.y += cc;*/
+
+			//重力に見立ててYのみ[0,-0.001f,0]でランダム分布
+			XMFLOAT3 acc{};//加速度
+			const float rnd_acc = 0.001f;
+			acc.y = -(float)rand() / RAND_MAX * rnd_acc;
+
+			/*const float rnd_acc = 0.05f;
+			const float m_acc = 0.02f;
+			acc.y -= rnd_acc;*/
+			//acc.y = acc.y - cc;
+			if (hitBlocks)
+			{
+				particleManager->Add(5, XMFLOAT3{ pos.x,pos.y + 7.0f,pos.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+			}
+			if (!hit)
+			{
+				spe = 1.0f;
+			}
+		}
 #pragma endregion
 
 #pragma region 新しい挙動まわりの処理(SZK)
@@ -546,7 +580,28 @@ void GameScene::Update()
 			}
 
 			//パーティクルの描画
-			particleManager->Add(5, XMFLOAT3{ ballPosition.x ,0.8f,1.8f }, vel, acc, 0.5f, 1.5f);//描画
+			//particleManager->Add(5, XMFLOAT3{ ballPosition.x ,0.8f,1.8f }, vel, acc, 0.5f, 1.5f);//描画
+
+			//ballPosition.y += 20.0f;
+			//debugText.Print("Hit", 50, 50, 3);
+		}
+		else if (hitBlocks)
+		{
+			sec += 1;
+			k -= 0.1;
+
+			ballPosition.y += k;//反発
+			if (sec > 45) //38
+			{
+				hitBlocks = false;
+				k = 7.0;
+				sec = 0;
+				blocksNumber++;
+
+			}
+
+			//パーティクルの描画
+			//particleManager->Add(5, XMFLOAT3{ ballPosition.x ,0.8f,1.8f }, vel, acc, 0.5f, 1.5f);//描画
 
 			//ballPosition.y += 20.0f;
 			//debugText.Print("Hit", 50, 50, 3);

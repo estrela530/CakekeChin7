@@ -129,6 +129,7 @@ public:
 	int timer = 0;
 	//開幕フェード処理
 	//bool fade_i= false;
+	int blocksNumber;
 	float gwip_x;
 	float gwip_y;
 	float alpha_f;
@@ -142,6 +143,7 @@ public:
 	float  sco_x;
 	float sco_y;
 	//float score___y;
+	bool hitBlocks = false;
 
 	//2点間の距離の差（Block）
 	int distance;
