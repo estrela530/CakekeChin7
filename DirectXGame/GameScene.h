@@ -120,9 +120,9 @@ public:
 	//フェード
 	bool alal = false;//背景点滅余
 	bool alalal = false;
-	float aa = 1;
-	float bb = 1;
-	float cc = 1;
+	float aa = 0;
+	float bb = 0;
+	float cc = 0;
 
 	int sec = 0;
 	bool hit1 = false;
@@ -155,8 +155,6 @@ public:
 
 	//ランキング機能関連
 	std::vector<int> scoreRankingVec;
-	//Ranking* ranking;
-	//bool check_bgm=false;
 
 };
 

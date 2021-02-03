@@ -111,21 +111,18 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	//	assert(0);
 	//	return;
 	//}
-	// 背景スプライト生成
-	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	// 3Dオブジェクト生成
 	//object3d = Object3d::Create();
 	//zahyou 
+		// 背景スプライト生成
+	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
 	score = Sprite::Create(2, { 1,126 });//スコア画像サイズ
 	score->Sprite::SetSize({ 135.0f,38.0f });//画像サイズ
 	//object3d->Update();
-
 	//// モデル読み込み
 	//modelSphere = Model::CreateFromOBJ("sphere", true);
-
 	////ボール生成
 	//ball = Ball::Create(modelSphere);
-
 	modelSphere = Model::CreateFromOBJ("sphere");
 	objSphere = Ball::Create(modelSphere);
 
@@ -175,6 +172,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 #pragma region 変数
 	//フェード
 	alpha = 0;
+
+	//spriteBG->SetColor({ 0, 0, 0, 0 });
 	//fade 生成
 	fade_1 = Sprite::Create(3, { 0.0f,0.0f });
 	gwip_x = 1280.0f;
@@ -208,7 +207,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	hit3 = false;
 	hit4 = false;
 	hit5 = false;
-
+	//	alpha = 0;
+//	iaiai = false;
 }
 
 void GameScene::Update()
@@ -247,13 +247,10 @@ void GameScene::Update()
 	alpha_f2 -= 0.008f;//柵
 	fade_saku->Sprite::SetColor({ 0,0,0,alpha_f2 });
 	score10->Sprite::SetColor({ 1,1,1, sal });
-	//if (alpha_f < 0.3f)
-	//{
-	//	timer += 1;
-	//}
+
 	if (timer > 70)//ゲームシーンの中身開始時間
 	{
-		spriteBG->SetColor({ 1,1,1,alpha });//背景色
+		//spriteBG->SetColor({ 1,1,1,alpha });//背景色
 
 		////if (alal == true)
 		////{
@@ -656,9 +653,28 @@ void GameScene::Update()
 			//audio->StopWave();
 #pragma endregion
 		}
-		aa = sco * 0.001f;
-		bb = sco * 0.001f;
-		cc = sco * 0.001f;
+		//ジャンプごとに背景色追加していくようになっている、
+		//現状では、色の天井まで行く可能性があるので変更する必要がある。
+		aa = sco * 0.002f;
+		bb = sco * 0.002f;
+		cc = sco * 0.002f;
+		if (sco > 190)
+		{
+			aa -= 0.002f;
+			bb -= 0.002f;
+			cc -= 0.002f;
+		}
+	/*	if (sco > 400)
+		{
+			aa = sco - 0.002f;
+			bb = sco - 0.002f;
+			cc = sco - 0.002f;
+		}*/
+
+
+
+
+
 #pragma region 
 		if (input->PushKey(DIK_2) || input->PushKey(DIK_R))
 		{
