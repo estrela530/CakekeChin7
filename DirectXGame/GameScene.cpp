@@ -505,27 +505,27 @@ void GameScene::Update()
 			//acc.y = acc.y - cc;
 			if (hitBlocks)
 			{
-				particleManager->Add(5, XMFLOAT3{ pos.x,pos.y + 7.0f,pos.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+				particleManager->Add(5, XMFLOAT3{ pos.x,pos.y + 4.0f,pos.z + 10.0f }, vel, acc, 5.0f, 20.0f);//描画
 			}
 			else if (hit1)
 			{
-				particleManager->Add(5, XMFLOAT3{ block1Position.x,block1Position.y + 7.0f,block1Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+				particleManager->Add(5, XMFLOAT3{ block1Position.x,block1Position.y + 4.0f,block1Position.z + 10.0f }, vel, acc, 10.0f, 20.0f);//描画
 			}
 			else if (hit2)
 			{
-				particleManager->Add(5, XMFLOAT3{ block2Position.x,block2Position.y + 7.0f,block2Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+				particleManager->Add(5, XMFLOAT3{ block2Position.x,block2Position.y + 4.0f,block2Position.z + 10.0f }, vel, acc, 10.0f, 20.0f);//描画
 			}
 			else if (hit3)
 			{
-				particleManager->Add(5, XMFLOAT3{ block3Position.x,block3Position.y + 7.0f,block3Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+				particleManager->Add(5, XMFLOAT3{ block3Position.x,block3Position.y + 4.0f,block3Position.z + 10.0f }, vel, acc, 10.0f, 20.0f);//描画
 			}
 			else if (hit4)
 			{
-				particleManager->Add(5, XMFLOAT3{ block4Position.x,block4Position.y + 7.0f,block4Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+				particleManager->Add(5, XMFLOAT3{ block4Position.x,block4Position.y + 4.0f,block4Position.z + 10.0f }, vel, acc, 10.0f, 20.0f);//描画
 			}
 			else if (hit5)
 			{
-				particleManager->Add(5, XMFLOAT3{ block5Position.x,block5Position.y + 7.0f,block5Position.z + 25.0f }, vel, acc, 10.0f, 20.0f);//描画
+				particleManager->Add(5, XMFLOAT3{ block5Position.x,block5Position.y + 4.0f,block5Position.z + 10.0f }, vel, acc, 10.0f, 20.0f);//描画
 			}
 
 			if (!hit1 || !hit2 || !hit3 || !hit4 || !hit5 || !hitBlocks)
